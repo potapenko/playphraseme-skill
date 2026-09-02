@@ -1,117 +1,86 @@
-# PlayPhrase.me for AI agents
+# Learn with PlayPhrase.me and an AI assistant
 
-Find a word or phrase in real movie and TV dialogue. The skill gives your AI
-agent a focused way to search PlayPhrase.me, explain what it found, and share a
-link you can open yourself.
+Create a language lesson in ChatGPT, Codex, Claude, or another AI assistant,
+then hear the phrases in real movie and TV dialogue.
 
-Try asking:
+I build [PlayPhrase.me](https://www.playphrase.me/). Lately, people have been
+asking me if they could bring it into the lessons they create with AI.
 
-> Find how people say “break a leg” in movies.
+It made sense to me. An AI assistant can explain grammar, shape a lesson around
+a topic, or make a quiz. PlayPhrase.me adds examples that can be watched and
+heard in context.
 
-> Show exact matches for “I love you.”
+So I made a small skill. It tells an AI assistant how to search PlayPhrase.me
+and place useful links inside a lesson. Install it once, then ask for a lesson
+in ordinary language.
 
-> Find American-English verbs and open one as Reels.
+## Start with one message
 
-## Install
+A lesson can begin with a topic, a phrase, a grammar question, or just a rough
+idea.
 
-### Codex
+For example:
 
-Paste this into Codex:
+> Teach me five natural ways to disagree politely. Explain each phrase, find
+> examples from movies or TV with PlayPhrase.me, and give me a short quiz at
+> the end.
+
+The assistant can organize the lesson and explain the language. The skill finds
+the PlayPhrase.me examples. Each link opens a scene where the phrase can be
+heard in context. After watching, return to the chat for the next part.
+
+The lesson might continue with:
+
+> Quiz me on those phrases one at a time. After each answer, give me a
+> PlayPhrase.me link so I can hear the phrase again.
+
+A chat can stay with one phrase or grow into a longer learning plan. There is no
+fixed course to follow.
+
+## Install the skill
+
+Open an AI assistant and paste this prompt:
 
 ```text
-$skill-installer Install the playphraseme skill from
+Install the PlayPhrase.me skill from:
 https://github.com/potapenko/playphraseme-language-learning-skill/tree/master/skills/playphraseme
+
+When it is ready, tell me how to use it here. If this app cannot install skills
+directly, give me the simplest steps for adding it.
 ```
 
-Then start a new session if needed and ask:
+If the app supports skills, the assistant can handle the installation. If it
+does not, the same prompt asks for the simplest available setup. Once installed,
+the skill stays available for future lessons in that app.
 
-```text
-$playphraseme Find natural examples of “piece of cake.”
-```
+## Ideas for a first lesson
 
-### Claude Code
+> Explain the difference between “I did” and “I have done.” Find examples of
+> both forms in real dialogue and help me notice the difference.
 
-Copy the `skills/playphraseme` folder to:
+> Make a 20-minute lesson with useful English for a job interview. Include
+> explanations, PlayPhrase.me examples, and a short practice exercise.
 
-```text
-~/.claude/skills/playphraseme
-```
+> Help me create a four-week study plan for my level. Whenever we learn a new
+> phrase or grammar pattern, use PlayPhrase.me to show it in context.
 
-Start a new session if needed, then use `/playphraseme` in your request.
+> Find natural examples of “break a leg,” explain what it means, and then make
+> a small fill-in-the-blank quiz.
 
-<details>
-<summary>Install with another Agent Skills client</summary>
+These are starting points, not a prescribed course. The same setup can be used
+for a single phrase, conversation practice, listening, grammar, or a study plan.
 
-Give the client this prompt:
+## What happens behind the lesson
 
-```text
-Install the Agent Skill from
-https://github.com/potapenko/playphraseme-language-learning-skill/tree/master/skills/playphraseme.
+The skill contains the PlayPhrase.me instructions an AI assistant needs: how to
+search for the requested material and return a link to the results. The learner
+does not need to remember query formats or explain the site again in every new
+chat.
 
-Use the personal skills directory supported by this client. Download or clone
-the repository into a temporary directory, inspect SKILL.md and the bundled
-scripts without executing them, then copy only the playphraseme folder. Validate
-SKILL.md against the Agent Skills specification and report the installed path
-and invocation syntax. If this client does not support Agent Skills, explain
-that instead of making a system-wide installation.
-```
+The assistant creates the lesson. PlayPhrase.me supplies the examples.
 
-Installation paths and invocation syntax vary by client. The skill uses the
-open [Agent Skills format](https://agentskills.io/).
+[Open PlayPhrase.me](https://www.playphrase.me/) or install the skill and begin
+with any phrase worth hearing in context.
 
-</details>
-
-## Use it
-
-Ask normally. The skill chooses the appropriate PlayPhrase.me view and returns
-a link alongside the result.
-
-- “Find exact movie quotes containing ‘I knew it.’”
-- “Show phrases matching ‘take * off.’”
-- “Find English examples of this grammar pattern.”
-- “Show idioms between B1 and C1.”
-- “Find scenes from the 1990s with this phrase.”
-- “Find clips whose cast includes Brad Pitt.”
-- “Open these results as Reels.”
-
-It can work with ordinary and exact searches, wildcard phrases, English grammar
-patterns, curated phrases, vocabulary, Clip Search filters, actors, and Reels.
-When live scenes are needed, it opens the public PlayPhrase.me page through the
-agent's browser and returns the final shareable URL.
-
-## Try PlayPhrase.me directly
-
-No skill is required to use the site.
-
-1. Open [PlayPhrase.me](https://www.playphrase.me/).
-2. Type a word or phrase, such as `break a leg`.
-3. Play the examples to hear the phrase in different scenes.
-
-For an exact match, put the phrase in quotation marks. Use `*` between words
-when one or more words may appear in the middle.
-
-[Open “break a leg” on PlayPhrase.me](https://www.playphrase.me/#/search?language=en&q=break+a+leg)
-
-## What to expect
-
-The skill uses public PlayPhrase.me pages and a small read-only Learning API. It
-does not download clips, expose private APIs, export the corpus, or bypass guest,
-subscription, safety, or rate limits. Cast matches and probable voice matches
-are also kept separate: appearing in a film does not prove who spoke a line.
-
-The production Learning API is still pending deployment. Public search links
-already target `www.playphrase.me`; structured Common Phrases and Vocabulary
-requests will become available to installed users after that API is deployed.
-Localhost is only used by maintainers for integration testing and is never
-required for normal installation.
-
-Search text becomes part of a public URL and may be saved in browser history or
-shared messages. Do not include secrets or personal data in a search.
-
-## For developers
-
-Implementation details, test commands, API limits, and contribution rules are
-in [CONTRIBUTING.md](CONTRIBUTING.md). Behavioral evals are documented in
-[evals/README.md](evals/README.md).
-
-The skill is licensed under the [MIT License](LICENSE).
+<sub>Search phrases may appear in shareable links and browser history. Do not
+use personal or secret information in a search.</sub>
