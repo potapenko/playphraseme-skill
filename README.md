@@ -1,76 +1,18 @@
-# Learn with PlayPhrase.me and your AI agent
+# PlayPhrase.me for AI agents
 
-I build [PlayPhrase.me](https://www.playphrase.me/), and lately people have
-started asking me the same question: can it be used inside ChatGPT, Codex,
-Claude, or another AI agent?
+Find a word or phrase in real movie and TV dialogue. The skill gives your AI
+agent a focused way to search PlayPhrase.me, explain what it found, and share a
+link you can open yourself.
 
-I think that is a good way to use it. An AI agent can explain a grammar rule,
-prepare a lesson, or make a quiz. PlayPhrase.me adds something that a written
-explanation cannot: examples you can watch and hear in real movie and TV
-dialogue.
+Try asking:
 
-This repository connects the two. It contains a small **Agent Skill** that
-teaches an AI agent how to search PlayPhrase.me, choose the right kind of
-search, and give you a link to the examples it found.
+> Find how people say “break a leg” in movies.
 
-## What you can do with it
+> Show exact matches for “I love you.”
 
-Install the skill once, then talk to your agent normally. You do not need to
-learn special commands or understand how PlayPhrase.me URLs work.
+> Find American-English verbs and open one as Reels.
 
-For example, start a new chat and say:
-
-> Let’s learn five natural phrases for disagreeing politely. Explain each
-> phrase, find examples from movies or TV, and give me a short quiz at the end.
-
-The agent can structure the lesson, explain the phrases, and use the skill to
-find relevant PlayPhrase.me examples. Open the links, listen to the lines, and
-return to the chat when you are ready for the next part.
-
-After watching the examples, continue with:
-
-> Quiz me on those phrases. Give me one question at a time, and include a
-> PlayPhrase.me link after each answer.
-
-That is only one possible lesson. You can also ask:
-
-> Explain the difference between “I did” and “I have done,” then find examples
-> of both forms in real dialogue.
-
-> Help me learn useful English for a job interview. Make a 20-minute lesson
-> with explanations, examples, and practice questions.
-
-> Create a four-week study plan for my level. Whenever we learn a new phrase or
-> grammar pattern, use PlayPhrase.me to show how it sounds in context.
-
-> Find natural examples of “break a leg,” explain what it means, and then make
-> a small fill-in-the-blank exercise.
-
-You decide what you want to study. The agent decides how to organize the
-lesson. The PlayPhrase.me skill helps it find the examples.
-
-## What the skill actually does
-
-The skill is not a separate language course and it does not replace your AI
-agent. It is a set of instructions, references, and small helper scripts written
-for the agent.
-
-It explains:
-
-- which PlayPhrase.me search to use for a word, exact quote, wildcard phrase,
-  grammar pattern, actor, genre, year, or other supported filter;
-- how to build a correct, shareable PlayPhrase.me link;
-- when to open the public site and inspect the visible scenes;
-- how to use the small public Learning API for common phrases and vocabulary;
-- which limits must be respected.
-
-In other words, you could explain all of this to the agent yourself in every
-new chat. The skill keeps those instructions in one reusable place.
-
-## Install the skill
-
-The folder follows the open [Agent Skills format](https://agentskills.io/).
-Installation is slightly different in each AI client.
+## Install
 
 ### Codex
 
@@ -81,27 +23,11 @@ $skill-installer Install the playphraseme skill from
 https://github.com/potapenko/playphraseme-language-learning-skill/tree/master/skills/playphraseme
 ```
 
-If the skill does not appear immediately, start a new session. You can invoke
-it explicitly:
+Then start a new session if needed and ask:
 
 ```text
 $playphraseme Find natural examples of “piece of cake.”
 ```
-
-You can also ask for a lesson normally. Codex may select the skill itself when
-your request needs PlayPhrase.me examples.
-
-### ChatGPT desktop app
-
-Standalone skills are available in the ChatGPT desktop app. Open **Skills** in
-the sidebar, download this repository, and add the `skills/playphraseme` folder
-as a personal skill using the option available in your Skills screen.
-
-Once installed, select the skill with `@` or ask ChatGPT to use
-PlayPhrase.me in your lesson. Skill availability can depend on your account,
-workspace settings, and the ChatGPT surface you are using. See the
-[official OpenAI skills documentation](https://learn.chatgpt.com/docs/build-skills)
-for current details.
 
 ### Claude Code
 
@@ -111,14 +37,12 @@ Copy the `skills/playphraseme` folder to:
 ~/.claude/skills/playphraseme
 ```
 
-Then invoke it with `/playphraseme`, or ask Claude for a lesson that needs
-movie or TV examples. If you created the top-level skills directory during the
-current session and the skill does not appear, restart Claude Code.
+Start a new session if needed, then use `/playphraseme` in your request.
 
-### Another Agent Skills client
+<details>
+<summary>Install with another Agent Skills client</summary>
 
-If your AI client can install skills from a Git repository, give it this
-prompt:
+Give the client this prompt:
 
 ```text
 Install the Agent Skill from
@@ -132,35 +56,48 @@ and invocation syntax. If this client does not support Agent Skills, explain
 that instead of making a system-wide installation.
 ```
 
-The installation path and invocation syntax vary by client. A client that does
-not support the Agent Skills format can still use PlayPhrase.me directly.
+Installation paths and invocation syntax vary by client. The skill uses the
+open [Agent Skills format](https://agentskills.io/).
 
-## Use PlayPhrase.me without the skill
+</details>
 
-The skill is optional. To search the site yourself:
+## Use it
+
+Ask normally. The skill chooses the appropriate PlayPhrase.me view and returns
+a link alongside the result.
+
+- “Find exact movie quotes containing ‘I knew it.’”
+- “Show phrases matching ‘take * off.’”
+- “Find English examples of this grammar pattern.”
+- “Show idioms between B1 and C1.”
+- “Find scenes from the 1990s with this phrase.”
+- “Find clips whose cast includes Brad Pitt.”
+- “Open these results as Reels.”
+
+It can work with ordinary and exact searches, wildcard phrases, English grammar
+patterns, curated phrases, vocabulary, Clip Search filters, actors, and Reels.
+When live scenes are needed, it opens the public PlayPhrase.me page through the
+agent's browser and returns the final shareable URL.
+
+## Try PlayPhrase.me directly
+
+No skill is required to use the site.
 
 1. Open [PlayPhrase.me](https://www.playphrase.me/).
-2. Enter a word or phrase, such as `break a leg`.
+2. Type a word or phrase, such as `break a leg`.
 3. Play the examples to hear the phrase in different scenes.
 
-Put a phrase in quotation marks for an exact match. Use `*` between words when
-one or more words may appear in the middle.
+For an exact match, put the phrase in quotation marks. Use `*` between words
+when one or more words may appear in the middle.
 
 [Open “break a leg” on PlayPhrase.me](https://www.playphrase.me/#/search?language=en&q=break+a+leg)
 
 ## What to expect
 
-The skill uses public PlayPhrase.me pages and a small read-only Learning API.
-It does not download clips, expose private APIs, export the corpus, or bypass
-guest, subscription, safety, or rate limits.
-
-When live scenes are needed, the agent opens the public PlayPhrase.me page in
-an available browser and returns the final shareable URL. If it cannot inspect
-the page, it can still give you a correctly constructed search link and tell
-you what it was unable to verify.
-
-Cast matches and probable voice matches are kept separate: appearing in a film
-does not prove who spoke a line.
+The skill uses public PlayPhrase.me pages and a small read-only Learning API. It
+does not download clips, expose private APIs, export the corpus, or bypass guest,
+subscription, safety, or rate limits. Cast matches and probable voice matches
+are also kept separate: appearing in a film does not prove who spoke a line.
 
 The production Learning API is still pending deployment. Public search links
 already target `www.playphrase.me`; structured Common Phrases and Vocabulary
