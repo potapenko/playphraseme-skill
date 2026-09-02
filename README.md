@@ -21,9 +21,11 @@ idea.
 
 For example:
 
-> Teach me five natural ways to disagree politely. Explain each phrase, find
-> examples from movies or TV with PlayPhrase.me, and give me a short quiz at
-> the end.
+```text
+Teach me five natural ways to disagree politely. Explain each phrase, find
+examples from movies or TV with PlayPhrase.me, and give me a short quiz at the
+end.
+```
 
 The assistant can organize the lesson and explain the language. The skill finds
 the PlayPhrase.me examples. Each link opens a scene where the phrase can be
@@ -31,8 +33,10 @@ heard in context. After watching, return to the chat for the next part.
 
 The lesson might continue with:
 
-> Quiz me on those phrases one at a time. After each answer, give me a
-> PlayPhrase.me link so I can hear the phrase again.
+```text
+Quiz me on those phrases one at a time. After each answer, give me a
+PlayPhrase.me link so I can hear the phrase again.
+```
 
 A chat can stay with one phrase or grow into a longer learning plan. There is no
 fixed course to follow.
@@ -55,17 +59,27 @@ the skill stays available for future lessons in that app.
 
 ## Ideas for a first lesson
 
-> Explain the difference between “I did” and “I have done.” Find examples of
-> both forms in real dialogue and help me notice the difference.
+Every example below is ready to copy into a new chat.
 
-> Make a 20-minute lesson with useful English for a job interview. Include
-> explanations, PlayPhrase.me examples, and a short practice exercise.
+```text
+Explain the difference between “I did” and “I have done.” Find examples of both
+forms in real dialogue and help me notice the difference.
+```
 
-> Help me create a four-week study plan for my level. Whenever we learn a new
-> phrase or grammar pattern, use PlayPhrase.me to show it in context.
+```text
+Make a 20-minute lesson with useful English for a job interview. Include
+explanations, PlayPhrase.me examples, and a short practice exercise.
+```
 
-> Find natural examples of “break a leg,” explain what it means, and then make
-> a small fill-in-the-blank quiz.
+```text
+Help me create a four-week study plan for my level. Whenever we learn a new
+phrase or grammar pattern, use PlayPhrase.me to show it in context.
+```
+
+```text
+Find natural examples of “break a leg,” explain what it means, and then make a
+small fill-in-the-blank quiz.
+```
 
 These are starting points, not a prescribed course. The same setup can be used
 for a single phrase, conversation practice, listening, grammar, or a study plan.
