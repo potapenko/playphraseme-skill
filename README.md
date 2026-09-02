@@ -1,156 +1,117 @@
-# PlayPhrase.me Agent Skill
+# PlayPhrase.me for AI agents
 
-Ask an AI agent:
+Find a word or phrase in real movie and TV dialogue. The skill gives your AI
+agent a focused way to search PlayPhrase.me, explain what it found, and share a
+link you can open yourself.
 
-- “Find how people say ‘break a leg’ in movies.”
-- “Show exact matches for ‘I love you’ and give me a shareable link.”
-- “Find American-English verbs, then open one as Reels.”
+Try asking:
 
-The `playphraseme` skill finds small language-learning sets through the bounded
-public PlayPhrase.me Learning API, builds public PlayPhrase.me URLs, and uses a
-host browser when live scenes or source details are needed.
+> Find how people say “break a leg” in movies.
 
-## Install with an agent
+> Show exact matches for “I love you.”
 
-Copy this prompt into an agent that supports Agent Skills:
+> Find American-English verbs and open one as Reels.
 
-```text
-Install the Agent Skill from
-https://github.com/potapenko/playphraseme-language-learning-skill/tree/master/skills/playphraseme.
-
-First determine which skill directory this agent supports. Download or clone
-the repository into a temporary directory, inspect SKILL.md and the bundled
-scripts without executing them, then copy only the playphraseme skill folder
-into the appropriate personal skills directory. Validate SKILL.md against the
-Agent Skills specification, make no changes outside that skill directory, and
-report the installed path and how to invoke it. If this client does not support
-Agent Skills, do not improvise a system-wide installation; explain the closest
-supported manual option.
-```
-
-Do not install downloaded scripts with `curl | sh`, `sudo`, or writes to broad
-system directories.
+## Install
 
 ### Codex
+
+Paste this into Codex:
 
 ```text
 $skill-installer Install the playphraseme skill from
 https://github.com/potapenko/playphraseme-language-learning-skill/tree/master/skills/playphraseme
 ```
 
-Manual personal path: `$HOME/.agents/skills/playphraseme`. Invoke it as
-`$playphraseme`.
+Then start a new session if needed and ask:
+
+```text
+$playphraseme Find natural examples of “piece of cake.”
+```
 
 ### Claude Code
 
-Personal path: `~/.claude/skills/playphraseme`.
-
-Project path: `.claude/skills/playphraseme`.
-
-Invoke it as `/playphraseme`.
-
-Start a new session if the current client does not discover a newly installed
-skill.
-
-## What it can do
-
-- Suggest Common Phrases and return small filtered Common Phrase or Vocabulary
-  sets.
-- Build Classic Search URLs for ordinary, exact, wildcard, and English grammar
-  queries.
-- Build catalog, Clip Search, actor, and Reels URLs with documented public
-  state.
-- Distinguish legacy actor scope, source cast metadata, and probabilistic
-  phrase-level voice detection.
-- Open public results with whatever browser capability the host agent provides.
-- Return the final public URL even when live extraction is unavailable.
-
-The skill does not expose the complete phrase-search API, download clips, use
-private endpoints, scrape internal services, or bypass guest, subscription,
-content-safety, or rate limits. There is no dedicated phrasal-verb filter.
-
-## Bundled command-line tools
-
-The scripts require Python 3.10+ and use the standard library only.
-
-```bash
-python3 skills/playphraseme/scripts/playphrase_url.py search \
-  --query "I love you" --exact
-
-python3 skills/playphraseme/scripts/playphrase_url.py clip-search \
-  --query "break a leg" --filter year=1990..1999
-
-python3 skills/playphraseme/scripts/playphrase_learning.py suggestions \
-  --query "break a leg" --language en
-```
-
-The published Learning API target is:
+Copy the `skills/playphraseme` folder to:
 
 ```text
-https://www.playphrase.me/api/v1/learning
+~/.claude/skills/playphraseme
 ```
 
-It is pending production deployment. Current integration smoke tests must use:
+Start a new session if needed, then use `/playphraseme` in your request.
 
-```bash
-python3 skills/playphraseme/scripts/playphrase_learning.py suggestions \
-  --query "break a leg" \
-  --base-url http://localhost:3000/api/v1/learning
+<details>
+<summary>Install with another Agent Skills client</summary>
+
+Give the client this prompt:
+
+```text
+Install the Agent Skill from
+https://github.com/potapenko/playphraseme-language-learning-skill/tree/master/skills/playphraseme.
+
+Use the personal skills directory supported by this client. Download or clone
+the repository into a temporary directory, inspect SKILL.md and the bundled
+scripts without executing them, then copy only the playphraseme folder. Validate
+SKILL.md against the Agent Skills specification and report the installed path
+and invocation syntax. If this client does not support Agent Skills, explain
+that instead of making a system-wide installation.
 ```
 
-Only these anonymous GET endpoints are permitted:
+Installation paths and invocation syntax vary by client. The skill uses the
+open [Agent Skills format](https://agentskills.io/).
 
-- `/api/v1/learning/common-phrases/suggestions`
-- `/api/v1/learning/common-phrases`
-- `/api/v1/learning/common-words`
+</details>
 
-The client makes one bounded logical API operation per invocation, does not
-send credentials, does not retry automatically, and does not page toward a
-bulk export. One same-origin redirect inside the Learning API prefix is allowed
-and bounded.
+## Use it
 
-## Compatibility
+Ask normally. The skill chooses the appropriate PlayPhrase.me view and returns
+a link alongside the result.
 
-Last documentation check: **2026-09-02**.
+- “Find exact movie quotes containing ‘I knew it.’”
+- “Show phrases matching ‘take * off.’”
+- “Find English examples of this grammar pattern.”
+- “Show idioms between B1 and C1.”
+- “Find scenes from the 1990s with this phrase.”
+- “Find clips whose cast includes Brad Pitt.”
+- “Open these results as Reels.”
 
-| Client | Format status | Validation status |
-| --- | --- | --- |
-| Agent Skills standard | Compatible | Local and reference validation required per release |
-| Codex CLI / IDE | Standalone skills documented | Fresh-install smoke pending |
-| ChatGPT desktop | Standalone skills documented | Fresh-install smoke pending |
-| Claude Code | Standard skills and local paths documented | Fresh-install smoke pending |
-| ChatGPT Chat/Work web and mobile | Skills via plugins | Plugin packaging is a later milestone |
-| Production Learning API | Contracted target | Pending deployment |
+It can work with ordinary and exact searches, wildcard phrases, English grammar
+patterns, curated phrases, vocabulary, Clip Search filters, actors, and Reels.
+When live scenes are needed, it opens the public PlayPhrase.me page through the
+agent's browser and returns the final shareable URL.
 
-Other agents may load the folder if they implement the open Agent Skills
-standard. Installation paths and invocation syntax remain client-specific.
+## Try PlayPhrase.me directly
 
-## Privacy, security, and rights
+No skill is required to use the site.
 
-Search text becomes part of a public URL and may be saved in browser history,
-logs, or shared messages. Do not put secrets or personal data in a query.
+1. Open [PlayPhrase.me](https://www.playphrase.me/).
+2. Type a word or phrase, such as `break a leg`.
+3. Play the examples to hear the phrase in different scenes.
 
-Inspect `SKILL.md` and both Python scripts before installation or execution.
-The API client rejects arbitrary remote origins, credentials in URLs,
-cross-origin redirects, oversized responses, and non-Learning API paths.
+For an exact match, put the phrase in quotation marks. Use `*` between words
+when one or more words may appear in the middle.
 
-PlayPhrase.me results and media remain subject to the site's terms and rights.
-This repository provides a workflow and public links; it does not redistribute
-the media corpus.
+[Open “break a leg” on PlayPhrase.me](https://www.playphrase.me/#/search?language=en&q=break+a+leg)
 
-## Development
+## What to expect
 
-Run the offline suite:
+The skill uses public PlayPhrase.me pages and a small read-only Learning API. It
+does not download clips, expose private APIs, export the corpus, or bypass guest,
+subscription, safety, or rate limits. Cast matches and probable voice matches
+are also kept separate: appearing in a film does not prove who spoke a line.
 
-```bash
-python3 -m unittest discover -s tests -v
-```
+The production Learning API is still pending deployment. Public search links
+already target `www.playphrase.me`; structured Common Phrases and Vocabulary
+requests will become available to installed users after that API is deployed.
+Localhost is only used by maintainers for integration testing and is never
+required for normal installation.
 
-Behavioral eval definitions live in [`evals/cases.json`](evals/cases.json).
-Live API tests are intentionally separate from the offline suite.
+Search text becomes part of a public URL and may be saved in browser history or
+shared messages. Do not include secrets or personal data in a search.
 
-See [`CONTRIBUTING.md`](CONTRIBUTING.md) before changing API or URL behavior.
+## For developers
 
-## License
+Implementation details, test commands, API limits, and contribution rules are
+in [CONTRIBUTING.md](CONTRIBUTING.md). Behavioral evals are documented in
+[evals/README.md](evals/README.md).
 
-MIT. See [`LICENSE`](LICENSE).
+The skill is licensed under the [MIT License](LICENSE).
