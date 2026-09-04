@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import socket
 import sys
 import threading
 import time
@@ -9,6 +10,8 @@ import unittest
 from contextlib import contextmanager
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from unittest.mock import patch
+from urllib.error import URLError
 from urllib.parse import parse_qs, urlsplit
 
 
@@ -182,6 +185,21 @@ class LearningClientTests(unittest.TestCase):
             url, validated = client.build_request("phrases", {}, base_url)
             with self.assertRaises(client.TimeoutFailure):
                 client.fetch_json(url, validated, timeout=0.05)
+
+    def test_dns_resolution_failure_has_clear_diagnostic(self) -> None:
+        class FailingOpener:
+            def open(self, *_args: object, **_kwargs: object) -> None:
+                raise URLError(socket.gaierror(-3, "Temporary failure in name resolution"))
+
+        url, validated = client.build_request("phrases", {})
+        with patch.object(client, "build_opener", return_value=FailingOpener()):
+            with self.assertRaises(client.HTTPFailure) as caught:
+                client.fetch_json(url, validated)
+        self.assertEqual(
+            "DNS resolution failed in the execution environment",
+            str(caught.exception),
+        )
+        self.assertEqual(6, caught.exception.exit_code)
 
     def test_oversized_body_is_rejected(self) -> None:
         with stub_server("oversized") as base_url:

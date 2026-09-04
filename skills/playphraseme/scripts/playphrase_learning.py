@@ -296,6 +296,8 @@ def fetch_json(url: str, validated_base: ValidatedBase, *, timeout: float = MAX_
     except URLError as exc:
         if isinstance(exc.reason, (TimeoutError, socket.timeout)):
             raise TimeoutFailure("Learning API request timed out") from exc
+        if isinstance(exc.reason, socket.gaierror):
+            raise HTTPFailure("DNS resolution failed in the execution environment") from exc
         raise HTTPFailure(f"Learning API request failed: {exc.reason}") from exc
 
     try:

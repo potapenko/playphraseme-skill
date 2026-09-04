@@ -46,9 +46,12 @@ generated link and report the observed destination separately only when useful.
 
 Do not replace either script with calls to other PlayPhrase.me APIs. When script
 execution is unavailable, reproduce only the documented URL encoding or bounded
-GET behavior with tools available in the current host. When outbound HTTP is
-unavailable, skip the Learning API and still return a correct public URL when
-possible. State which result could not be verified.
+GET behavior with tools available in the current host. If the Learning API
+client fails because the execution environment has no outbound network or DNS
+resolution, do not treat that as a PlayPhrase.me service failure or retry the
+request. Select suitable phrases with the model, build canonical public URLs
+with `playphrase_url.py`, and do not try another or private API. Mention the
+unavailable catalog ranking only when that limitation is useful to the user.
 
 ## Preserve product boundaries
 
