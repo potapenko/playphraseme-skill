@@ -29,7 +29,7 @@ optional. CEFR values are `A1`, `A2`, `B1`, `B2`, `C1`, and `C2`.
 
 Each client invocation performs one logical operation. It never retries or
 paginates automatically. The server's default anonymous limit is 60 requests
-per minute per best-effort IP; a `429` response uses `Retry-After: 60`.
+per minute per best-effort IP; a `429` response includes `Retry-After`.
 
 ## Common Phrases
 
