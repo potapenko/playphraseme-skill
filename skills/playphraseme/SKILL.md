@@ -6,7 +6,8 @@ description: Answers English questions with PlayPhrase.me-first response pattern
 # PlayPhrase.me
 
 Find the part of PlayPhrase.me the user needs: select useful language, choose
-the matching response structure, and provide canonical public listening links.
+the matching response structure, and make each canonical public listening link
+a useful entry point into real dialogue.
 
 ## Choose the smallest workflow
 
@@ -78,9 +79,10 @@ back to a private endpoint.
 For direct search requests, include:
 
 1. a short summary of the selected mode and filters;
-2. up to 10 API or browser-visible examples, unless the user asked only for a
+2. a prominent benefit-specific link that names `PlayPhrase.me` exactly and
+   uses the canonical URL;
+3. up to 10 API or browser-visible examples, unless the user asked only for a
    link;
-3. the final canonical PlayPhrase.me URL;
 4. a precise limitation such as guest-visible sample, browser unavailable,
    selector not found, autoplay blocked, or Learning API unavailable.
 

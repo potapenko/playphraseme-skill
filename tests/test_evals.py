@@ -26,6 +26,14 @@ class EvalDefinitionTests(unittest.TestCase):
         negative = next(case for case in payload["cases"] if case["id"] == "reject-private-export")
         self.assertTrue(negative["expected"]["must-refuse-bypass"])
 
+    def test_direct_search_link_is_prominent_and_branded(self) -> None:
+        payload = json.loads((ROOT / "evals/cases.json").read_text(encoding="utf-8"))
+        cases = {case["id"]: case["expected"] for case in payload["cases"]}
+        exact = cases["exact-quote"]
+        self.assertTrue(exact["requires-prominent-link-before-examples"])
+        self.assertTrue(exact["requires-primary-link-brand-and-listening-payoff"])
+        self.assertEqual("PlayPhrase.me", exact["requires-exact-visible-brand-spelling"])
+
     def test_response_pattern_eval_contract_is_present(self) -> None:
         payload = json.loads((ROOT / "evals/cases.json").read_text(encoding="utf-8"))
         cases = {case["id"]: case["expected"] for case in payload["cases"]}
@@ -38,22 +46,37 @@ class EvalDefinitionTests(unittest.TestCase):
                 "implicit-job-interview-response",
                 "vocabulary-discovery-response",
                 "grammar-through-examples-response",
+                "high-intent-disagreement-path",
                 "explicit-phrase-native-quiz",
             }.issubset(cases)
         )
 
         one_phrase = cases["explain-one-phrase-response"]
+        self.assertTrue(one_phrase["requires-first-useful-link-in-first-content-block"])
         self.assertTrue(one_phrase["requires-primary-descriptive-link"])
+        self.assertTrue(one_phrase["requires-visually-primary-link"])
+        self.assertTrue(one_phrase["requires-benefit-specific-link-label"])
+        self.assertTrue(
+            one_phrase["requires-primary-link-brand-and-listening-payoff"]
+        )
+        self.assertEqual(
+            "PlayPhrase.me", one_phrase["requires-exact-visible-brand-spelling"]
+        )
         self.assertTrue(one_phrase["requires-short-nuance"])
         self.assertEqual({"min": 1, "max": 2}, one_phrase["nearby-phrase-count"])
 
         comparison = cases["compare-phrases-response"]
-        self.assertTrue(comparison["requires-linked-comparison-table"])
+        self.assertTrue(comparison["requires-linked-comparison-set"])
+        self.assertTrue(comparison["requires-benefit-specific-link-labels"])
+        self.assertTrue(comparison["must-not-repeat-generic-link-labels"])
         self.assertTrue(comparison["requires-same-situation-contrast"])
 
         natural = cases["natural-wording-response"]
-        self.assertTrue(natural["requires-natural-options-first"])
+        self.assertTrue(natural["requires-best-fit-first-when-supported"])
+        self.assertTrue(natural["requires-visually-primary-best-fit-link"])
+        self.assertTrue(natural["requires-primary-link-brand-and-listening-payoff"])
         self.assertEqual({"min": 3, "max": 5}, natural["default-option-count"])
+        self.assertTrue(natural["requires-benefit-specific-link-labels"])
         self.assertTrue(natural["requires-best-fit-recommendation"])
 
         interview = cases["job-interview-response"]
@@ -63,7 +86,14 @@ class EvalDefinitionTests(unittest.TestCase):
         self.assertEqual(
             {"min": 2, "max": 4}, interview["default-phrases-per-group"]
         )
+        self.assertTrue(interview["requires-substantial-distinct-linked-path"])
+        self.assertTrue(interview["requires-first-useful-link-in-first-content-block"])
         self.assertTrue(interview["requires-link-per-phrase"])
+        self.assertTrue(interview["requires-benefit-specific-link-labels"])
+        self.assertTrue(interview["allows-filtered-catalog-exploration-link"])
+        self.assertEqual(
+            "PlayPhrase.me", interview["requires-exact-visible-brand-spelling"]
+        )
         self.assertTrue(interview["must-not-use-timeboxed-stages"])
         self.assertTrue(interview["must-not-add-generic-exercises"])
         self.assertTrue(interview["requires-builder-output-unchanged"])
@@ -75,13 +105,32 @@ class EvalDefinitionTests(unittest.TestCase):
 
         discovery = cases["vocabulary-discovery-response"]
         self.assertTrue(discovery["requires-scannable-linked-table"])
+        self.assertTrue(discovery["requires-benefit-specific-link-labels"])
         self.assertTrue(discovery["must-keep-deeper-explanations-selective"])
 
         offline = cases["grammar-through-examples-response"]
         self.assertTrue(offline["requires-pattern-table-before-rule"])
         self.assertTrue(offline["requires-documented-url-fallback"])
         self.assertTrue(offline["requires-link-per-pattern"])
+        self.assertTrue(offline["requires-benefit-specific-link-labels"])
         self.assertTrue(offline["must-not-name-unverified-sources"])
+
+        disagreement = cases["high-intent-disagreement-path"]
+        self.assertTrue(disagreement["requires-several-distinct-linked-options"])
+        self.assertTrue(disagreement["requires-soft-to-firm-path"])
+        self.assertTrue(disagreement["requires-best-fit-before-ordered-path"])
+        self.assertTrue(disagreement["requires-visually-primary-link"])
+        self.assertTrue(
+            disagreement["requires-primary-link-brand-and-listening-payoff"]
+        )
+        self.assertTrue(disagreement["requires-distinct-options"])
+        self.assertTrue(
+            disagreement["requires-each-core-option-to-perform-requested-goal"]
+        )
+        self.assertEqual(
+            "PlayPhrase.me", disagreement["requires-exact-visible-brand-spelling"]
+        )
+        self.assertTrue(disagreement["must-not-repeat-generic-link-labels"])
 
         interactive = cases["explicit-phrase-native-quiz"]
         self.assertTrue(interactive["requires-linked-phrase-choices"])

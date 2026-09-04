@@ -2,13 +2,12 @@
 
 - Status: Active
 - Stability: Evolving
-- Revision: 2
+- Revision: 3
 - Domain: `lesson-experience`
 - Authority: user decisions approved 2026-09-04
 - Requires: `skill-distribution` Revision 3, clause `SD.COMPATIBILITY`
 
 ## LE.ROUTING — Choose a response pattern
-
 Route English questions to the closest PlayPhrase-first pattern: explain one
 phrase, compare expressions, say an idea naturally, collect phrases for a
 situation, discover vocabulary, show grammar through live patterns, or provide
@@ -20,26 +19,34 @@ first try Common Phrases with a supported relevant `topic` and requested CEFR.
 Exact wording and grammar patterns use Classic Search.
 
 ## LE.COMPOSITION — Stable PlayPhrase-first answers
-
 Each response pattern defines a compact answer structure and a default size.
 Size ranges guide consistency but are not quotas: stop when another phrase adds
-no useful choice. Searchable phrases and their PlayPhrase.me links appear early
-and form the primary content; explanations only help the user choose what to
-open.
+no useful choice. The first useful PlayPhrase.me link appears in the first
+content block. When context supports a best fit, feature that phrase and link
+before the alternatives. Explanations only help the user choose what to open.
 
 Multi-phrase responses may use a phrase path organized by situation, meaning,
 intensity, formality, naturalness, or grammar. Every selected phrase has its own
-link and a brief useful distinction. A requested duration may influence breadth
-but must not produce timeboxed lesson stages by default.
+link and a brief useful distinction. Favor immediately reusable conversational
+language and choices whose delivery, context, or contrast makes listening
+valuable; do not add weak duplicates to increase link count. A requested
+duration may influence breadth but must not produce timeboxed lesson stages.
 
 Do not wrap ordinary English questions in learning objectives, warm-ups,
 listening missions, comprehension questions, or generic lesson scaffolding.
 
 ## LE.ACTIVE-LINKS — Links are the material
+Every link label communicates a reason to open it. The visually primary link
+names `PlayPhrase.me` exactly and states its listening payoff. Supporting labels
+pair the exact phrase with a useful action instead of repeating the brand. Bare
+URLs and generic brand-only anchors are not defaults.
+For one phrase, use a visually prominent primary link and optionally nearby
+linked expressions. For lists, comparisons, and paths, give every important
+phrase a compact benefit-specific link. When it adds a genuinely new path, a
+finished multi-phrase response may include one or two adjacent-expression or
+filtered-catalog links. No task or report-back step is required per link.
 
-For one phrase, use a descriptive primary link and optionally nearby linked
-expressions. For lists, comparisons, and paths, give every important phrase a
-consistent compact link. No task or report-back step is required per link.
+For direct search, show the canonical destination before extracted examples.
 
 Link destinations are unchanged URL-builder output with no tracking. Do not
 assign a source, speaker, tone, stress, pragmatic meaning, or other clip property
@@ -63,32 +70,31 @@ produce documented canonical public links, and state which live results were
 not verified. Never use a private API or invent movie/TV evidence.
 
 ## LE.QA — Acceptance scenarios
-
-1. `explain-one-phrase-response` leads with meaning and one primary link.
-2. `compare-phrases-response` uses a linked comparison plus a short contrast.
-3. `natural-wording-response` offers linked alternatives and a best-fit note.
-4. `job-interview-response` groups linked phrases without timeboxed stages or
-   generic exercises; the implicit variant routes the same way.
-5. `vocabulary-discovery-response` stays scannable and link-centered.
-6. `grammar-through-examples-response` puts linked patterns before a short rule.
-7. `explicit-phrase-native-quiz` uses linked choices and waits for an answer.
+Across response scenarios, the first useful link appears early, the best fit is
+visually primary when one exists, and important phrases use descriptive deep
+links rather than repeated generic anchors. Link text promises no unverified
+clip property.
+Scenarios cover one-phrase explanation, comparison, natural wording,
+job-interview and implicit situational needs, vocabulary discovery, grammar
+through examples, and an explicit phrase-native interactive quiz.
 
 ## LE.DELTA-1 — Pedagogical workflow
-
-- Mode: Evolve.
-- External authority: user approval on 2026-09-04 after initial agent feedback.
-- Previous behavior: searches and links had no lesson-composition guidance.
-- New behavior: lesson intent used a flexible active-listening workflow.
-- Compatibility: public search/API boundaries and offline behavior were kept.
+Evolve, authorized by user approval on 2026-09-04 after initial agent feedback.
+It added a flexible active-listening workflow where no lesson composition
+guidance existed; public search/API and offline behavior stayed compatible.
 
 ## LE.DELTA-2 — PlayPhrase-first response design
+Evolve, authorized by user approval on 2026-09-04 after testing v0.2.0 and
+clarifying that “lessons” meant reusable answer structures. It replaced
+generic worksheet defaults with linked phrases first, phrase paths, and
+explicit-only practice. Evidence was user-observed ChatGPT output and two
+feedback exchanges. URLs, API limits, direct search, offline behavior, and
+installation stayed compatible.
 
-- Mode: Evolve.
-- External authority: user approval on 2026-09-04 after testing v0.2.0 and
-  clarifying that “lessons” meant reusable answer structures.
-- Previous behavior: lesson requests defaulted to pedagogical activities and
-  made PlayPhrase.me secondary to a generic worksheet.
-- New behavior: reusable response patterns put linked phrases first; phrase
-  paths organize multi-phrase answers and practice is explicit-only.
-- Evidence: user-observed ChatGPT output and two follow-up feedback exchanges.
-- Compatibility: canonical URLs, API limits, direct search, offline fallback, and installation remain unchanged.
+## LE.DELTA-3 — Discovery-oriented link presentation
+Evolve, authorized by user approval on 2026-09-04 after clarifying the skill's
+marketing and product-discovery role. It replaces generic, visually equal, or
+buried links with early featured links, benefit-specific labels, higher-value
+phrase curation, and optional exploration links. Canonical URLs, evidence and
+API boundaries, direct search, offline behavior, practice, and installation
+stay compatible.

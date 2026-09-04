@@ -19,6 +19,9 @@
         "mode": "classic-search-browser",
         "query": "\"I love you\"",
         "requires-link": true,
+        "requires-prominent-link-before-examples": true,
+        "requires-primary-link-brand-and-listening-payoff": true,
+        "requires-exact-visible-brand-spelling": "PlayPhrase.me",
         "api-paths": []
       }
     },
@@ -163,7 +166,12 @@
       "expected": {
         "mode": "response-explain-one-phrase",
         "requires-plain-meaning-first": true,
+        "requires-first-useful-link-in-first-content-block": true,
         "requires-primary-descriptive-link": true,
+        "requires-visually-primary-link": true,
+        "requires-benefit-specific-link-label": true,
+        "requires-primary-link-brand-and-listening-payoff": true,
+        "requires-exact-visible-brand-spelling": "PlayPhrase.me",
         "requires-short-nuance": true,
         "requires-model-example-sentences": true,
         "requires-useful-nearby-linked-phrases": true,
@@ -176,8 +184,10 @@
       "prompt": "What's the difference between 'I guess', 'I suppose', and 'I think'?",
       "expected": {
         "mode": "response-compare-expressions",
-        "requires-linked-comparison-table": true,
+        "requires-linked-comparison-set": true,
         "requires-link-per-phrase": true,
+        "requires-benefit-specific-link-labels": true,
+        "must-not-repeat-generic-link-labels": true,
         "requires-same-situation-contrast": true,
         "must-not-lead-with-general-lecture": true,
         "must-not-add-generic-exercises": true
@@ -188,9 +198,12 @@
       "prompt": "How do I naturally say that I was the main person responsible for a project?",
       "expected": {
         "mode": "response-natural-wording",
-        "requires-natural-options-first": true,
+        "requires-best-fit-first-when-supported": true,
+        "requires-visually-primary-best-fit-link": true,
+        "requires-primary-link-brand-and-listening-payoff": true,
         "default-option-count": {"min": 3, "max": 5},
         "requires-link-per-phrase": true,
+        "requires-benefit-specific-link-labels": true,
         "requires-fit-note-per-option": true,
         "requires-best-fit-recommendation": true,
         "must-not-add-generic-exercises": true
@@ -206,8 +219,13 @@
         "requires-intent-based-groups": true,
         "default-group-count": {"min": 2, "max": 4},
         "default-phrases-per-group": {"min": 2, "max": 4},
+        "requires-substantial-distinct-linked-path": true,
+        "requires-first-useful-link-in-first-content-block": true,
         "requires-link-per-phrase": true,
+        "requires-benefit-specific-link-labels": true,
         "requires-brief-distinctions": true,
+        "allows-filtered-catalog-exploration-link": true,
+        "requires-exact-visible-brand-spelling": "PlayPhrase.me",
         "must-not-use-timeboxed-stages": true,
         "must-not-add-generic-exercises": true,
         "must-not-require-task-per-link": true,
@@ -234,6 +252,7 @@
         "mode": "response-vocabulary-discovery",
         "requires-scannable-linked-table": true,
         "requires-link-per-phrase": true,
+        "requires-benefit-specific-link-labels": true,
         "must-keep-deeper-explanations-selective": true,
         "must-not-add-generic-exercises": true
       }
@@ -246,11 +265,31 @@
         "api-paths": [],
         "requires-pattern-table-before-rule": true,
         "requires-link-per-pattern": true,
+        "requires-benefit-specific-link-labels": true,
         "requires-short-rule": true,
         "requires-documented-url-fallback": true,
         "must-state-live-scenes-unverified": true,
         "must-not-invent-results": true,
         "must-not-name-unverified-sources": true
+      }
+    },
+    {
+      "id": "high-intent-disagreement-path",
+      "prompt": "I need to disagree with my manager without sounding rude. Give me natural options from soft to firm.",
+      "expected": {
+        "mode": "response-natural-wording",
+        "requires-several-distinct-linked-options": true,
+        "requires-soft-to-firm-path": true,
+        "requires-best-fit-first-when-supported": true,
+        "requires-best-fit-before-ordered-path": true,
+        "requires-visually-primary-link": true,
+        "requires-primary-link-brand-and-listening-payoff": true,
+        "requires-benefit-specific-link-labels": true,
+        "requires-exact-visible-brand-spelling": "PlayPhrase.me",
+        "requires-each-core-option-to-perform-requested-goal": true,
+        "requires-distinct-options": true,
+        "must-not-repeat-generic-link-labels": true,
+        "must-not-add-generic-exercises": true
       }
     },
     {

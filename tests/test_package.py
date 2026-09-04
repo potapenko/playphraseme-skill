@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import importlib.util
+import re
 import tempfile
 import unittest
 from pathlib import Path, PurePosixPath
@@ -14,6 +15,12 @@ SPEC = importlib.util.spec_from_file_location("package_skill", MODULE_PATH)
 assert SPEC and SPEC.loader
 package_skill = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(package_skill)
+
+URL_MODULE_PATH = REPOSITORY_ROOT / "skills/playphraseme/scripts/playphrase_url.py"
+URL_SPEC = importlib.util.spec_from_file_location("playphrase_url", URL_MODULE_PATH)
+assert URL_SPEC and URL_SPEC.loader
+playphrase_url = importlib.util.module_from_spec(URL_SPEC)
+URL_SPEC.loader.exec_module(playphrase_url)
 
 
 class SkillPackageTests(unittest.TestCase):
@@ -92,6 +99,47 @@ class SkillPackageTests(unittest.TestCase):
         self.assertLess(
             readme.index(chatgpt_skills_url), readme.index(repository_url)
         )
+
+    def test_readme_offers_canonical_product_taste_links(self) -> None:
+        readme = (REPOSITORY_ROOT / "README.md").read_text(encoding="utf-8")
+        phrases = {
+            "I'm down for that",
+            "I'm not sure I agree",
+            "I was in charge of the project",
+        }
+        expected = {playphrase_url.build_search(phrase)["url"] for phrase in phrases}
+        destinations = set(
+            re.findall(r"\]\((https://www\.playphrase\.me/[^)]+)\)", readme)
+        )
+        search_destinations = {
+            destination
+            for destination in destinations
+            if destination.startswith("https://www.playphrase.me/#/search?")
+        }
+        self.assertTrue(expected.issubset(search_destinations))
+        for destination in search_destinations:
+            playphrase_url.validate_url(destination)
+
+    def test_documented_deep_links_follow_the_public_url_contract(self) -> None:
+        documents = (
+            REPOSITORY_ROOT / "README.md",
+            REPOSITORY_ROOT / "skills/playphraseme/references/response-patterns.md",
+        )
+        destinations: set[str] = set()
+        for document in documents:
+            text = document.read_text(encoding="utf-8")
+            destinations.update(
+                re.findall(r"\]\((https://www\.playphrase\.me/[^)]+)\)", text)
+            )
+
+        deep_links = {
+            destination
+            for destination in destinations
+            if destination.startswith("https://www.playphrase.me/#/")
+        }
+        self.assertGreaterEqual(len(deep_links), 10)
+        for destination in deep_links:
+            playphrase_url.validate_url(destination)
 
 
 if __name__ == "__main__":

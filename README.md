@@ -7,6 +7,12 @@ context.
 
 **[Download the PlayPhrase.me skill for ChatGPT](https://github.com/potapenko/playphraseme-skill/releases/latest/download/skill.zip)**
 
+Want a quick taste before installing?
+
+- **[🎬 Hear “I'm down for that” in movie and TV dialogue →](https://www.playphrase.me/#/search?language=en&q=I%27m+down+for+that)**
+- **[🎬 Hear “I'm not sure I agree” in movie and TV dialogue →](https://www.playphrase.me/#/search?language=en&q=I%27m+not+sure+I+agree)**
+- **[🎬 Hear “I was in charge of the project” in movie and TV dialogue →](https://www.playphrase.me/#/search?language=en&q=I+was+in+charge+of+the+project)**
+
 Keep `skill.zip` zipped. Installation takes three steps and does not require
 code.
 
@@ -58,8 +64,10 @@ several real alternatives and briefly explain when each one fits.
 
 The result is a PlayPhrase-first answer: sometimes one explained expression,
 sometimes a comparison, and sometimes a phrase path through several useful
-formulations. Each important phrase gets its own PlayPhrase.me search. Quizzes
-and exercises are optional—ask for one when you want practice.
+formulations. The best match becomes a prominent listening link, each important
+alternative gets its own PlayPhrase.me search, and useful answers can end with
+a new path to explore. Quizzes and exercises are optional—ask for one when you
+want practice.
 
 ## Made by PlayPhrase.me
 
