@@ -3,10 +3,10 @@
 This folder follows the open Agent Skills format. The host determines where it
 loads skills and how explicit invocation is written.
 
-## ChatGPT Web
+## ChatGPT
 
 1. Download `skill.zip` from the latest GitHub Release:
-   <https://github.com/potapenko/playphraseme-language-learning-skill/releases/latest>
+   <https://github.com/potapenko/playphraseme-skill/releases/latest>
 2. Open ChatGPT and select **Plugins**.
 3. Open **Skills**, then choose **Create** or the **+** button.
 4. Choose **Upload from your computer** and select `skill.zip`.
@@ -48,7 +48,7 @@ repository can use this prompt:
 
 ```text
 Install the PlayPhrase.me skill from:
-https://github.com/potapenko/playphraseme-language-learning-skill/tree/master/skills/playphraseme
+https://github.com/potapenko/playphraseme-skill/tree/master/skills/playphraseme
 
 When it is ready, tell me how to use it here. If this app cannot install skills
 directly, give me the simplest steps for adding it.

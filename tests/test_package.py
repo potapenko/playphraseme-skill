@@ -59,7 +59,7 @@ class SkillPackageTests(unittest.TestCase):
 
     def test_prompt_installation_remains_documented(self) -> None:
         repository_url = (
-            "https://github.com/potapenko/playphraseme-language-learning-skill/"
+            "https://github.com/potapenko/playphraseme-skill/"
             "tree/master/skills/playphraseme"
         )
         readme = (REPOSITORY_ROOT / "README.md").read_text(encoding="utf-8")
@@ -68,6 +68,19 @@ class SkillPackageTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         self.assertIn(repository_url, readme)
         self.assertIn(repository_url, installation)
+
+    def test_readme_leads_with_chatgpt_zip_download(self) -> None:
+        release_url = (
+            "https://github.com/potapenko/playphraseme-skill/"
+            "releases/latest/download/skill.zip"
+        )
+        repository_url = (
+            "https://github.com/potapenko/playphraseme-skill/"
+            "tree/master/skills/playphraseme"
+        )
+        readme = (REPOSITORY_ROOT / "README.md").read_text(encoding="utf-8")
+        self.assertIn(release_url, readme)
+        self.assertLess(readme.index(release_url), readme.index(repository_url))
 
 
 if __name__ == "__main__":

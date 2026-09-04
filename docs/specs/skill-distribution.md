@@ -2,18 +2,21 @@
 
 - Status: Active
 - Stability: Evolving
-- Revision: 1
+- Revision: 2
 - Domain: `skill-distribution`
-- Authority: user decision approved 2026-09-04
+- Authority: user decisions approved 2026-09-04
 
 ## SD.CHANNELS — Installation channels
 
 The canonical skill source is `skills/playphraseme/`.
 
-Prompt-based installation remains available for Codex, Claude, and other
-compatible Agent Skills hosts. A ready-made `skill.zip` is an additional
-installation channel for ChatGPT Web and must not replace or weaken the
-prompt-based instructions.
+A ready-made `skill.zip` is the primary public installation path for ChatGPT.
+The README and other learner-facing material lead with the direct download,
+the shortest supported upload flow, and a first `@PlayPhrase.me` prompt.
+
+Prompt-based installation remains available as a secondary path for Codex,
+Claude, and other compatible Agent Skills hosts. Making ChatGPT primary must
+not remove or weaken that supported path.
 
 ## SD.PACKAGE — Upload package
 
@@ -43,8 +46,9 @@ invocation syntax. Platform syntax must not be mixed in shared UI prompts.
 ## SD.RELEASE — Non-developer installation
 
 GitHub Releases expose a ready-to-download artifact named `skill.zip`.
-Repository documentation presents ChatGPT ZIP upload and prompt-based agent
-installation as separate supported paths.
+The primary README call to action links directly to the latest release asset.
+Repository documentation presents ChatGPT ZIP upload first and prompt-based
+agent installation as a separate supported path later on the page.
 
 ## SD.QA — Acceptance scenarios
 
@@ -54,8 +58,23 @@ installation as separate supported paths.
 3. `SKILL.md` has valid minimal frontmatter with `name: playphraseme` and a
    useful trigger description.
 4. Every local path referenced by the packaged skill exists inside the archive.
-5. A manual ChatGPT Web smoke test uploads `skill.zip`, shows `PlayPhrase.me`,
+5. A manual ChatGPT smoke test uploads `skill.zip`, shows `PlayPhrase.me`,
    supports `@PlayPhrase.me`, and exercises a public PlayPhrase.me URL.
 
 Manual ChatGPT acceptance is reported separately from automated package
-validation and is not claimed until it has actually been performed.
+validation and is not claimed until it has actually been performed. The
+2026-09-04 test passed: the installed skill handled an explicit mention and
+returned public PlayPhrase.me links. The README screenshot records that result.
+
+## SD.DELTA-2 — ChatGPT-first public installation
+
+- Mode: Evolve.
+- External authority: user direction on 2026-09-04 to make ZIP installation the
+  main path for the broader ChatGPT audience and optimize the README for fast
+  installation.
+- Previous behavior: ZIP upload was documented as an additional channel beside
+  prompt-assisted installation.
+- New behavior: learner-facing material leads with ZIP download and ChatGPT;
+  prompt-assisted installation remains supported below it.
+- Compatibility: packaging, skill behavior, Codex invocation, Claude
+  invocation, and other compatible Agent Skills hosts are unchanged.
