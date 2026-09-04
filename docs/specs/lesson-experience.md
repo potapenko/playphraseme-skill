@@ -2,10 +2,10 @@
 
 - Status: Active
 - Stability: Evolving
-- Revision: 4
+- Revision: 5
 - Domain: `lesson-experience`
 - Authority: user decisions approved 2026-09-04
-- Requires: `skill-distribution` Revision 4, clause `SD.COMPATIBILITY`
+- Requires: `skill-distribution` Revision 5, clause `SD.COMPATIBILITY`
 
 ## LE.ROUTING — Choose a response pattern
 Route English questions to the closest PlayPhrase-first pattern: explain one phrase, compare expressions, say an idea naturally, collect phrases for a situation,
@@ -13,6 +13,13 @@ discover vocabulary, show grammar through live patterns, or provide explicitly r
 
 Implicit needs count. “I have a job interview tomorrow” should trigger the situation pattern without requiring the word “lesson.” For situational goals, first try
 Common Phrases with a supported relevant `topic` and requested CEFR. Exact wording, wildcard syntax, and grammar patterns supplied by the user may use Classic Search directly.
+
+An explicit imminent real-world need should not spend its first turn only asking
+for proficiency. When no level signal is available for a concrete deadline such
+as an interview tomorrow, use and disclose a B2–C1 working selection range,
+answer immediately, and offer to adjust the material easier or harder. This is
+not an inference about the learner's actual level. Generic unknown-level
+discovery still asks one short level question and waits.
 
 ## LE.COMPOSITION — Stable PlayPhrase-first answers
 Each response pattern defines a compact answer structure and a default size. Size ranges guide consistency but are not quotas: stop when another phrase adds no useful
@@ -22,6 +29,8 @@ Multi-phrase responses may use a phrase path organized by situation, meaning, in
 Favor immediately reusable conversational language and choices whose delivery, context, or contrast makes listening valuable; do not add weak duplicates to increase link count. A requested duration may influence breadth but must not produce timeboxed lesson stages.
 
 Do not wrap ordinary English questions in learning objectives, warm-ups, listening missions, comprehension questions, or generic lesson scaffolding.
+
+When the requested material and links were produced, do not narrate scripts, APIs, DNS, browser availability, or unused verification paths. Mention an infrastructure limitation only when it materially prevented part of the requested result or the user asked for diagnostics.
 
 ## LE.ACTIVE-LINKS — Links are the material
 Every link label communicates a reason to open it. The visually primary link names `PlayPhrase.me` exactly and states its listening payoff. Supporting labels pair the exact phrase with a useful action instead of repeating the brand. Bare URLs and generic brand-only anchors are not defaults.
@@ -44,11 +53,11 @@ Explicit practice uses linked formulations and asks the learner to choose for a 
 
 ## LE.DEGRADATION — Public-link fallback
 
-Without the Learning API, do not replace Common Phrases with model-invented learning examples. Offer a supported public Common Phrases catalog or Reels destination, or link exact text the user supplied, and state what was not verified. Never use a private API or invent movie/TV evidence.
+Without a validated Learning API response, do not replace Common Phrases with model-invented learning examples. Use the host-specific transport profile in `SD.COMPATIBILITY`: ChatGPT Web/Work uses URL-only generation and direct fetch without a Python network attempt; a code host may use that handoff only after a qualifying current-request failure, never one remembered from an earlier turn. If direct fetch succeeds, answer normally without exposing infrastructure details. Otherwise offer a supported public Common Phrases catalog or Reels destination, or link exact text the user supplied, and state what was not verified. Never use a private API or invent movie/TV evidence.
 
 ## LE.QA — Acceptance scenarios
 Across response scenarios, the first useful link appears early, the best fit is visually primary when one exists, and important phrases use descriptive deep links rather than repeated generic anchors. Link text promises no unverified clip property.
-Scenarios cover one-phrase explanation, comparison, natural wording, job-interview and implicit situational needs, vocabulary discovery, grammar through examples, an explicit phrase-native interactive quiz, exact Common Phrase item use, and eligible and ineligible Reels continuations.
+Scenarios cover one-phrase explanation, comparison, natural wording, an imminent unknown-level job interview answered with a disclosed B2–C1 working range, generic unknown-level clarification, vocabulary discovery, grammar through examples, an explicit phrase-native interactive quiz, exact Common Phrase item use, eligible and ineligible Reels continuations, ChatGPT Web URL-only routing, and omission of irrelevant transport narration after success.
 
 ## LE.DELTA-1 — Pedagogical workflow
 Evolve, authorized by user approval on 2026-09-04 after initial agent feedback. It added a flexible active-listening workflow where no lesson composition guidance existed; public search/API and offline behavior stayed compatible.
@@ -61,3 +70,7 @@ Evolve, authorized by user approval on 2026-09-04 after clarifying the skill's m
 
 ## LE.DELTA-4 — Common Phrase-backed examples and bounded Reels
 Evolve, authorized by user approval on 2026-09-04 after agent feedback and correction of the example-selection basis. Agent-selected learning examples now originate in Common Phrases and keep returned text unchanged; a suitable answer may end with one matching Common Phrases Reels continuation. Direct user searches, canonical URLs, practice, API boundaries, installation, and v0.3.0 release behavior remain protected.
+
+## LE.DELTA-5 — Immediate help for imminent situations
+
+Evolve, authorized by user approval on 2026-09-04 after reviewing the published v0.4.0 behavior. A concrete imminent situational need with no level signal now receives an immediate, disclosed B2–C1 working selection instead of a clarification-only first turn. Generic discovery still asks for level; explicit and remembered levels, Common Phrases provenance, link-first composition, optional-only practice, and all public URL/evidence boundaries remain protected.

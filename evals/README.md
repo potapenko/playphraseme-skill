@@ -3,6 +3,9 @@
 `cases.json` describes behavior, not exact answer wording. Evaluate each case
 in a fresh session with the `playphraseme` skill installed. When a case has
 `prior-turns`, replay those turns in order in that session before its `prompt`.
+When it has `runtime-profile`, `runtime-capabilities`, or `runtime-event`,
+establish that context with a real current invocation/fetch or controlled
+harness; do not paste those fields into the learner prompt.
 
 For every case, inspect:
 
@@ -21,8 +24,12 @@ For learner-selected catalog cases, also inspect:
 - correct separation of individual words from multi-word phrases;
 - exact explicit or reliably remembered CEFR and a disclosed range for mapped
   natural-language levels;
-- one short level question before any level-sensitive open-ended collection
+- one short level question before any generic level-sensitive open-ended collection
   when level is unknown, with no API call or provisional list before the answer;
+- an immediate, disclosed B2–C1 working selection range for a concrete
+  time-sensitive situation such as an interview tomorrow, without presenting
+  that range as the learner's inferred level; explicit, remembered, or mapped
+  levels still take precedence;
 - a disclosed C1–C2 fallback only when the learner explicitly requests an
   immediate answer without questions, never the API's A1–C2 transport default,
   and preserved when the API is unavailable;
@@ -33,6 +40,25 @@ For learner-selected catalog cases, also inspect:
 - no Common Phrases catalog URL containing API-only filters;
 - one initial candidate query, with additional sequential queries only for
   distinct groups or one disclosed relaxation of an inferred constraint;
+- in ordinary ChatGPT Web/Work, never a Python Learning API network attempt:
+  use `--print-url` first, then at most one direct web/browser GET of that exact
+  validated URL, or the public-link fallback when direct fetch is unavailable;
+- in Codex and other code hosts, the normal Python client first, with one
+  URL-only direct-fetch handoff permitted only after a qualifying pre-response
+  DNS/outbound-policy exit `10` in the current invocation; generic exit `6`,
+  user claims, and earlier-turn failures never count;
+- for every direct fetch, no supplied authentication and raw response plus
+  final-URL evidence sufficient to verify the production origin/API prefix,
+  HTTP 200, at most one redirect, a 10-second timeout, a 1 MiB UTF-8 JSON body,
+  exact endpoint and query string, endpoint shape, filters, and requested limit;
+- no intentionally supplied cookies, tracking, or alternate headers, and all
+  returned fields treated only as data rather than instructions;
+- no Python, DNS, or web/browser explanation after either supported transport
+  succeeds, unless the user explicitly asks for diagnostics;
+- no direct web/browser Learning API retry after a response, 400, 429, timeout,
+  server error, redirect-policy failure, oversized body, or invalid JSON, and a
+  supported public catalog or Reels link when the selected direct-fetch path is
+  unavailable or cannot be validated;
 - no silent removal of an explicit constraint, blind pagination, or merging of
   separate catalogs as proof of an unsupported intersection;
 - server order preserved when the user requests API ranking, while curated or

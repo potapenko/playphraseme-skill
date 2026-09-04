@@ -18,12 +18,18 @@ help the user choose what to open.
 - Offer nearby phrases when they add a useful choice or progression.
 - End a substantial answer with one or two new exploration paths when useful.
 - Do not add exercises or lesson scaffolding unless practice is explicit.
+- When the requested material and links are complete, do not narrate scripts,
+  API calls, DNS, browser availability, or tools that were not needed. Mention a
+  limitation only when it prevented requested content or the user asked for
+  diagnostics.
 
 For an open-ended multi-item phrase or vocabulary selection, resolve the
 learner's level with [learning query planning](learning-query-planning.md)
-before choosing material. When that workflow requires clarification, the one
-short level question is the whole turn; the link-first rules begin after the
-learner answers.
+before choosing material. When generic discovery requires clarification, the
+one short level question is the whole turn; the link-first rules begin after
+the learner answers. A concrete imminent real-world situation with no reliable
+level signal instead uses the disclosed B2–C1 working range defined there and
+returns the linked material in the current turn.
 
 Choose the single closest response pattern below. Combine patterns only when
 the request genuinely contains separate questions.
@@ -145,6 +151,12 @@ Use [learning query planning](learning-query-planning.md) to resolve level and
 turn the situation into one or more bounded candidate sets. When a relevant
 supported topic or CEFR filter exists, first try Common Phrases. Use each
 selected phrase's text to build its own public search link.
+
+When the user names an imminent real-world event and gives no level signal, say
+briefly that the selection uses B2–C1 as a practical working range, then provide
+the phrase path immediately. Do not present that range as a diagnosis of the
+learner. A final offer to make the choices easier or harder is enough; do not
+turn the exception into another intake flow.
 
 For example, an interview path might use groups such as:
 

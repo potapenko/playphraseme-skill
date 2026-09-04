@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import errno
 import ipaddress
 import json
 import socket
@@ -128,6 +129,10 @@ class HTTPFailure(LearningClientError):
     exit_code = 6
 
 
+class PreResponseTransportFailure(LearningClientError):
+    exit_code = 10
+
+
 class RedirectPolicyFailure(LearningClientError):
     exit_code = 7
 
@@ -224,6 +229,16 @@ def _enum_value(value: Any, api_key: str, allowed_values: set[str]) -> str | Non
     return text
 
 
+def _validated_timeout(value: Any) -> float:
+    try:
+        timeout = float(value)
+    except (TypeError, ValueError) as exc:
+        raise InputError("timeout must be a number") from exc
+    if timeout <= 0 or timeout > MAX_TIMEOUT_SECONDS:
+        raise InputError("timeout must be greater than 0 and no more than 10 seconds")
+    return timeout
+
+
 def build_request(command: str, options: dict[str, Any], base_url: str = PRODUCTION_BASE) -> tuple[str, ValidatedBase]:
     if command not in PATHS:
         raise InputError("unsupported Learning API command")
@@ -309,12 +324,7 @@ class _SafeRedirectHandler(HTTPRedirectHandler):
 
 
 def fetch_json(url: str, validated_base: ValidatedBase, *, timeout: float = MAX_TIMEOUT_SECONDS) -> dict[str, Any]:
-    try:
-        timeout = float(timeout)
-    except (TypeError, ValueError) as exc:
-        raise InputError("timeout must be a number") from exc
-    if timeout <= 0 or timeout > MAX_TIMEOUT_SECONDS:
-        raise InputError("timeout must be greater than 0 and no more than 10 seconds")
+    timeout = _validated_timeout(timeout)
     handler = _SafeRedirectHandler(validated_base)
     opener = build_opener(handler)
     request = Request(
@@ -352,11 +362,29 @@ def fetch_json(url: str, validated_base: ValidatedBase, *, timeout: float = MAX_
         raise TimeoutFailure("Learning API request timed out") from exc
     except RedirectPolicyFailure:
         raise
+    except PermissionError as exc:
+        if handler.redirect_count:
+            raise HTTPFailure(
+                "Learning API request failed after an HTTP response"
+            ) from exc
+        raise PreResponseTransportFailure(
+            "Outbound network access is blocked by the execution environment"
+        ) from exc
     except URLError as exc:
         if isinstance(exc.reason, (TimeoutError, socket.timeout)):
             raise TimeoutFailure("Learning API request timed out") from exc
+        if handler.redirect_count:
+            raise HTTPFailure(
+                "Learning API request failed after an HTTP response"
+            ) from exc
         if isinstance(exc.reason, socket.gaierror):
-            raise HTTPFailure("DNS resolution failed in the execution environment") from exc
+            raise PreResponseTransportFailure(
+                "DNS resolution failed in the execution environment"
+            ) from exc
+        if isinstance(exc.reason, OSError) and exc.reason.errno in {errno.EACCES, errno.EPERM}:
+            raise PreResponseTransportFailure(
+                "Outbound network access is blocked by the execution environment"
+            ) from exc
         raise HTTPFailure(f"Learning API request failed: {exc.reason}") from exc
 
     try:
@@ -368,14 +396,18 @@ def fetch_json(url: str, validated_base: ValidatedBase, *, timeout: float = MAX_
     return payload
 
 
-def _extract_global_options(argv: list[str]) -> tuple[list[str], str, float]:
+def _extract_global_options(argv: list[str]) -> tuple[list[str], str, float, bool]:
     cleaned: list[str] = []
     base_url = PRODUCTION_BASE
     timeout = MAX_TIMEOUT_SECONDS
+    print_url = False
     index = 0
     while index < len(argv):
         item = argv[index]
-        if item in {"--base-url", "--timeout"}:
+        if item == "--print-url":
+            print_url = True
+            index += 1
+        elif item in {"--base-url", "--timeout"}:
             if index + 1 >= len(argv):
                 raise InputError(f"{item} requires a value")
             value = argv[index + 1]
@@ -399,7 +431,7 @@ def _extract_global_options(argv: list[str]) -> tuple[list[str], str, float]:
         else:
             cleaned.append(item)
             index += 1
-    return cleaned, base_url, timeout
+    return cleaned, base_url, timeout, print_url
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -439,11 +471,17 @@ def _parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     try:
-        cleaned, base_url, timeout = _extract_global_options(list(argv or sys.argv[1:]))
+        cleaned, base_url, timeout, print_url = _extract_global_options(list(argv or sys.argv[1:]))
         args = _parser().parse_args(cleaned)
         options = vars(args).copy()
         command = options.pop("command")
         url, validated = build_request(command, options, base_url)
+        if print_url:
+            _validated_timeout(timeout)
+            if validated.url != PRODUCTION_BASE:
+                raise InputError("--print-url is restricted to the production Learning API")
+            print(url)
+            return 0
         payload = fetch_json(url, validated, timeout=timeout)
         print(json.dumps(payload, ensure_ascii=False, separators=(",", ":")))
         return 0

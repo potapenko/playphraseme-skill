@@ -1,13 +1,15 @@
 from __future__ import annotations
 
 import importlib.util
+import errno
+import io
 import json
 import socket
 import sys
 import threading
 import time
 import unittest
-from contextlib import contextmanager
+from contextlib import contextmanager, redirect_stderr, redirect_stdout
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from unittest.mock import patch
@@ -98,6 +100,99 @@ def stub_server(mode: str = "json"):
 
 
 class LearningClientTests(unittest.TestCase):
+    def test_print_url_outputs_exact_validated_url_without_network(self) -> None:
+        stdout = io.StringIO()
+        with (
+            patch.object(
+                client,
+                "fetch_json",
+                side_effect=AssertionError("--print-url must not perform a network fetch"),
+            ) as fetch_json,
+            redirect_stdout(stdout),
+        ):
+            exit_code = client.main(
+                [
+                    "--print-url",
+                    "phrases",
+                    "--language",
+                    "en",
+                    "--skip",
+                    "7",
+                    "--limit",
+                    "8",
+                    "--language-level-from",
+                    "B2",
+                    "--language-level-to",
+                    "C1",
+                    "--register",
+                    "professional",
+                    "--topic",
+                    "work",
+                ]
+            )
+
+        self.assertEqual(0, exit_code)
+        fetch_json.assert_not_called()
+        self.assertEqual(
+            "https://www.playphrase.me/api/v1/learning/common-phrases"
+            "?language=en&skip=7&limit=8&language-level-from=B2"
+            "&language-level-to=C1&register=professional&topic=work\n",
+            stdout.getvalue(),
+        )
+
+    def test_print_url_rejects_loopback_transport_handoff(self) -> None:
+        stdout = io.StringIO()
+        stderr = io.StringIO()
+        with redirect_stdout(stdout), redirect_stderr(stderr):
+            exit_code = client.main(
+                [
+                    "--print-url",
+                    "--base-url",
+                    "http://localhost:3000/api/v1/learning",
+                    "phrases",
+                    "--language",
+                    "en",
+                ]
+            )
+
+        self.assertEqual(2, exit_code)
+        self.assertEqual("", stdout.getvalue())
+        self.assertIn("restricted to the production Learning API", stderr.getvalue())
+
+    def test_default_main_fetches_once_with_the_validated_url(self) -> None:
+        stdout = io.StringIO()
+        with (
+            patch.object(client, "fetch_json", return_value={"items": []}) as fetch_json,
+            redirect_stdout(stdout),
+        ):
+            exit_code = client.main(
+                [
+                    "phrases",
+                    "--language",
+                    "en",
+                    "--idiom",
+                    "--language-level-from",
+                    "B2",
+                    "--language-level-to",
+                    "B2",
+                    "--limit",
+                    "5",
+                ]
+            )
+
+        self.assertEqual(0, exit_code)
+        fetch_json.assert_called_once()
+        call_args, call_kwargs = fetch_json.call_args
+        self.assertEqual(
+            "https://www.playphrase.me/api/v1/learning/common-phrases"
+            "?language=en&skip=0&limit=5&language-level-from=B2"
+            "&language-level-to=B2&idiom=true",
+            call_args[0],
+        )
+        self.assertEqual(client.PRODUCTION_BASE, call_args[1].url)
+        self.assertEqual(client.MAX_TIMEOUT_SECONDS, call_kwargs["timeout"])
+        self.assertEqual('{"items":[]}\n', stdout.getvalue())
+
     def test_suggestions_encodes_unicode_apostrophe_and_clamps_limit(self) -> None:
         url, _ = client.build_request(
             "suggestions",
@@ -263,13 +358,55 @@ class LearningClientTests(unittest.TestCase):
 
         url, validated = client.build_request("phrases", {})
         with patch.object(client, "build_opener", return_value=FailingOpener()):
-            with self.assertRaises(client.HTTPFailure) as caught:
+            with self.assertRaises(client.PreResponseTransportFailure) as caught:
                 client.fetch_json(url, validated)
         self.assertEqual(
             "DNS resolution failed in the execution environment",
             str(caught.exception),
         )
-        self.assertEqual(6, caught.exception.exit_code)
+        self.assertEqual(10, caught.exception.exit_code)
+
+    def test_outbound_policy_failure_has_clear_diagnostic(self) -> None:
+        class WrappedFailingOpener:
+            def open(self, *_args: object, **_kwargs: object) -> None:
+                raise URLError(PermissionError(errno.EACCES, "Operation not permitted"))
+
+        class DirectFailingOpener:
+            def open(self, *_args: object, **_kwargs: object) -> None:
+                raise PermissionError(errno.EACCES, "Operation not permitted")
+
+        url, validated = client.build_request("phrases", {})
+        for opener in (WrappedFailingOpener(), DirectFailingOpener()):
+            with self.subTest(opener=type(opener).__name__):
+                with patch.object(client, "build_opener", return_value=opener):
+                    with self.assertRaises(client.PreResponseTransportFailure) as caught:
+                        client.fetch_json(url, validated)
+                self.assertEqual(
+                    "Outbound network access is blocked by the execution environment",
+                    str(caught.exception),
+                )
+                self.assertEqual(10, caught.exception.exit_code)
+
+    def test_dns_after_redirect_is_not_a_qualifying_pre_response_diagnostic(self) -> None:
+        class FailingOpener:
+            def __init__(self, handler: object):
+                self.handler = handler
+
+            def open(self, *_args: object, **_kwargs: object) -> None:
+                self.handler.redirect_count = 1
+                raise URLError(socket.gaierror(-3, "Temporary failure in name resolution"))
+
+        def failing_opener(handler: object) -> FailingOpener:
+            return FailingOpener(handler)
+
+        url, validated = client.build_request("phrases", {})
+        with patch.object(client, "build_opener", side_effect=failing_opener):
+            with self.assertRaises(client.HTTPFailure) as caught:
+                client.fetch_json(url, validated)
+        self.assertEqual(
+            "Learning API request failed after an HTTP response",
+            str(caught.exception),
+        )
 
     def test_oversized_body_is_rejected(self) -> None:
         with stub_server("oversized") as base_url:
@@ -294,6 +431,7 @@ class LearningClientTests(unittest.TestCase):
             client.BadRequestFailure,
             client.RateLimitFailure,
             client.HTTPFailure,
+            client.PreResponseTransportFailure,
             client.RedirectPolicyFailure,
             client.ResponseTooLargeFailure,
             client.InvalidJSONFailure,

@@ -44,14 +44,21 @@ informal expressions, keep the established `register=informal` mapping; use
   or “not basic” → B2–C1, and advanced → C1–C2. Briefly disclose an inferred
   range.
 - Before an open-ended multi-item phrase or vocabulary selection, ask one short
-  level question when no reliable signal exists and level would materially
-  change the choices. Wait for the answer before calling the catalog or
-  publishing a provisional list.
+  level question when no reliable signal exists, level would materially change
+  the choices, and the request is generic rather than an imminent real-world
+  situation. Wait for the answer before calling the catalog or publishing a
+  provisional list.
+- For a concrete imminent situation with no reliable level signal, such as an
+  interview tomorrow or a meeting later today, do not spend the first turn only
+  asking for level. Use B2–C1 as a disclosed **working selection range**, answer
+  immediately, and offer to make the choices easier or harder. Do not claim that
+  B2–C1 is the learner's level. A demand for the answer “right now” without an
+  actual near-term event is not enough to trigger this exception.
 - Do not ask for a direct search, an explanation of one named expression, or a
   request whose useful answer does not depend on proficiency.
-- If the learner explicitly says not to ask a follow-up question, state the
-  working assumption and use C1–C2. This is the only default range for an
-  unknown-level learner collection.
+- If the learner explicitly says not to ask a follow-up question for a generic
+  collection, state the working assumption and use C1–C2. The imminent-situation
+  B2–C1 rule takes precedence when both apply.
 - Treat “harder,” “higher-level,” or “those were too easy” as a request to raise
   the lower bound from the preceding selection. After B2 material, normally use
   C1–C2; do not merely exchange one set of basic phrases for another.
@@ -89,6 +96,7 @@ the currently documented filter families include:
 | six non-basic English idioms | Common Phrases; idiom; B2–C1 |
 | beginner travel questions | Common Phrases; topic travel; question; A1–A2 |
 | B1 interview language | Common Phrases; topic work; B1 |
+| interview tomorrow, level unknown | Common Phrases; topic work; disclosed B2–C1 working range |
 | sarcastic B2 responses | Common Phrases; emotion sarcastic; B2 |
 | non-basic slang expressions | Common Phrases; register slang; B2–C1 |
 | informal expressions, no clarification allowed | Common Phrases; register informal; C1–C2 |
@@ -124,11 +132,18 @@ If an agent-inferred level or property caused the weak result, it may be
 broadened once. Say what changed. Do not hide a second query as though it used
 the original filters.
 
-If the API is unavailable, do not invent candidates for an open-ended phrase
-selection. Offer a supported filtered Common Phrases catalog or Reels link when
-the public URL contract can preserve the request, or state that curated
-selection could not be completed. Exact text supplied by the user may still go
-to direct Classic Search.
+For an inferred imminent-situation B2–C1 range, broaden upward to B2–C2 when
+needed; do not silently include B1 material.
+
+Follow the host-specific transport profile in
+[the Learning API reference](learning-api.md): ChatGPT Web/Work uses the
+validated URL-only command and direct fetch without a Python network attempt;
+Codex and other code hosts may hand off only after one of the qualifying
+pre-response diagnostics from the current client invocation. For an unavailable or unvalidated result, do not invent
+candidates for an open-ended phrase selection. Offer a supported filtered Common
+Phrases catalog or Reels link when the public URL contract can preserve the
+request, or state that curated selection could not be completed. Exact text
+supplied by the user may still go to direct Classic Search.
 
 Treat server order as candidate priority, not presentation order. Preserve it
 when the user asks for API-ranked results. For a PlayPhrase-first answer, select

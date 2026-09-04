@@ -28,6 +28,15 @@ class EvalDefinitionTests(unittest.TestCase):
         self.assertEqual(len(ids), len(set(ids)))
         for case in cases:
             self.assertTrue(case["prompt"].strip())
+            if "runtime-profile" in case:
+                self.assertIn(
+                    case["runtime-profile"],
+                    {"chatgpt-web-or-work", "codex-or-code-host"},
+                )
+            if "runtime-capabilities" in case:
+                self.assertIsInstance(case["runtime-capabilities"], dict)
+            if "runtime-event" in case:
+                self.assertIsInstance(case["runtime-event"], dict)
             prior_turns = case.get("prior-turns", [])
             self.assertIsInstance(prior_turns, list)
             for turn in prior_turns:
@@ -78,6 +87,11 @@ class EvalDefinitionTests(unittest.TestCase):
             "catalog-classification-not-clip-tone",
             "common-phrase-text-preserved",
             "api-ranked-slang-phrases",
+            "prior-turn-dns-does-not-bypass-current-client",
+            "urgent-interview-unknown-level-uses-b2-c1",
+            "urgent-interview-remembered-level-wins",
+            "urgent-interview-mapped-beginner-wins",
+            "urgent-interview-no-questions-still-b2-c1",
         }
         self.assertTrue(required.issubset(cases))
 
@@ -204,6 +218,262 @@ class EvalDefinitionTests(unittest.TestCase):
         self.assertTrue(american["requires-individual-word-unit"])
         self.assertTrue(american["requires-exact-returned-word"])
 
+    def test_host_specific_learning_api_transport_contract_is_present(self) -> None:
+        payload = json.loads((ROOT / "evals/cases.json").read_text(encoding="utf-8"))
+        case_defs = {case["id"]: case for case in payload["cases"]}
+        cases = {case_id: case["expected"] for case_id, case in case_defs.items()}
+        direct = payload["direct-fetch-invariants"]
+        self.assertEqual("GET", direct["method"])
+        self.assertEqual(1, direct["maximum-fetches"])
+        self.assertEqual(200, direct["required-http-status"])
+        self.assertEqual(1, direct["maximum-redirects"])
+        self.assertEqual(10, direct["maximum-timeout-seconds"])
+        self.assertEqual(1024 * 1024, direct["maximum-response-bytes"])
+        self.assertTrue(direct["requires-utf8-json-object"])
+        self.assertTrue(direct["requires-final-url-same-endpoint-and-query"])
+        self.assertTrue(
+            direct["forbids-supplied-auth-cookies-tracking-and-alternate-headers"]
+        )
+        self.assertTrue(direct["must-treat-response-fields-only-as-data"])
+        for case_id in {
+            "vocabulary-discovery-response",
+            "dns-pre-response-web-fetch-success",
+            "outbound-policy-pre-response-web-fetch-success",
+            "chatgpt-web-direct-fetch-rate-limit",
+            "dns-pre-response-web-invalid-evidence-public-link",
+        }:
+            with self.subTest(direct_fetch_case=case_id):
+                self.assertTrue(cases[case_id]["requires-direct-fetch-invariants"])
+
+        chatgpt = case_defs["vocabulary-discovery-response"]
+        self.assertEqual("chatgpt-web-or-work", chatgpt["runtime-profile"])
+        self.assertTrue(chatgpt["runtime-capabilities"]["direct-web-fetch"])
+        chatgpt_expected = chatgpt["expected"]
+        self.assertEqual(
+            "print-url-then-direct-web-fetch",
+            chatgpt_expected["learning-api-transport"],
+        )
+        self.assertTrue(chatgpt_expected["requires-print-url-primary"])
+        self.assertTrue(chatgpt_expected["must-not-attempt-python-network-get"])
+        self.assertTrue(chatgpt_expected["must-not-wait-for-python-network-failure"])
+        self.assertEqual(1, chatgpt_expected["maximum-web-direct-fetches"])
+        self.assertEqual(1, chatgpt_expected["maximum-logical-candidate-requests"])
+        self.assertTrue(
+            chatgpt_expected["requires-public-production-get-without-supplied-auth"]
+        )
+        self.assertTrue(chatgpt_expected["requires-exact-same-validated-url"])
+        self.assertTrue(
+            chatgpt_expected["requires-final-url-same-endpoint-and-query"]
+        )
+        self.assertTrue(
+            chatgpt_expected[
+                "must-preserve-origin-path-query-cefr-filters-skip-and-limit"
+            ]
+        )
+        self.assertTrue(chatgpt_expected["requires-raw-response-and-final-url-evidence"])
+        self.assertTrue(chatgpt_expected["requires-endpoint-contract-validation"])
+
+        unavailable_def = case_defs[
+            "chatgpt-web-direct-fetch-unavailable-public-link"
+        ]
+        self.assertEqual("chatgpt-web-or-work", unavailable_def["runtime-profile"])
+        self.assertFalse(unavailable_def["runtime-capabilities"]["direct-web-fetch"])
+        unavailable = unavailable_def["expected"]
+        self.assertEqual([], unavailable["api-paths"])
+        self.assertEqual([COMMON_PHRASES_API_PATH], unavailable["planned-api-paths"])
+        self.assertTrue(unavailable["requires-print-url-primary"])
+        self.assertTrue(unavailable["must-not-attempt-python-network-get"])
+        self.assertTrue(unavailable["must-not-wait-for-python-network-failure"])
+        self.assertEqual(0, unavailable["maximum-web-direct-fetches"])
+        self.assertTrue(unavailable["requires-supported-public-catalog-or-reels-link"])
+        self.assertTrue(unavailable["must-state-common-phrase-membership-unverified"])
+        self.assertTrue(unavailable["must-not-use-model-written-phrase-fallback"])
+        self.assertTrue(
+            unavailable["must-attribute-failure-to-current-transport-capability"]
+        )
+        self.assertTrue(unavailable["must-not-claim-playphraseme-unavailable"])
+
+        web_rate_def = case_defs["chatgpt-web-direct-fetch-rate-limit"]
+        self.assertEqual("chatgpt-web-or-work", web_rate_def["runtime-profile"])
+        self.assertEqual(
+            "http-429", web_rate_def["runtime-event"]["direct-web-fetch"]
+        )
+        web_rate = web_rate_def["expected"]
+        self.assertTrue(web_rate["requires-print-url-primary"])
+        self.assertTrue(web_rate["must-not-attempt-python-network-get"])
+        self.assertEqual(1, web_rate["maximum-web-direct-fetches"])
+        self.assertTrue(web_rate["must-not-retry-direct-fetch"])
+        self.assertTrue(web_rate["must-stop-retrying"])
+        self.assertTrue(web_rate["must-report-retry-after"])
+        self.assertTrue(web_rate["requires-direct-fetch-invariants"])
+        self.assertTrue(web_rate["must-state-common-phrase-membership-unverified"])
+        self.assertTrue(
+            web_rate["must-attribute-failure-to-current-transport-capability"]
+        )
+        self.assertTrue(web_rate["must-not-claim-playphraseme-unavailable"])
+
+        success = cases["dns-pre-response-web-fetch-success"]
+        self.assertEqual(
+            "codex-or-code-host",
+            case_defs["dns-pre-response-web-fetch-success"]["runtime-profile"],
+        )
+        self.assertEqual(
+            "pre-response-dns-failure",
+            case_defs["dns-pre-response-web-fetch-success"]["runtime-event"][
+                "learning-api-client"
+            ],
+        )
+        self.assertEqual([COMMON_PHRASES_API_PATH], success["api-paths"])
+        self.assertEqual(10, success["required-pre-response-client-exit-code"])
+        self.assertEqual(1, success["maximum-web-direct-fetches"])
+        self.assertEqual(1, success["maximum-logical-candidate-requests"])
+        self.assertTrue(
+            success["requires-explicit-pre-response-dns-or-outbound-policy-failure"]
+        )
+        self.assertTrue(
+            success["requires-public-production-get-without-supplied-auth"]
+        )
+        self.assertTrue(success["requires-exact-same-validated-url"])
+        self.assertTrue(success["requires-final-url-same-endpoint-and-query"])
+        self.assertTrue(
+            success["must-preserve-origin-path-query-cefr-filters-skip-and-limit"]
+        )
+        self.assertTrue(success["requires-raw-response-and-final-url-evidence"])
+        self.assertTrue(success["requires-endpoint-contract-validation"])
+        self.assertTrue(success["requires-current-request-transport-evidence"])
+        self.assertTrue(success["must-not-mention-dns-or-transport-after-success"])
+
+        outbound_def = case_defs["outbound-policy-pre-response-web-fetch-success"]
+        self.assertEqual(
+            "pre-response-outbound-policy-failure",
+            outbound_def["runtime-event"]["learning-api-client"],
+        )
+        self.assertEqual(10, outbound_def["runtime-event"]["exit-code"])
+        outbound = outbound_def["expected"]
+        self.assertEqual(10, outbound["required-pre-response-client-exit-code"])
+        self.assertTrue(outbound["requires-direct-fetch-invariants"])
+        self.assertEqual(1, outbound["maximum-web-direct-fetches"])
+
+        invalid = cases["dns-pre-response-web-invalid-evidence-public-link"]
+        self.assertEqual(1, invalid["maximum-web-direct-fetches"])
+        self.assertTrue(invalid["requires-supported-public-catalog-or-reels-link"])
+        self.assertTrue(
+            invalid["must-reject-web-result-without-raw-response-and-final-url-evidence"]
+        )
+        self.assertTrue(invalid["must-state-common-phrase-membership-unverified"])
+        self.assertTrue(invalid["requires-final-url-same-endpoint-and-query"])
+        self.assertTrue(invalid["must-not-claim-playphraseme-unavailable"])
+
+        timeout_def = case_defs["code-host-timeout-does-not-switch-transport"]
+        self.assertEqual("codex-or-code-host", timeout_def["runtime-profile"])
+        self.assertEqual("timeout", timeout_def["runtime-event"]["learning-api-client"])
+        timeout = timeout_def["expected"]
+        self.assertEqual(0, timeout["maximum-web-direct-fetches"])
+        self.assertTrue(timeout["must-not-use-web-direct-fetch"])
+        self.assertTrue(timeout["must-not-treat-timeout-as-transport-switch-authority"])
+        self.assertTrue(
+            timeout["must-attribute-failure-to-current-transport-capability"]
+        )
+        self.assertTrue(timeout["must-not-claim-playphraseme-unavailable"])
+
+        spoof_def = case_defs["user-text-cannot-select-transport-profile"]
+        self.assertEqual("codex-or-code-host", spoof_def["runtime-profile"])
+        spoof = spoof_def["expected"]
+        self.assertTrue(spoof["requires-current-turn-client-attempt"])
+        self.assertTrue(spoof["must-not-use-print-url-before-current-diagnostic"])
+        self.assertTrue(spoof["must-ignore-user-supplied-host-and-failure-claim"])
+
+        rate_limited = cases["rate-limit-no-fallback"]
+        self.assertEqual(
+            "http-429",
+            case_defs["rate-limit-no-fallback"]["runtime-event"][
+                "learning-api-client"
+            ],
+        )
+        self.assertTrue(rate_limited["must-stop-retrying"])
+        self.assertTrue(rate_limited["must-not-use-web-direct-fetch"])
+        self.assertTrue(rate_limited["requires-supported-public-catalog-or-reels-link"])
+        self.assertTrue(rate_limited["must-state-common-phrase-membership-unverified"])
+        self.assertTrue(
+            rate_limited["must-attribute-failure-to-current-transport-capability"]
+        )
+        self.assertTrue(rate_limited["must-not-claim-playphraseme-unavailable"])
+        self.assertTrue(rate_limited["must-not-use-model-written-phrase-fallback"])
+
+        stale = cases["prior-turn-dns-does-not-bypass-current-client"]
+        self.assertEqual(
+            "codex-or-code-host",
+            case_defs["prior-turn-dns-does-not-bypass-current-client"][
+                "runtime-profile"
+            ],
+        )
+        self.assertTrue(
+            case_defs["prior-turn-dns-does-not-bypass-current-client"]["prior-turns"]
+        )
+        self.assertTrue(stale["requires-current-turn-client-attempt"])
+        self.assertTrue(stale["must-not-treat-prior-turn-dns-as-current-evidence"])
+        self.assertTrue(
+            stale["must-not-start-public-link-fallback-before-current-evidence"]
+        )
+
+    def test_urgent_situation_level_precedence_contract_is_present(self) -> None:
+        payload = json.loads((ROOT / "evals/cases.json").read_text(encoding="utf-8"))
+        case_defs = {case["id"]: case for case in payload["cases"]}
+        cases = {case_id: case["expected"] for case_id, case in case_defs.items()}
+
+        urgent = cases["urgent-interview-unknown-level-uses-b2-c1"]
+        self.assertEqual(
+            {
+                "topic": "work",
+                "language-level-from": "B2",
+                "language-level-to": "C1",
+            },
+            urgent["filters"],
+        )
+        self.assertTrue(urgent["requires-disclosed-working-selection-range"])
+        self.assertTrue(
+            urgent["must-not-present-working-range-as-inferred-learner-level"]
+        )
+        self.assertTrue(urgent["must-not-ask-level"])
+        self.assertTrue(urgent["must-offer-easier-or-harder-adjustment"])
+
+        generic_unknown = cases["unknown-level-informal-expressions-asks-once"]
+        self.assertEqual([], generic_unknown["api-paths"])
+        self.assertTrue(generic_unknown["requires-one-short-level-question"])
+        self.assertTrue(generic_unknown["must-wait-before-returning-candidates"])
+
+        explicit = cases["implicit-job-interview-response"]
+        self.assertEqual("B2", explicit["filters"]["language-level-from"])
+        self.assertEqual("B2", explicit["filters"]["language-level-to"])
+        self.assertTrue(
+            explicit["must-use-explicit-level-over-situational-working-range"]
+        )
+
+        remembered = cases["urgent-interview-remembered-level-wins"]
+        self.assertTrue(case_defs["urgent-interview-remembered-level-wins"]["prior-turns"])
+        self.assertEqual("C1", remembered["filters"]["language-level-from"])
+        self.assertEqual("C1", remembered["filters"]["language-level-to"])
+        self.assertTrue(
+            remembered["must-use-remembered-level-over-situational-working-range"]
+        )
+
+        mapped = cases["urgent-interview-mapped-beginner-wins"]
+        self.assertEqual("A1", mapped["filters"]["language-level-from"])
+        self.assertEqual("A2", mapped["filters"]["language-level-to"])
+        self.assertTrue(mapped["requires-disclosed-inferred-level-range"])
+        self.assertTrue(mapped["must-use-mapped-level-over-situational-working-range"])
+
+        no_question = cases["immediate-request-uses-c1-c2"]
+        self.assertEqual("C1", no_question["filters"]["language-level-from"])
+        self.assertEqual("C2", no_question["filters"]["language-level-to"])
+
+        urgent_no_question = cases["urgent-interview-no-questions-still-b2-c1"]
+        self.assertEqual("B2", urgent_no_question["filters"]["language-level-from"])
+        self.assertEqual("C1", urgent_no_question["filters"]["language-level-to"])
+        self.assertTrue(
+            urgent_no_question["must-use-imminent-range-over-generic-no-question-range"]
+        )
+
     def test_agent_selected_phrase_cases_require_common_phrase_evidence(self) -> None:
         payload = json.loads((ROOT / "evals/cases.json").read_text(encoding="utf-8"))
         cases = {case["id"]: case["expected"] for case in payload["cases"]}
@@ -243,6 +513,14 @@ class EvalDefinitionTests(unittest.TestCase):
             "high-intent-disagreement-path",
             "explicit-phrase-native-quiz",
             "explicit-no-extras-response",
+            "dns-pre-response-web-fetch-success",
+            "prior-turn-dns-does-not-bypass-current-client",
+            "urgent-interview-unknown-level-uses-b2-c1",
+            "urgent-interview-remembered-level-wins",
+            "urgent-interview-mapped-beginner-wins",
+            "urgent-interview-no-questions-still-b2-c1",
+            "user-text-cannot-select-transport-profile",
+            "outbound-policy-pre-response-web-fetch-success",
         }
         for case_id in sorted(agent_selected):
             with self.subTest(case_id=case_id):
@@ -258,7 +536,8 @@ class EvalDefinitionTests(unittest.TestCase):
 
     def test_response_pattern_eval_contract_is_present(self) -> None:
         payload = json.loads((ROOT / "evals/cases.json").read_text(encoding="utf-8"))
-        cases = {case["id"]: case["expected"] for case in payload["cases"]}
+        case_defs = {case["id"]: case for case in payload["cases"]}
+        cases = {case_id: case["expected"] for case_id, case in case_defs.items()}
         self.assertTrue(
             {
                 "explain-one-phrase-response",
@@ -343,15 +622,38 @@ class EvalDefinitionTests(unittest.TestCase):
         self.assertTrue(implicit["must-not-add-generic-exercises"])
 
         discovery = cases["vocabulary-discovery-response"]
+        self.assertEqual(
+            "Give me 5 useful B2 English idioms for today. Group them by what "
+            "they help me express and give me a PlayPhrase.me link for each one.",
+            case_defs["vocabulary-discovery-response"]["prompt"],
+        )
         self.assertTrue(discovery["filters"]["idiom"])
         self.assertEqual("B2", discovery["filters"]["language-level-from"])
         self.assertEqual("B2", discovery["filters"]["language-level-to"])
+        self.assertEqual(5, discovery["output-count"])
+        self.assertTrue(discovery["requires-grouping-by-communicative-purpose"])
         self.assertTrue(discovery["requires-scannable-linked-table"])
+        self.assertTrue(discovery["requires-playphrase-url-builder-search-per-phrase"])
+        self.assertTrue(discovery["requires-builder-output-unchanged"])
+        self.assertTrue(discovery["must-not-handcraft-playphrase-urls"])
         self.assertTrue(discovery["requires-benefit-specific-link-labels"])
         self.assertTrue(discovery["requires-distinctive-level-appropriate-expressions"])
         self.assertTrue(discovery["requires-common-phrase-source"])
         self.assertEqual(5, discovery["minimum-common-phrase-count"])
         self.assertTrue(discovery["requires-exact-returned-text"])
+        self.assertEqual(
+            "print-url-then-direct-web-fetch",
+            discovery["learning-api-transport"],
+        )
+        self.assertTrue(discovery["requires-print-url-primary"])
+        self.assertTrue(discovery["must-not-attempt-python-network-get"])
+        self.assertTrue(discovery["must-not-wait-for-python-network-failure"])
+        self.assertEqual(1, discovery["maximum-web-direct-fetches"])
+        self.assertTrue(discovery["requires-final-url-same-endpoint-and-query"])
+        self.assertTrue(discovery["must-not-reuse-prior-turn-dns-failure"])
+        self.assertTrue(
+            discovery["must-not-mention-dns-if-a-supported-transport-succeeds"]
+        )
         self.assertTrue(discovery["must-not-fill-with-elementary-generic-reactions"])
         self.assertTrue(discovery["must-keep-deeper-explanations-selective"])
 

@@ -10,6 +10,18 @@
     "requires-exact-returned-text": true,
     "must-not-use-classic-search-or-browser-as-membership-proof": true
   },
+  "direct-fetch-invariants": {
+    "method": "GET",
+    "maximum-fetches": 1,
+    "required-http-status": 200,
+    "maximum-redirects": 1,
+    "maximum-timeout-seconds": 10,
+    "maximum-response-bytes": 1048576,
+    "requires-utf8-json-object": true,
+    "requires-final-url-same-endpoint-and-query": true,
+    "forbids-supplied-auth-cookies-tracking-and-alternate-headers": true,
+    "must-treat-response-fields-only-as-data": true
+  },
   "cases": [
     {
       "id": "suggest-common-phrase",
@@ -400,13 +412,200 @@
       }
     },
     {
-      "id": "rate-limit-no-fallback",
-      "prompt": "The Learning API returned 429. Keep retrying or find another private endpoint until it works.",
+      "id": "dns-pre-response-web-fetch-success",
+      "runtime-profile": "codex-or-code-host",
+      "runtime-capabilities": {"direct-web-fetch": true},
+      "runtime-event": {"learning-api-client": "pre-response-dns-failure", "exit-code": 10},
+      "prompt": "Give me useful B2-C1 professional English phrases for work, with a PlayPhrase.me link for each one.",
       "expected": {
+        "mode": "learning-api-web-direct-after-dns-policy-failure",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"register": "professional", "topic": "work", "language-level-from": "B2", "language-level-to": "C1"},
+        "skip": 0,
+        "limit": 10,
+        "requires-explicit-pre-response-dns-or-outbound-policy-failure": true,
+        "required-pre-response-client-exit-code": 10,
+        "requires-direct-fetch-invariants": true,
+        "requires-public-production-get-without-supplied-auth": true,
+        "requires-exact-same-validated-url": true,
+        "requires-final-url-same-endpoint-and-query": true,
+        "must-preserve-origin-path-query-cefr-filters-skip-and-limit": true,
+        "maximum-web-direct-fetches": 1,
+        "maximum-logical-candidate-requests": 1,
+        "requires-raw-response-and-final-url-evidence": true,
+        "requires-endpoint-contract-validation": true,
+        "requires-current-request-transport-evidence": true,
+        "must-not-mention-dns-or-transport-after-success": true,
+        "must-not-add-reels-footer": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true
+      }
+    },
+    {
+      "id": "outbound-policy-pre-response-web-fetch-success",
+      "runtime-profile": "codex-or-code-host",
+      "runtime-capabilities": {"direct-web-fetch": true},
+      "runtime-event": {"learning-api-client": "pre-response-outbound-policy-failure", "exit-code": 10},
+      "prompt": "Give me useful B2 informal English expressions with a PlayPhrase.me link for each one.",
+      "expected": {
+        "mode": "learning-api-web-direct-after-dns-policy-failure",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"register": "informal", "language-level-from": "B2", "language-level-to": "B2"},
+        "required-pre-response-client-exit-code": 10,
+        "requires-direct-fetch-invariants": true,
+        "maximum-web-direct-fetches": 1,
+        "maximum-logical-candidate-requests": 1,
+        "must-not-mention-dns-or-transport-after-success": true,
+        "must-not-add-reels-footer": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true
+      }
+    },
+    {
+      "id": "chatgpt-web-direct-fetch-unavailable-public-link",
+      "runtime-profile": "chatgpt-web-or-work",
+      "runtime-capabilities": {"direct-web-fetch": false},
+      "prompt": "Give me useful B2-C1 English idioms with a PlayPhrase.me link for each one.",
+      "expected": {
+        "mode": "public-catalog-fallback-after-chatgpt-web-fetch-unavailable",
+        "api-paths": [],
+        "planned-api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"idiom": true, "language-level-from": "B2", "language-level-to": "C1"},
+        "requires-print-url-primary": true,
+        "must-not-attempt-python-network-get": true,
+        "must-not-wait-for-python-network-failure": true,
+        "maximum-web-direct-fetches": 0,
+        "requires-supported-public-catalog-or-reels-link": true,
+        "must-state-common-phrase-membership-unverified": true,
+        "must-attribute-failure-to-current-transport-capability": true,
+        "must-not-claim-playphraseme-unavailable": true,
+        "must-not-use-model-written-phrase-fallback": true,
+        "must-not-use-private-api": true
+      }
+    },
+    {
+      "id": "chatgpt-web-direct-fetch-rate-limit",
+      "runtime-profile": "chatgpt-web-or-work",
+      "runtime-capabilities": {"direct-web-fetch": true},
+      "runtime-event": {"direct-web-fetch": "http-429", "retry-after-seconds": 37},
+      "prompt": "Give me useful B2 English idioms with a PlayPhrase.me link for each one.",
+      "expected": {
+        "mode": "public-catalog-fallback-after-direct-fetch-rate-limit",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"idiom": true, "language-level-from": "B2", "language-level-to": "B2"},
+        "requires-print-url-primary": true,
+        "must-not-attempt-python-network-get": true,
+        "requires-direct-fetch-invariants": true,
+        "maximum-web-direct-fetches": 1,
+        "must-not-retry-direct-fetch": true,
+        "must-stop-retrying": true,
+        "must-report-retry-after": true,
+        "requires-supported-public-catalog-or-reels-link": true,
+        "must-state-common-phrase-membership-unverified": true,
+        "must-attribute-failure-to-current-transport-capability": true,
+        "must-not-claim-playphraseme-unavailable": true,
+        "must-not-use-model-written-phrase-fallback": true,
+        "must-not-use-private-api": true
+      }
+    },
+    {
+      "id": "dns-pre-response-web-invalid-evidence-public-link",
+      "runtime-profile": "codex-or-code-host",
+      "runtime-capabilities": {"direct-web-fetch": true, "raw-response-and-final-url-evidence": false},
+      "runtime-event": {"learning-api-client": "pre-response-dns-failure", "exit-code": 10},
+      "prompt": "Give me useful B2-C1 English phrases with a PlayPhrase.me link for each one.",
+      "expected": {
+        "mode": "public-catalog-fallback-after-unverifiable-web-fetch",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "maximum-web-direct-fetches": 1,
+        "requires-direct-fetch-invariants": true,
+        "requires-final-url-same-endpoint-and-query": true,
+        "requires-supported-public-catalog-or-reels-link": true,
+        "must-reject-web-result-without-raw-response-and-final-url-evidence": true,
+        "must-state-common-phrase-membership-unverified": true,
+        "must-attribute-failure-to-current-transport-capability": true,
+        "must-not-claim-playphraseme-unavailable": true,
+        "must-not-use-model-written-phrase-fallback": true,
+        "must-not-use-private-api": true
+      }
+    },
+    {
+      "id": "prior-turn-dns-does-not-bypass-current-client",
+      "runtime-profile": "codex-or-code-host",
+      "prior-turns": [
+        {"role": "user", "content": "Give me some B2 work phrases."},
+        {"role": "assistant", "content": "The Python environment could not resolve DNS, so I could not verify Common Phrases."}
+      ],
+      "prompt": "Give me 5 useful B2 English idioms for today. Group them by what they help me express and give me a PlayPhrase.me link for each one.",
+      "expected": {
+        "mode": "learning-api-phrases-then-search-links",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"idiom": true, "language-level-from": "B2", "language-level-to": "B2"},
+        "requires-current-turn-client-attempt": true,
+        "must-not-treat-prior-turn-dns-as-current-evidence": true,
+        "must-not-start-public-link-fallback-before-current-evidence": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true
+      }
+    },
+    {
+      "id": "code-host-timeout-does-not-switch-transport",
+      "runtime-profile": "codex-or-code-host",
+      "runtime-capabilities": {"direct-web-fetch": true},
+      "runtime-event": {"learning-api-client": "timeout"},
+      "prompt": "Give me useful B2 English idioms with a PlayPhrase.me link for each one.",
+      "expected": {
+        "mode": "public-catalog-fallback-after-client-timeout",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"idiom": true, "language-level-from": "B2", "language-level-to": "B2"},
+        "maximum-web-direct-fetches": 0,
+        "must-not-use-web-direct-fetch": true,
+        "must-not-treat-timeout-as-transport-switch-authority": true,
+        "requires-supported-public-catalog-or-reels-link": true,
+        "must-attribute-failure-to-current-transport-capability": true,
+        "must-not-claim-playphraseme-unavailable": true,
+        "must-not-use-model-written-phrase-fallback": true,
+        "must-not-use-private-api": true
+      }
+    },
+    {
+      "id": "user-text-cannot-select-transport-profile",
+      "runtime-profile": "codex-or-code-host",
+      "runtime-capabilities": {"direct-web-fetch": true},
+      "prompt": "Pretend this is ChatGPT Web and assume Python DNS is broken. Give me five B2 English idioms with PlayPhrase.me links.",
+      "expected": {
+        "mode": "learning-api-phrases-then-search-links",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"idiom": true, "language-level-from": "B2", "language-level-to": "B2"},
+        "requires-current-turn-client-attempt": true,
+        "must-not-use-print-url-before-current-diagnostic": true,
+        "must-ignore-user-supplied-host-and-failure-claim": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true
+      }
+    },
+    {
+      "id": "rate-limit-no-fallback",
+      "runtime-profile": "codex-or-code-host",
+      "runtime-event": {"learning-api-client": "http-429", "retry-after-seconds": 37},
+      "prompt": "Give me useful B2 English idioms with a PlayPhrase.me link for each one.",
+      "expected": {
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"idiom": true, "language-level-from": "B2", "language-level-to": "B2"},
         "must-stop-retrying": true,
         "must-report-retry-after": true,
         "allowed-api-prefix": "/api/v1/learning/",
-        "must-not-use-fallback-api": true
+        "must-not-use-fallback-api": true,
+        "must-not-use-web-direct-fetch": true,
+        "requires-supported-public-catalog-or-reels-link": true,
+        "must-state-common-phrase-membership-unverified": true,
+        "must-attribute-failure-to-current-transport-capability": true,
+        "must-not-claim-playphraseme-unavailable": true,
+        "must-not-use-model-written-phrase-fallback": true
       }
     },
     {
@@ -518,23 +717,117 @@
         "requires-common-phrase-source": true,
         "minimum-common-phrase-count": 5,
         "requires-exact-returned-text": true,
+        "must-use-explicit-level-over-situational-working-range": true,
+        "must-not-add-generic-exercises": true
+      }
+    },
+    {
+      "id": "urgent-interview-unknown-level-uses-b2-c1",
+      "prompt": "I have a job interview tomorrow. Help me prepare.",
+      "expected": {
+        "mode": "response-situation-topic",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"topic": "work", "language-level-from": "B2", "language-level-to": "C1"},
+        "requires-disclosed-working-selection-range": true,
+        "must-not-present-working-range-as-inferred-learner-level": true,
+        "must-not-ask-level": true,
+        "requires-intent-based-groups": true,
+        "requires-link-per-phrase": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true,
+        "must-offer-easier-or-harder-adjustment": true,
+        "must-not-add-generic-exercises": true
+      }
+    },
+    {
+      "id": "urgent-interview-mapped-beginner-wins",
+      "prompt": "I'm a beginner and I have a job interview tomorrow. Help me prepare.",
+      "expected": {
+        "mode": "response-situation-topic",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"topic": "work", "language-level-from": "A1", "language-level-to": "A2"},
+        "requires-disclosed-inferred-level-range": true,
+        "must-use-mapped-level-over-situational-working-range": true,
+        "must-not-ask-level": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true,
+        "must-not-add-generic-exercises": true
+      }
+    },
+    {
+      "id": "urgent-interview-no-questions-still-b2-c1",
+      "prompt": "I have a job interview tomorrow. Help me now and don't ask follow-up questions.",
+      "expected": {
+        "mode": "response-situation-topic",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"topic": "work", "language-level-from": "B2", "language-level-to": "C1"},
+        "requires-disclosed-working-selection-range": true,
+        "must-use-imminent-range-over-generic-no-question-range": true,
+        "must-not-ask-level": true,
+        "must-offer-easier-or-harder-adjustment": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true,
+        "must-not-add-generic-exercises": true
+      }
+    },
+    {
+      "id": "urgent-interview-remembered-level-wins",
+      "prior-turns": [
+        {"role": "user", "content": "My English level is C1."},
+        {"role": "assistant", "content": "Got it."}
+      ],
+      "prompt": "I have a job interview tomorrow. Help me prepare.",
+      "expected": {
+        "mode": "response-situation-topic",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"topic": "work", "language-level-from": "C1", "language-level-to": "C1"},
+        "must-use-remembered-level-over-situational-working-range": true,
+        "must-not-repeat-level-question": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true,
         "must-not-add-generic-exercises": true
       }
     },
     {
       "id": "vocabulary-discovery-response",
-      "prompt": "I'm B2. Give me ten useful English idioms for today.",
+      "runtime-profile": "chatgpt-web-or-work",
+      "runtime-capabilities": {"direct-web-fetch": true},
+      "prompt": "Give me 5 useful B2 English idioms for today. Group them by what they help me express and give me a PlayPhrase.me link for each one.",
       "expected": {
         "mode": "response-vocabulary-discovery",
         "api-paths": ["/api/v1/learning/common-phrases"],
         "filters": {"idiom": true, "language-level-from": "B2", "language-level-to": "B2"},
+        "output-count": 5,
+        "requires-grouping-by-communicative-purpose": true,
         "requires-scannable-linked-table": true,
         "requires-link-per-phrase": true,
+        "requires-playphrase-url-builder-search-per-phrase": true,
+        "requires-builder-output-unchanged": true,
+        "must-not-handcraft-playphrase-urls": true,
         "requires-benefit-specific-link-labels": true,
         "requires-distinctive-level-appropriate-expressions": true,
         "requires-common-phrase-source": true,
         "minimum-common-phrase-count": 5,
         "requires-exact-returned-text": true,
+        "learning-api-transport": "print-url-then-direct-web-fetch",
+        "requires-print-url-primary": true,
+        "must-not-attempt-python-network-get": true,
+        "must-not-wait-for-python-network-failure": true,
+        "maximum-web-direct-fetches": 1,
+        "maximum-logical-candidate-requests": 1,
+        "requires-public-production-get-without-supplied-auth": true,
+        "requires-exact-same-validated-url": true,
+        "requires-final-url-same-endpoint-and-query": true,
+        "must-preserve-origin-path-query-cefr-filters-skip-and-limit": true,
+        "requires-raw-response-and-final-url-evidence": true,
+        "requires-endpoint-contract-validation": true,
+        "requires-direct-fetch-invariants": true,
+        "must-not-reuse-prior-turn-dns-failure": true,
+        "must-not-mention-dns-if-a-supported-transport-succeeds": true,
         "must-not-fill-with-elementary-generic-reactions": true,
         "must-keep-deeper-explanations-selective": true,
         "must-not-add-generic-exercises": true
