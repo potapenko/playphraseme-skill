@@ -12,4 +12,5 @@ PlayPhrase.me language-learning skill.
 
 ## Release baselines
 
+- [v0.2.0](releases/v0.2.0.md) — lesson-building workflows release.
 - [v0.1.0](releases/v0.1.0.md) — first public ChatGPT ZIP release.
