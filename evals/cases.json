@@ -54,6 +54,110 @@
       }
     },
     {
+      "id": "beginner-travel-questions",
+      "prompt": "Give me useful travel questions for a beginner and link every phrase to PlayPhrase.me.",
+      "expected": {
+        "mode": "learning-api-phrases-then-search-links",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"topic": "travel", "is-question": true, "language-level-from": "A1", "language-level-to": "A2"},
+        "requires-disclosed-inferred-level-range": true,
+        "requires-link-per-phrase": true
+      }
+    },
+    {
+      "id": "non-basic-slang-expressions",
+      "prompt": "Give me eight non-basic slang expressions, not single words, and link each one to scenes on PlayPhrase.me.",
+      "expected": {
+        "mode": "learning-api-phrases-then-search-links",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"register": "slang", "language-level-from": "B2", "language-level-to": "C1"},
+        "requires-disclosed-inferred-level-range": true,
+        "must-not-use-common-words-as-phrase-proof": true,
+        "requires-classic-search-link-per-item": true,
+        "must-not-put-api-only-filter-in-catalog-url": true
+      }
+    },
+    {
+      "id": "professional-apologies",
+      "prompt": "Give me B1-B2 professional phrases for apologizing at work.",
+      "expected": {
+        "mode": "learning-api-phrases-then-search-links",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"function": "apology", "register": "professional", "language-level-from": "B1", "language-level-to": "B2"},
+        "requires-link-per-phrase": true,
+        "must-not-put-api-only-filter-in-catalog-url": true
+      }
+    },
+    {
+      "id": "broad-personalization-asks-level",
+      "prompt": "Build an ongoing personalized English phrase course for me. I have not told you my level.",
+      "expected": {
+        "mode": "clarify-level-before-learning-api",
+        "api-paths": [],
+        "requires-one-short-level-question": true,
+        "must-not-invent-user-level": true
+      }
+    },
+    {
+      "id": "finite-request-infers-level",
+      "prompt": "Give me eight useful travel phrases right now. I have not given you my level.",
+      "expected": {
+        "mode": "learning-api-phrases-then-search-links",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"topic": "travel"},
+        "requires-narrow-inferred-level-range": true,
+        "requires-disclosed-inferred-level-range": true,
+        "must-not-block-for-level": true
+      }
+    },
+    {
+      "id": "empty-explicit-filter-result",
+      "prompt": "The exact B2-C1 professional-apology Common Phrases query returned no items. Keep my constraints and tell me the useful next step.",
+      "expected": {
+        "mode": "learning-api-empty-result-guidance",
+        "must-treat-empty-items-as-success": true,
+        "must-not-remove-explicit-filters": true,
+        "must-offer-one-specific-relaxation-or-public-search": true,
+        "must-not-present-relaxed-results-as-original-query": true
+      }
+    },
+    {
+      "id": "orthogonal-interview-groups",
+      "prompt": "For B1 job-interview English, give me statements about my experience and questions to ask the interviewer.",
+      "expected": {
+        "mode": "learning-api-orthogonal-phrase-queries",
+        "api-paths": ["/api/v1/learning/common-phrases", "/api/v1/learning/common-phrases"],
+        "query-filters": [
+          {"topic": "work", "sentence-type": "statement", "language-level-from": "B1", "language-level-to": "B1"},
+          {"topic": "work", "is-question": true, "language-level-from": "B1", "language-level-to": "B1"}
+        ],
+        "requires-sequential-requests": true,
+        "maximum-api-requests": 2,
+        "must-deduplicate-candidates": true,
+        "must-not-page-for-variety": true
+      }
+    },
+    {
+      "id": "catalog-classification-not-clip-tone",
+      "prompt": "The Common Phrases API returned a phrase under emotion=sarcastic. Does that prove every movie clip delivers it sarcastically?",
+      "expected": {
+        "may-state-catalog-filter-membership": true,
+        "must-distinguish-record-classification-from-clip-tone": true,
+        "must-not-claim-clip-tone-without-browser-proof": true
+      }
+    },
+    {
+      "id": "api-ranked-slang-phrases",
+      "prompt": "Return the first five B2 slang Common Phrases in the API's ranking order.",
+      "expected": {
+        "mode": "learning-api-phrases-then-search-links",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"register": "slang", "language-level-from": "B2", "language-level-to": "B2"},
+        "must-preserve-server-order": true,
+        "must-not-call-curated-order-api-ranked": true
+      }
+    },
+    {
       "id": "american-verbs",
       "prompt": "Find American-English verbs from Vocabulary.",
       "expected": {
@@ -288,6 +392,7 @@
         "requires-exact-visible-brand-spelling": "PlayPhrase.me",
         "requires-each-core-option-to-perform-requested-goal": true,
         "requires-distinct-options": true,
+        "must-not-call-curated-order-api-ranked": true,
         "must-not-repeat-generic-link-labels": true,
         "must-not-add-generic-exercises": true
       }

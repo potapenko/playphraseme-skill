@@ -128,6 +128,76 @@ class LearningClientTests(unittest.TestCase):
             self.assertEqual(["B1"], query["language-level-from"])
             self.assertEqual(["C1"], query["language-level-to"])
 
+    def test_phrases_supports_extended_filter_dimensions(self) -> None:
+        url, _ = client.build_request(
+            "phrases",
+            {
+                "phrase_type": "sentence-frame",
+                "formality": "informal",
+                "tense": "modal present",
+                "aspect": "perfect continuous",
+                "register": "slang",
+                "function": "expression of doubt",
+                "sentence_type": "statement",
+                "emotion": "sarcastic",
+                "polarity": "negative",
+                "topic": "daily-life",
+            },
+        )
+        query = parse_qs(urlsplit(url).query)
+        self.assertEqual(["sentence-frame"], query["phrase-type"])
+        self.assertEqual(["informal"], query["formality"])
+        self.assertEqual(["modal present"], query["tense"])
+        self.assertEqual(["perfect continuous"], query["aspect"])
+        self.assertEqual(["slang"], query["register"])
+        self.assertEqual(["expression of doubt"], query["function"])
+        self.assertEqual(["statement"], query["sentence-type"])
+        self.assertEqual(["sarcastic"], query["emotion"])
+        self.assertEqual(["negative"], query["polarity"])
+        self.assertEqual(["daily-life"], query["topic"])
+
+    def test_extended_phrase_filter_alias_literals_are_allowed(self) -> None:
+        cases = [
+            ("aspect", "perfect-continuous", "aspect"),
+            ("register", "literaery", "register"),
+            ("function", "thank-you", "function"),
+        ]
+        for option_key, value, api_key in cases:
+            with self.subTest(option_key=option_key, value=value):
+                url, _ = client.build_request("phrases", {option_key: value})
+                query = parse_qs(urlsplit(url).query)
+                self.assertEqual([value], query[api_key])
+
+    def test_unknown_or_non_exact_phrase_filter_is_rejected(self) -> None:
+        cases = [
+            ("phrase_type", "phrasal-verb"),
+            ("formality", "casual"),
+            ("tense", "Present"),
+            ("aspect", " perfect"),
+            ("register", "colloquial"),
+            ("function", "disagreement"),
+            ("sentence_type", "declarative"),
+        ]
+        for option_key, value in cases:
+            with self.subTest(option_key=option_key, value=value):
+                with self.assertRaises(client.InputError):
+                    client.build_request("phrases", {option_key: value})
+
+    def test_idiom_alias_rejects_conflicting_phrase_type(self) -> None:
+        with self.assertRaises(client.InputError):
+            client.build_request(
+                "phrases",
+                {"idiom": True, "phrase_type": "collocation"},
+            )
+
+        url, _ = client.build_request(
+            "phrases",
+            {"idiom": True, "phrase_type": "idiom"},
+        )
+        query = parse_qs(urlsplit(url).query)
+        self.assertEqual(["true"], query["idiom"])
+        self.assertEqual(["idiom"], query["phrase-type"])
+
     def test_words_domain_and_part_of_speech(self) -> None:
         url, _ = client.build_request(
             "words",

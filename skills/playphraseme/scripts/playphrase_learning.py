@@ -41,6 +41,61 @@ TOPICS = {
     "relationship", "relationships", "religion", "sports", "transportation",
     "travel", "work", "other",
 }
+PHRASE_TYPES = {
+    "chunk", "collocation", "idiom", "lyrics", "other", "sentence-frame",
+    "statement",
+}
+FORMALITIES = {"formal", "idiomatic", "informal", "literary", "neutral"}
+TENSES = {
+    "conditional", "future", "imperative", "mixed", "modal",
+    "modal present", "none", "past", "present", "would",
+}
+ASPECTS = {
+    "continuous", "none", "perfect", "perfect continuous",
+    "perfect-continuous", "progressive", "simple",
+}
+REGISTERS = {
+    "informal", "literaery", "literary", "neutral", "other",
+    "professional", "slang", "spoken", "written",
+}
+FUNCTIONS = {
+    "advice", "agreement", "apology", "appreciation", "assertion",
+    "assurance", "comfort", "comment", "commitment", "complaint",
+    "compliment", "concern", "confirmation", "critique", "directive",
+    "discussion", "encouragement", "exclamation", "expressing desire",
+    "expressing dislike", "expressing feeling", "expressing regret",
+    "expressing reluctance", "expression", "expression of concern",
+    "expression of confusion", "expression of desire",
+    "expression of doubt", "expression of feeling",
+    "expression of feelings", "expression of frustration",
+    "expression of gratitude", "expression of indifference",
+    "expression of preference", "farewell", "gift", "gratitude",
+    "greeting", "informal", "information", "informational", "informing",
+    "instruction", "insult", "interruption", "introduction", "invitation",
+    "motivation", "motivational", "offer", "offer assistance", "offer help",
+    "offering", "offering help", "offering support", "opinion", "other",
+    "prayer", "presentation", "promise", "question", "reassurance",
+    "refusal", "reminder", "report", "request", "response",
+    "self-description", "small-talk", "statement", "suggestion", "support",
+    "thank", "thank you", "thank-you", "thankful", "thankfulness",
+    "thanks", "thanksgiving", "threat", "warning", "well-wishing", "wish",
+}
+SENTENCE_TYPES = {
+    "condition", "conditional", "exclamation", "imperative", "other",
+    "question", "statement",
+}
+PHRASE_ENUM_FILTERS = (
+    ("phrase_type", "phrase-type", PHRASE_TYPES),
+    ("formality", "formality", FORMALITIES),
+    ("tense", "tense", TENSES),
+    ("aspect", "aspect", ASPECTS),
+    ("register", "register", REGISTERS),
+    ("function", "function", FUNCTIONS),
+    ("sentence_type", "sentence-type", SENTENCE_TYPES),
+    ("emotion", "emotion", EMOTIONS),
+    ("polarity", "polarity", POLARITIES),
+    ("topic", "topic", TOPICS),
+)
 MAX_BODY_BYTES = 1024 * 1024
 MAX_TIMEOUT_SECONDS = 10.0
 
@@ -160,6 +215,15 @@ def _levels(level_from: str, level_to: str) -> tuple[str, str]:
     return level_from, level_to
 
 
+def _enum_value(value: Any, api_key: str, allowed_values: set[str]) -> str | None:
+    if value is None:
+        return None
+    text = str(value)
+    if not text or text != text.strip() or text not in allowed_values:
+        raise InputError(f"unsupported {api_key}")
+    return text
+
+
 def build_request(command: str, options: dict[str, Any], base_url: str = PRODUCTION_BASE) -> tuple[str, ValidatedBase]:
     if command not in PATHS:
         raise InputError("unsupported Learning API command")
@@ -191,25 +255,20 @@ def build_request(command: str, options: dict[str, Any], base_url: str = PRODUCT
             ("language-level-to", level_to),
         ])
         if command == "phrases":
+            selected_filters: dict[str, str] = {}
+            for option_key, api_key, allowed_values in PHRASE_ENUM_FILTERS:
+                value = _enum_value(options.get(option_key), api_key, allowed_values)
+                if value:
+                    selected_filters[option_key] = value
             if options.get("idiom"):
+                if selected_filters.get("phrase_type") not in {None, "idiom"}:
+                    raise InputError("idiom conflicts with non-idiom phrase-type")
                 params.append(("idiom", "true"))
             if options.get("is_question"):
                 params.append(("is-question", "true"))
-            for option_key, api_key in (
-                ("emotion", "emotion"),
-                ("polarity", "polarity"),
-                ("topic", "topic"),
-            ):
-                value = _text(options.get(option_key), api_key)
-                if value:
-                    allowed_values = {
-                        "emotion": EMOTIONS,
-                        "polarity": POLARITIES,
-                        "topic": TOPICS,
-                    }[option_key]
-                    if value not in allowed_values:
-                        raise InputError(f"unsupported {api_key}")
-                    params.append((api_key, value))
+            for option_key, api_key, _allowed_values in PHRASE_ENUM_FILTERS:
+                if option_key in selected_filters:
+                    params.append((api_key, selected_filters[option_key]))
         else:
             for option_key, api_key in (
                 ("domain", "domain"),
@@ -364,9 +423,12 @@ def _parser() -> argparse.ArgumentParser:
         if name == "phrases":
             command.add_argument("--idiom", action="store_true")
             command.add_argument("--is-question", "--question", dest="is_question", action="store_true")
-            command.add_argument("--emotion")
-            command.add_argument("--polarity")
-            command.add_argument("--topic")
+            for option_key, api_key, allowed_values in PHRASE_ENUM_FILTERS:
+                command.add_argument(
+                    f"--{api_key}",
+                    dest=option_key,
+                    choices=sorted(allowed_values),
+                )
         else:
             command.add_argument("--domain")
             command.add_argument("--part-of-speech")

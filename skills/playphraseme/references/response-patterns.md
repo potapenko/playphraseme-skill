@@ -118,9 +118,10 @@ Use for interviews, travel, dating, meetings, and implicit needs such as “I
 have an interview tomorrow.” Group the answer by what the user needs to do, not
 by generic lesson stages or minutes.
 
-When a relevant supported topic or requested CEFR filter exists, first try
-Common Phrases for the candidate set. Use each selected phrase's text to build
-its own public search link.
+Use [learning query planning](learning-query-planning.md) to resolve level and
+turn the situation into one or more bounded candidate sets. When a relevant
+supported topic or CEFR filter exists, first try Common Phrases. Use each
+selected phrase's text to build its own public search link.
 
 For example, an interview path might use groups such as:
 
@@ -153,6 +154,11 @@ response resemble a lesson.
 
 Follow an explicit count. Otherwise select roughly eight to ten items, favoring
 a coherent set over filling the upper end of the range.
+
+Keep the requested unit honest: a Common Words slang result is a word, not
+proof that a multi-word expression was selected as slang. Follow
+[learning query planning](learning-query-planning.md) for mixed requests such
+as a topic plus slang expressions.
 
 ## 6. Grammar through real patterns
 
@@ -239,10 +245,11 @@ A selected Common Phrase gets its own public search URL rather than only a link
 to an undifferentiated catalog. Use API item `text` or `word`, never its record
 `id`, in the URL.
 
-Do not claim that a result is sarcastic, stressed on a certain word, spoken by
-a named actor, or from a named movie or series unless the public page was
-actually inspected and showed it. Without browser evidence, explain the
-language-level distinction and let the user explore the live results.
+A documented API filter may support a catalog-level statement such as “returned
+by the sarcastic Common Phrases filter.” It does not prove that any particular
+clip is delivered sarcastically. Do not claim a clip's tone, stress, speaker, or
+source unless the public page was inspected and showed it. Without browser
+evidence, keep catalog classification separate from clip-level claims.
 
 Without the Learning API, select defensible phrases with the model. Without a
 browser, provide canonical public links and avoid clip-specific claims. Without

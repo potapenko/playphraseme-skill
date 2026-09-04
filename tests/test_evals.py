@@ -34,6 +34,52 @@ class EvalDefinitionTests(unittest.TestCase):
         self.assertTrue(exact["requires-primary-link-brand-and-listening-payoff"])
         self.assertEqual("PlayPhrase.me", exact["requires-exact-visible-brand-spelling"])
 
+    def test_learning_query_planning_eval_contract_is_present(self) -> None:
+        payload = json.loads((ROOT / "evals/cases.json").read_text(encoding="utf-8"))
+        cases = {case["id"]: case["expected"] for case in payload["cases"]}
+        required = {
+            "beginner-travel-questions",
+            "non-basic-slang-expressions",
+            "professional-apologies",
+            "broad-personalization-asks-level",
+            "finite-request-infers-level",
+            "empty-explicit-filter-result",
+            "orthogonal-interview-groups",
+            "catalog-classification-not-clip-tone",
+            "api-ranked-slang-phrases",
+        }
+        self.assertTrue(required.issubset(cases))
+
+        slang = cases["non-basic-slang-expressions"]
+        self.assertEqual("slang", slang["filters"]["register"])
+        self.assertTrue(slang["must-not-use-common-words-as-phrase-proof"])
+        self.assertTrue(slang["must-not-put-api-only-filter-in-catalog-url"])
+
+        personalized = cases["broad-personalization-asks-level"]
+        self.assertEqual([], personalized["api-paths"])
+        self.assertTrue(personalized["requires-one-short-level-question"])
+
+        finite = cases["finite-request-infers-level"]
+        self.assertTrue(finite["requires-disclosed-inferred-level-range"])
+        self.assertTrue(finite["must-not-block-for-level"])
+
+        empty = cases["empty-explicit-filter-result"]
+        self.assertTrue(empty["must-not-remove-explicit-filters"])
+        self.assertTrue(empty["must-not-present-relaxed-results-as-original-query"])
+
+        orthogonal = cases["orthogonal-interview-groups"]
+        self.assertEqual(2, orthogonal["maximum-api-requests"])
+        self.assertTrue(orthogonal["requires-sequential-requests"])
+        self.assertTrue(orthogonal["must-not-page-for-variety"])
+
+        evidence = cases["catalog-classification-not-clip-tone"]
+        self.assertTrue(evidence["may-state-catalog-filter-membership"])
+        self.assertTrue(evidence["must-not-claim-clip-tone-without-browser-proof"])
+
+        ranked = cases["api-ranked-slang-phrases"]
+        self.assertTrue(ranked["must-preserve-server-order"])
+        self.assertTrue(ranked["must-not-call-curated-order-api-ranked"])
+
     def test_response_pattern_eval_contract_is_present(self) -> None:
         payload = json.loads((ROOT / "evals/cases.json").read_text(encoding="utf-8"))
         cases = {case["id"]: case["expected"] for case in payload["cases"]}

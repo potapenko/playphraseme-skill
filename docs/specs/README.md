@@ -9,6 +9,8 @@ PlayPhrase.me language-learning skill.
   package contents, compatibility, and release acceptance.
 - [Response experience](lesson-experience.md) — PlayPhrase-first answer
   patterns, phrase paths, optional practice, and behavioral acceptance.
+- [Learning material selection](learning-material-selection.md) — translating
+  learner intent and level into bounded Learning API candidate queries.
 
 ## Release baselines
 

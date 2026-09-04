@@ -22,6 +22,8 @@ a useful entry point into real dialogue.
 3. Use the Learning API only for Common Phrase suggestions, filtered Common
    Phrases, or Vocabulary/Common Words. Read
    [the Learning API reference](references/learning-api.md) before calling it.
+   For a level-tailored collection or lesson, also read
+   [learning query planning](references/learning-query-planning.md).
 4. For exact, wildcard, grammar, Clip Search, actor, or Reels intent, build a
    public URL directly. Read [the URL contract](references/url-contract.md).
 5. Open that URL with an available browser when the user asks for scenes,
@@ -30,9 +32,10 @@ a useful entry point into real dialogue.
 6. If a Learning API item is selected, use its `text` or `word` as the public
    search query. Never treat its `id` as a video phrase id.
 
-Prefer one API request. Fetch a second catalog page only when the first page is
-insufficient for an explicitly requested small set. Never parallelize pages or
-iterate toward a catalog export.
+Start with one well-shaped API request. One or two additional sequential
+requests are appropriate only for distinct communicative groups or a disclosed
+relaxation described in learning query planning. Never parallelize catalog
+requests, page merely for variety, or iterate toward an export.
 
 ## Use the bundled scripts when available
 
