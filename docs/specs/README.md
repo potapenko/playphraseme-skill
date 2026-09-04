@@ -7,8 +7,8 @@ PlayPhrase.me language-learning skill.
 
 - [Skill distribution](skill-distribution.md) — installation channels,
   package contents, compatibility, and release acceptance.
-- [Lesson experience](lesson-experience.md) — lesson routing, active listening
-  links, tutoring modes, and behavioral acceptance.
+- [Response experience](lesson-experience.md) — PlayPhrase-first answer
+  patterns, phrase paths, optional practice, and behavioral acceptance.
 
 ## Release baselines
 

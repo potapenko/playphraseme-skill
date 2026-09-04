@@ -1,7 +1,9 @@
-# Learn English in ChatGPT with real movie dialogue
+# Explore real English in ChatGPT with PlayPhrase.me
 
-The PlayPhrase.me skill adds links to movie and TV scenes to ChatGPT English
-lessons. Start with one phrase, a grammar question, or a complete lesson.
+The PlayPhrase.me skill turns an English question or communication goal into an
+answer built around real movie and TV dialogue. ChatGPT chooses and organizes
+the phrases; every phrase leads back to PlayPhrase.me so you can hear it in
+context.
 
 **[Download the PlayPhrase.me skill for ChatGPT](https://github.com/potapenko/playphraseme-skill/releases/latest/download/skill.zip)**
 
@@ -22,47 +24,49 @@ Start a new chat, type `@PlayPhrase.me`, and send this prompt:
 
 ```text
 @PlayPhrase.me Give me 5 useful informal English expressions for today.
-Explain the nuance, then give me PlayPhrase.me searches so I can hear them in
-real dialogue.
+Group them by what they help me express and give me a PlayPhrase.me link for
+each one.
 ```
 
 <p align="center">
-  <img src="docs/assets/chatgpt-playphraseme-example.png" width="860" alt="A ChatGPT lesson made with the PlayPhrase.me skill, with five informal English expressions and links to hear each one on PlayPhrase.me">
+  <img src="docs/assets/chatgpt-playphraseme-example.png" width="860" alt="A ChatGPT response with five informal English expressions and links to hear each one on PlayPhrase.me">
 </p>
 
 This is a real result from the installed skill. ChatGPT explains each
 expression and adds a PlayPhrase.me link for hearing it in movie and TV
 dialogue.
 
-## Make a lesson from any question
+## Find the part of PlayPhrase.me you need
 
-Start with a phrase, a grammar point, a situation, or a rough lesson idea. For
-example:
+Start with a situation, a meaning, a phrase, or a grammar point. You do not need
+to know what to search for. For example:
 
 ```text
-@PlayPhrase.me Teach me natural ways to disagree politely. Explain each phrase,
-find examples from movies or TV, and give me a short quiz at the end.
+@PlayPhrase.me I have a job interview tomorrow. Show me natural ways to talk
+about my experience, ordered from participating in work to leading it.
 ```
 
 ```text
-@PlayPhrase.me Explain the difference between “I did” and “I have done.” Find
-examples of both forms in real dialogue and help me notice the difference.
+@PlayPhrase.me Show me different ways to say “I think,” from uncertain to
+confident, with a PlayPhrase.me link for each one.
 ```
 
 ```text
-@PlayPhrase.me Make a 20-minute English lesson for a job interview. Include
-explanations, examples from movies or TV, and a short practice exercise.
+@PlayPhrase.me Turn “I am good at programming” into a naturalness path: give me
+several real alternatives and briefly explain when each one fits.
 ```
 
-ChatGPT builds the explanation and practice. The skill creates the relevant
-PlayPhrase.me searches. Each link opens scenes where the phrase can be heard in
-context; the lesson continues in the chat.
+The result is a PlayPhrase-first answer: sometimes one explained expression,
+sometimes a comparison, and sometimes a phrase path through several useful
+formulations. Each important phrase gets its own PlayPhrase.me search. Quizzes
+and exercises are optional—ask for one when you want practice.
 
 ## Made by PlayPhrase.me
 
-I build [PlayPhrase.me](https://www.playphrase.me/). People asked whether they
-could use it inside lessons made with AI, so I made this skill. The assistant
-handles the lesson; PlayPhrase.me supplies the real dialogue.
+I build [PlayPhrase.me](https://www.playphrase.me/). This skill lets the
+assistant translate your immediate language goal into the phrases and searches
+worth exploring. PlayPhrase.me supplies the real dialogue; the assistant helps
+you navigate it.
 
 **[Download the PlayPhrase.me skill for ChatGPT](https://github.com/potapenko/playphraseme-skill/releases/latest/download/skill.zip)**
 

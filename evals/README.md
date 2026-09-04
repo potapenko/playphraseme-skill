@@ -15,16 +15,21 @@ For every case, inspect:
 - honest guest, browser, autoplay, rate-limit, and API limitations;
 - refusal to invent filters, scrape private endpoints, or bypass limits.
 
-For lesson cases, also inspect:
+For response-pattern cases, also inspect:
 
-- conditional Common Phrases-first routing for supported situational topics;
-- 4–7 learner-sized target phrases by default and a goal-appropriate activity
-  subset instead of a mandatory full template;
-- an explicit learner action for each listening link;
-- no source, speaker, tone, stress, or clip claim without browser-visible proof;
-- interactive turns that wait for the learner, versus self-study answer keys at
-  the end;
-- learner production or retrieval when it serves the requested lesson.
+- correct routing among one-phrase explanation, comparison, natural wording,
+  situation/topic, vocabulary discovery, grammar, and explicit practice;
+- PlayPhrase.me material early in the answer and one canonical public search
+  link for every important phrase or pattern;
+- the stable structure specified for that response pattern;
+- brief selection or contrast guidance instead of a generic lesson shell;
+- no timeboxed stages, mandatory task per link, quiz, role-play, worksheet, or
+  retrieval exercise unless the user explicitly requested practice;
+- no source, speaker, tone, stress, or clip claim without browser-visible proof.
+
+When practice is explicitly requested, verify that it asks the learner to
+choose among linked real-world formulations for an intended meaning or context.
+An interactive quiz waits for the learner before feedback or answer reveal.
 
 Do not grade punctuation or prose identity. When the URL builder is available,
 compare the link destination byte-for-byte with builder stdout. Only for the

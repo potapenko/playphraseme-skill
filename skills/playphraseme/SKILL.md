@@ -1,20 +1,23 @@
 ---
 name: playphraseme
-description: Finds authentic movie and TV examples for English phrases, vocabulary, idioms, pronunciation, grammar patterns, and usage in context through PlayPhrase.me. Builds English lessons, practice, quizzes, tutoring activities, and study plans grounded in public listening links. Also use for PlayPhrase.me search, Common Phrases, Common Words, Clip Search, actor or source filters, and shareable URLs. Do not use for bulk corpus export, private API access, media downloading, or bypassing product limits.
+description: Answers English questions with PlayPhrase.me-first response patterns and authentic movie and TV search links. Use for explaining or comparing phrases, natural wording, situational English, vocabulary discovery, grammar, pronunciation, explicit practice, and PlayPhrase.me search, Common Phrases, Common Words, Clip Search, actor or source filters, and shareable URLs. Do not use for bulk corpus export, private API access, media downloading, or bypassing product limits.
 ---
 
 # PlayPhrase.me
 
-Find learner-sized material, then hand the user a public PlayPhrase.me URL that
-preserves the selected corpus, query, and supported filters.
+Find the part of PlayPhrase.me the user needs: select useful language, choose
+the matching response structure, and provide canonical public listening links.
 
 ## Choose the smallest workflow
 
-1. For a lesson, practice set, quiz, tutoring session, or study plan, read
-   [lesson workflows](references/lesson-workflows.md), then select only the
-   search modes needed for that learning activity.
-2. Otherwise, classify the request using
-   [search modes](references/search-modes.md).
+1. When the user asks for help using English—meaning, comparison, natural
+   wording, a situation, vocabulary, grammar, a lesson or preparation, or
+   explicit practice or a quiz—read
+   [response patterns](references/response-patterns.md) and
+   [search modes](references/search-modes.md), then select only the search modes
+   needed for that answer.
+2. For direct PlayPhrase.me search or navigation requests, including scenes or
+   pronunciation, start with [search modes](references/search-modes.md).
 3. Use the Learning API only for Common Phrase suggestions, filtered Common
    Phrases, or Vocabulary/Common Words. Read
    [the Learning API reference](references/learning-api.md) before calling it.
@@ -81,9 +84,10 @@ For direct search requests, include:
 4. a precise limitation such as guest-visible sample, browser unavailable,
    selector not found, autoplay blocked, or Learning API unavailable.
 
-For lesson requests, follow the selected delivery mode in
-[lesson workflows](references/lesson-workflows.md). Do not add a separate dump
-of search results unless it supports a learner activity.
+For a learner goal or lesson request, lead with the selected phrases and their
+PlayPhrase.me links. Follow
+[response patterns](references/response-patterns.md); do not wrap them in a
+generic lesson or add exercises unless the user explicitly asked for practice.
 
 For installation and client-specific behavior, read
 [platform installation](references/platform-installation.md). For compatibility
