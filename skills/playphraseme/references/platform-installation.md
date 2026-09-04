@@ -3,6 +3,21 @@
 This folder follows the open Agent Skills format. The host determines where it
 loads skills and how explicit invocation is written.
 
+## ChatGPT Web
+
+1. Download `skill.zip` from the latest GitHub Release:
+   <https://github.com/potapenko/playphraseme-language-learning-skill/releases/latest>
+2. Open ChatGPT and select **Plugins**.
+3. Open **Skills**, then choose **Create** or the **+** button.
+4. Choose **Upload from your computer** and select `skill.zip`.
+5. After installation, invoke it explicitly with `@PlayPhrase.me`, or ask a
+   relevant language-learning question and allow ChatGPT to select it
+   automatically.
+
+Availability can depend on the ChatGPT account and workspace settings. Do not
+claim a particular account has been validated until the upload and invocation
+have been smoke-tested there.
+
 ## Codex
 
 Personal path:
@@ -26,12 +41,18 @@ Personal and project paths:
 Invoke with `/playphraseme`. The core frontmatter uses only portable Agent
 Skills fields, without required Claude-specific extensions.
 
-## ChatGPT and plugins
+## Prompt-assisted installation
 
-Standalone skills are documented for the ChatGPT desktop app, Codex CLI, and
-the Codex IDE extension. Skills distributed through plugins are available in
-Chat and Work across ChatGPT web, desktop, and mobile. Actual client support
-must still be smoke-tested before the compatibility table claims validation.
+Codex, Claude, and other agents that can install an Agent Skill from a public
+repository can use this prompt:
+
+```text
+Install the PlayPhrase.me skill from:
+https://github.com/potapenko/playphraseme-language-learning-skill/tree/master/skills/playphraseme
+
+When it is ready, tell me how to use it here. If this app cannot install skills
+directly, give me the simplest steps for adding it.
+```
 
 Other clients may use the skill if they load standard `SKILL.md` folders. Do
 not claim support without checking that client's current documentation and a

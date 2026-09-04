@@ -1,4 +1,7 @@
 interface:
   display_name: "PlayPhrase.me"
   short_description: "Find authentic language in movies and TV"
-  default_prompt: "Use $playphraseme to find authentic movie or TV examples for a phrase and give me a shareable PlayPhrase.me link."
+  default_prompt: "Find authentic movie or TV examples for a phrase and give me a shareable PlayPhrase.me link."
+
+policy:
+  allow_implicit_invocation: true

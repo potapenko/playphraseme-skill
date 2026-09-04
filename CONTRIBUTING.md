@@ -20,8 +20,16 @@ Do not add:
 ## Development checks
 
 The scripts must stay compatible with Python 3.10+ using only the standard
-library.
-Run:
+library. Run the complete local check:
+
+```bash
+make check
+```
+
+This runs the tests, validates the canonical skill, and deterministically builds
+`dist/skill.zip`. To build only the upload package, run `make package`.
+
+The underlying script checks remain:
 
 ```bash
 python3 -m py_compile \

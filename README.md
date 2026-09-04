@@ -14,6 +14,36 @@ So I made a small skill. It tells an AI assistant how to search PlayPhrase.me
 and place useful links inside a lesson. Install it once, then ask for a lesson
 in ordinary language.
 
+## Install in ChatGPT
+
+1. Download [`skill.zip`](https://github.com/potapenko/playphraseme-language-learning-skill/releases/latest/download/skill.zip)
+   from the latest GitHub Release.
+2. In ChatGPT Web, open **Plugins → Skills**, choose **Create** or **+**, then
+   select **Upload from your computer**.
+3. Upload `skill.zip`.
+4. Use `@PlayPhrase.me`, or simply ask ChatGPT for authentic movie or TV
+   language examples.
+
+## Install with an AI assistant
+
+For Codex, Claude, and other agents that support Agent Skills, open the
+assistant and paste this prompt:
+
+```text
+Install the PlayPhrase.me skill from:
+https://github.com/potapenko/playphraseme-language-learning-skill/tree/master/skills/playphraseme
+
+When it is ready, tell me how to use it here. If this app cannot install skills
+directly, give me the simplest steps for adding it.
+```
+
+If the app supports skills, the assistant can handle the installation. If it
+does not, the same prompt asks for the simplest available setup. Once installed,
+the skill stays available for future lessons in that app.
+
+The ZIP upload is an additional ChatGPT installation path. It does not replace
+prompt-assisted installation for other agents.
+
 ## Start with one message
 
 A lesson can begin with a topic, a phrase, a grammar question, or just a rough
@@ -40,22 +70,6 @@ PlayPhrase.me link so I can hear the phrase again.
 
 A chat can stay with one phrase or grow into a longer learning plan. There is no
 fixed course to follow.
-
-## Install the skill
-
-Open an AI assistant and paste this prompt:
-
-```text
-Install the PlayPhrase.me skill from:
-https://github.com/potapenko/playphraseme-language-learning-skill/tree/master/skills/playphraseme
-
-When it is ready, tell me how to use it here. If this app cannot install skills
-directly, give me the simplest steps for adding it.
-```
-
-If the app supports skills, the assistant can handle the installation. If it
-does not, the same prompt asks for the simplest available setup. Once installed,
-the skill stays available for future lessons in that app.
 
 ## Ideas for a first lesson
 
