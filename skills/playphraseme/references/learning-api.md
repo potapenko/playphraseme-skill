@@ -27,6 +27,11 @@ Common bounds are `limit=1..20` (default `10`). Catalog operations also use
 `skip=0..1000` (default `0`). `language` defaults to `en`; `translate-to` is
 optional. CEFR values are `A1`, `A2`, `B1`, `B2`, `C1`, and `C2`.
 
+The catalog's A1–C2 CEFR defaults are transport defaults only. Before a
+level-sensitive learner collection, resolve the learner's level as described in
+[learning query planning](learning-query-planning.md) and pass both CEFR bounds.
+Do not omit them to choose material for an unknown-level learner.
+
 Each client invocation performs one logical operation. It never retries or
 paginates automatically. The server's default anonymous limit is 60 requests
 per minute per best-effort IP; a `429` response includes `Retry-After`.

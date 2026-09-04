@@ -1,5 +1,5 @@
 {
-  "schema-version": 1,
+  "schema-version": 2,
   "skill": "playphraseme",
   "cases": [
     {
@@ -22,6 +22,7 @@
         "requires-prominent-link-before-examples": true,
         "requires-primary-link-brand-and-listening-payoff": true,
         "requires-exact-visible-brand-spelling": "PlayPhrase.me",
+        "must-not-ask-level": true,
         "api-paths": []
       }
     },
@@ -99,15 +100,63 @@
       }
     },
     {
-      "id": "finite-request-infers-level",
-      "prompt": "Give me eight useful travel phrases right now. I have not given you my level.",
+      "id": "unknown-level-informal-expressions-asks-once",
+      "prompt": "Give me 5 useful informal English expressions for today. Group them by what they help me express and give me a PlayPhrase.me link for each one.",
+      "expected": {
+        "mode": "clarify-level-before-learning-api",
+        "api-paths": [],
+        "requires-one-short-level-question": true,
+        "must-wait-before-returning-candidates": true,
+        "must-not-show-provisional-basic-list": true,
+        "must-not-infer-level-from-writing-style-or-locale": true,
+        "must-not-use-transport-default-as-learner-default": true
+      }
+    },
+    {
+      "id": "immediate-request-uses-c1-c2",
+      "prompt": "Give me eight useful travel phrases right now. Don't ask a follow-up; choose a sensible level and tell me what you chose.",
       "expected": {
         "mode": "learning-api-phrases-then-search-links",
         "api-paths": ["/api/v1/learning/common-phrases"],
-        "filters": {"topic": "travel"},
-        "requires-narrow-inferred-level-range": true,
-        "requires-disclosed-inferred-level-range": true,
+        "filters": {"topic": "travel", "language-level-from": "C1", "language-level-to": "C2"},
+        "requires-disclosed-default-level-range": true,
+        "must-not-use-transport-default-as-learner-default": true,
+        "must-preserve-resolved-level-on-model-fallback": true,
+        "requires-distinctive-non-elementary-value-per-item": true,
+        "must-not-default-to-beginner-safe-reactions": true,
         "must-not-block-for-level": true
+      }
+    },
+    {
+      "id": "reuse-prior-turn-c1-level",
+      "prior-turns": [
+        {"role": "user", "content": "My English level is C1."},
+        {"role": "assistant", "content": "Got it."}
+      ],
+      "prompt": "Give me five useful informal expressions with PlayPhrase.me links.",
+      "expected": {
+        "mode": "learning-api-phrases-then-search-links",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"register": "informal", "language-level-from": "C1", "language-level-to": "C1"},
+        "must-reuse-explicit-prior-level": true,
+        "must-not-repeat-level-question": true,
+        "requires-link-per-phrase": true
+      }
+    },
+    {
+      "id": "higher-than-b2-followup",
+      "prior-turns": [
+        {"role": "user", "content": "I'm B2. Give me five informal expressions."},
+        {"role": "assistant", "content": "Here are five B2 informal expressions with PlayPhrase.me links."}
+      ],
+      "prompt": "Those expressions were too easy. Give me five at a higher level.",
+      "expected": {
+        "mode": "learning-api-phrases-then-search-links",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"language-level-from": "C1", "language-level-to": "C2"},
+        "must-use-prior-level-as-baseline": true,
+        "must-raise-lower-cefr-bound": true,
+        "must-not-merely-swap-basic-phrases": true
       }
     },
     {
@@ -159,11 +208,11 @@
     },
     {
       "id": "american-verbs",
-      "prompt": "Find American-English verbs from Vocabulary.",
+      "prompt": "Find B2 American-English verbs from Vocabulary.",
       "expected": {
         "mode": "learning-api-words-then-catalog-url",
         "api-paths": ["/api/v1/learning/common-words"],
-        "filters": {"domain": "American-English", "part-of-speech": "verb"},
+        "filters": {"domain": "American-English", "part-of-speech": "verb", "language-level-from": "B2", "language-level-to": "B2"},
         "requires-link": true
       }
     },
@@ -280,6 +329,7 @@
         "requires-model-example-sentences": true,
         "requires-useful-nearby-linked-phrases": true,
         "nearby-phrase-count": {"min": 1, "max": 2},
+        "must-not-ask-level": true,
         "must-not-add-generic-exercises": true
       }
     },
@@ -340,10 +390,11 @@
     },
     {
       "id": "implicit-job-interview-response",
-      "prompt": "I have a job interview tomorrow. Help me prepare my English.",
+      "prompt": "I have a job interview tomorrow and my English is B2. Help me prepare.",
       "expected": {
         "mode": "response-situation-topic",
         "must-recognize-implicit-learning-need": true,
+        "filters": {"topic": "work", "language-level-from": "B2", "language-level-to": "B2"},
         "requires-intent-based-groups": true,
         "requires-link-per-phrase": true,
         "must-not-add-generic-exercises": true
@@ -351,12 +402,16 @@
     },
     {
       "id": "vocabulary-discovery-response",
-      "prompt": "Give me ten useful informal English phrases for today.",
+      "prompt": "I'm C1. Give me ten useful informal English phrases for today.",
       "expected": {
         "mode": "response-vocabulary-discovery",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"register": "informal", "language-level-from": "C1", "language-level-to": "C1"},
         "requires-scannable-linked-table": true,
         "requires-link-per-phrase": true,
         "requires-benefit-specific-link-labels": true,
+        "requires-distinctive-level-appropriate-expressions": true,
+        "must-not-fill-with-elementary-generic-reactions": true,
         "must-keep-deeper-explanations-selective": true,
         "must-not-add-generic-exercises": true
       }
@@ -399,7 +454,7 @@
     },
     {
       "id": "explicit-phrase-native-quiz",
-      "prompt": "Quiz me interactively on how to describe my level of responsibility in a job interview. Use PlayPhrase.me choices and ask one question at a time.",
+      "prompt": "I'm B2. Quiz me interactively on how to describe my level of responsibility in a job interview. Use PlayPhrase.me choices and ask one question at a time.",
       "expected": {
         "mode": "response-explicit-practice",
         "requires-linked-phrase-choices": true,

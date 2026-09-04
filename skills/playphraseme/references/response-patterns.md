@@ -17,6 +17,12 @@ help the user choose what to open.
 - End a substantial answer with one or two new exploration paths when useful.
 - Do not add exercises or lesson scaffolding unless practice is explicit.
 
+For an open-ended multi-item phrase or vocabulary selection, resolve the
+learner's level with [learning query planning](learning-query-planning.md)
+before choosing material. When that workflow requires clarification, the one
+short level question is the whole turn; the link-first rules begin after the
+learner answers.
+
 Choose the single closest response pattern below. Combine patterns only when
 the request genuinely contains separate questions.
 
@@ -154,6 +160,15 @@ response resemble a lesson.
 
 Follow an explicit count. Otherwise select roughly eight to ten items, favoring
 a coherent set over filling the upper end of the range.
+
+Resolve an explicit or remembered level before returning the list. If it is
+unknown and materially affects the selection, ask once and wait; do not show a
+basic sample list first. Only when the learner explicitly requests an immediate
+answer without clarification, use and disclose the C1–C2 fallback. Within the
+resolved range, prefer distinctive reusable expressions over safe elementary
+reactions. For C1–C2, each core choice needs nonliteral meaning, pragmatic or
+register nuance, or a reusable construction beyond transparent beginner
+English; frequency alone does not make it a useful recommendation.
 
 Keep the requested unit honest: a Common Words slang result is a word, not
 proof that a multi-word expression was selected as slang. Follow

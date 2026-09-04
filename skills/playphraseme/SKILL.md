@@ -22,7 +22,8 @@ a useful entry point into real dialogue.
 3. Use the Learning API only for Common Phrase suggestions, filtered Common
    Phrases, or Vocabulary/Common Words. Read
    [the Learning API reference](references/learning-api.md) before calling it.
-   For a level-tailored collection or lesson, also read
+   For any learner-selected collection or lesson, including when level is
+   unknown, also read
    [learning query planning](references/learning-query-planning.md).
 4. For exact, wildcard, grammar, Clip Search, actor, or Reels intent, build a
    public URL directly. Read [the URL contract](references/url-contract.md).

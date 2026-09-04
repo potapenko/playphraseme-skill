@@ -1,7 +1,8 @@
 # Behavioral evals
 
-`cases.json` describes behavior, not exact answer wording. Evaluate each prompt
-in a fresh session with the `playphraseme` skill installed.
+`cases.json` describes behavior, not exact answer wording. Evaluate each case
+in a fresh session with the `playphraseme` skill installed. When a case has
+`prior-turns`, replay those turns in order in that session before its `prompt`.
 
 For every case, inspect:
 
@@ -18,9 +19,16 @@ For every case, inspect:
 For learner-selected catalog cases, also inspect:
 
 - correct separation of individual words from multi-word phrases;
-- explicit CEFR preservation and a briefly disclosed range for inferred levels;
-- one short level question for broad continuing personalization, but no blocking
-  question for a finite answer that can proceed with a reasonable assumption;
+- exact explicit or reliably remembered CEFR and a disclosed range for mapped
+  natural-language levels;
+- one short level question before any level-sensitive open-ended collection
+  when level is unknown, with no API call or provisional list before the answer;
+- a disclosed C1–C2 fallback only when the learner explicitly requests an
+  immediate answer without questions, never the API's A1–C2 transport default,
+  and preserved when the API is unavailable;
+- no proficiency inference from writing style, interface language, or locale,
+  and a raised lower CEFR bound after “higher-level” or “too easy” feedback;
+- no level question for a direct search or one named expression;
 - exact documented filter values and AND semantics across active dimensions;
 - no Common Phrases catalog URL containing API-only filters;
 - one initial candidate query, with additional sequential queries only for
@@ -47,6 +55,8 @@ For response-pattern cases, also inspect:
 - exact `PlayPhrase.me` spelling in all other visible brand mentions;
 - the stable structure specified for that response pattern;
 - distinct, immediately useful choices instead of padded near-duplicates;
+- level-appropriate idiomatic, collocational, or colloquial expressions instead
+  of elementary generic reactions in open-ended discovery;
 - core choices that each perform the user's requested communication goal;
 - brief selection or contrast guidance instead of a generic lesson shell;
 - no more than two closing exploration links, each opening a genuinely new

@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class EvalDefinitionTests(unittest.TestCase):
     def test_behavioral_eval_file_has_required_shape(self) -> None:
         payload = json.loads((ROOT / "evals/cases.json").read_text(encoding="utf-8"))
+        self.assertEqual(2, payload["schema-version"])
         self.assertEqual("playphraseme", payload["skill"])
         cases = payload["cases"]
         self.assertGreaterEqual(len(cases), 12)
@@ -18,6 +19,11 @@ class EvalDefinitionTests(unittest.TestCase):
         self.assertEqual(len(ids), len(set(ids)))
         for case in cases:
             self.assertTrue(case["prompt"].strip())
+            prior_turns = case.get("prior-turns", [])
+            self.assertIsInstance(prior_turns, list)
+            for turn in prior_turns:
+                self.assertIn(turn["role"], {"user", "assistant"})
+                self.assertTrue(turn["content"].strip())
             self.assertIsInstance(case["expected"], dict)
             self.assertTrue(case["expected"])
 
@@ -33,16 +39,22 @@ class EvalDefinitionTests(unittest.TestCase):
         self.assertTrue(exact["requires-prominent-link-before-examples"])
         self.assertTrue(exact["requires-primary-link-brand-and-listening-payoff"])
         self.assertEqual("PlayPhrase.me", exact["requires-exact-visible-brand-spelling"])
+        self.assertTrue(exact["must-not-ask-level"])
 
     def test_learning_query_planning_eval_contract_is_present(self) -> None:
         payload = json.loads((ROOT / "evals/cases.json").read_text(encoding="utf-8"))
-        cases = {case["id"]: case["expected"] for case in payload["cases"]}
+        case_defs = {case["id"]: case for case in payload["cases"]}
+        cases = {case_id: case["expected"] for case_id, case in case_defs.items()}
         required = {
             "beginner-travel-questions",
             "non-basic-slang-expressions",
             "professional-apologies",
             "broad-personalization-asks-level",
-            "finite-request-infers-level",
+            "unknown-level-informal-expressions-asks-once",
+            "immediate-request-uses-c1-c2",
+            "reuse-prior-turn-c1-level",
+            "higher-than-b2-followup",
+            "american-verbs",
             "empty-explicit-filter-result",
             "orthogonal-interview-groups",
             "catalog-classification-not-clip-tone",
@@ -59,9 +71,38 @@ class EvalDefinitionTests(unittest.TestCase):
         self.assertEqual([], personalized["api-paths"])
         self.assertTrue(personalized["requires-one-short-level-question"])
 
-        finite = cases["finite-request-infers-level"]
-        self.assertTrue(finite["requires-disclosed-inferred-level-range"])
-        self.assertTrue(finite["must-not-block-for-level"])
+        unknown = cases["unknown-level-informal-expressions-asks-once"]
+        self.assertEqual([], unknown["api-paths"])
+        self.assertTrue(unknown["requires-one-short-level-question"])
+        self.assertTrue(unknown["must-wait-before-returning-candidates"])
+        self.assertTrue(unknown["must-not-show-provisional-basic-list"])
+        self.assertTrue(unknown["must-not-infer-level-from-writing-style-or-locale"])
+        self.assertTrue(unknown["must-not-use-transport-default-as-learner-default"])
+
+        immediate = cases["immediate-request-uses-c1-c2"]
+        self.assertEqual("C1", immediate["filters"]["language-level-from"])
+        self.assertEqual("C2", immediate["filters"]["language-level-to"])
+        self.assertTrue(immediate["requires-disclosed-default-level-range"])
+        self.assertTrue(immediate["must-not-use-transport-default-as-learner-default"])
+        self.assertTrue(immediate["must-preserve-resolved-level-on-model-fallback"])
+        self.assertTrue(immediate["requires-distinctive-non-elementary-value-per-item"])
+        self.assertTrue(immediate["must-not-default-to-beginner-safe-reactions"])
+        self.assertTrue(immediate["must-not-block-for-level"])
+
+        remembered = cases["reuse-prior-turn-c1-level"]
+        self.assertTrue(case_defs["reuse-prior-turn-c1-level"]["prior-turns"])
+        self.assertEqual("C1", remembered["filters"]["language-level-from"])
+        self.assertEqual("C1", remembered["filters"]["language-level-to"])
+        self.assertTrue(remembered["must-reuse-explicit-prior-level"])
+        self.assertTrue(remembered["must-not-repeat-level-question"])
+
+        higher = cases["higher-than-b2-followup"]
+        self.assertTrue(case_defs["higher-than-b2-followup"]["prior-turns"])
+        self.assertEqual("C1", higher["filters"]["language-level-from"])
+        self.assertEqual("C2", higher["filters"]["language-level-to"])
+        self.assertTrue(higher["must-use-prior-level-as-baseline"])
+        self.assertTrue(higher["must-raise-lower-cefr-bound"])
+        self.assertTrue(higher["must-not-merely-swap-basic-phrases"])
 
         empty = cases["empty-explicit-filter-result"]
         self.assertTrue(empty["must-not-remove-explicit-filters"])
@@ -79,6 +120,10 @@ class EvalDefinitionTests(unittest.TestCase):
         ranked = cases["api-ranked-slang-phrases"]
         self.assertTrue(ranked["must-preserve-server-order"])
         self.assertTrue(ranked["must-not-call-curated-order-api-ranked"])
+
+        american = cases["american-verbs"]
+        self.assertEqual("B2", american["filters"]["language-level-from"])
+        self.assertEqual("B2", american["filters"]["language-level-to"])
 
     def test_response_pattern_eval_contract_is_present(self) -> None:
         payload = json.loads((ROOT / "evals/cases.json").read_text(encoding="utf-8"))
@@ -110,6 +155,7 @@ class EvalDefinitionTests(unittest.TestCase):
         )
         self.assertTrue(one_phrase["requires-short-nuance"])
         self.assertEqual({"min": 1, "max": 2}, one_phrase["nearby-phrase-count"])
+        self.assertTrue(one_phrase["must-not-ask-level"])
 
         comparison = cases["compare-phrases-response"]
         self.assertTrue(comparison["requires-linked-comparison-set"])
@@ -150,8 +196,13 @@ class EvalDefinitionTests(unittest.TestCase):
         self.assertTrue(implicit["must-not-add-generic-exercises"])
 
         discovery = cases["vocabulary-discovery-response"]
+        self.assertEqual("informal", discovery["filters"]["register"])
+        self.assertEqual("C1", discovery["filters"]["language-level-from"])
+        self.assertEqual("C1", discovery["filters"]["language-level-to"])
         self.assertTrue(discovery["requires-scannable-linked-table"])
         self.assertTrue(discovery["requires-benefit-specific-link-labels"])
+        self.assertTrue(discovery["requires-distinctive-level-appropriate-expressions"])
+        self.assertTrue(discovery["must-not-fill-with-elementary-generic-reactions"])
         self.assertTrue(discovery["must-keep-deeper-explanations-selective"])
 
         offline = cases["grammar-through-examples-response"]

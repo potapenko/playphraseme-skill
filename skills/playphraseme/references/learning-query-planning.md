@@ -29,17 +29,29 @@ captures it. Do not substitute a merely adjacent function such as `critique` or
 ## Resolve the level
 
 - Use an explicit CEFR level or range exactly.
+- Reuse a level or range the learner explicitly stated in the current
+  conversation or in reliable available learner memory. Do not guess a level
+  from writing style, interface language, locale, or how polished one prompt is.
 - Treat descriptions as working ranges rather than precise equivalences. Useful
   starting points are beginner → A1–A2, intermediate → B1–B2, upper-intermediate
   or “not basic” → B2–C1, and advanced → C1–C2. Briefly disclose an inferred
   range.
-- Ask one short level question before a broad personalized collection or
-  continuing course when the answer would materially change the selection.
-- For a finite request the user wants now, do not block. Choose a reasonable
-  range, state it, give the linked result, and offer to make it easier or harder.
+- Before an open-ended multi-item phrase or vocabulary selection, ask one short
+  level question when no reliable signal exists and level would materially
+  change the choices. Wait for the answer before calling the catalog or
+  publishing a provisional list.
+- Do not ask for a direct search, an explanation of one named expression, or a
+  request whose useful answer does not depend on proficiency.
+- If the learner explicitly says not to ask a follow-up question, state the
+  working assumption and use C1–C2. This is the only default range for an
+  unknown-level learner collection.
+- Treat “harder,” “higher-level,” or “those were too easy” as a request to raise
+  the lower bound from the preceding selection. After B2 material, normally use
+  C1–C2; do not merely exchange one set of basic phrases for another.
 
-Do not default every unspecified request to the full A1–C2 range when that
-would predictably mix elementary and advanced material.
+Always send both CEFR bounds for a level-sensitive Common Phrases or Common
+Words request. The API's A1–C2 defaults are transport defaults, not permission
+to mix elementary and advanced material for an unspecified learner.
 
 ## Choose words or phrases
 
@@ -70,6 +82,7 @@ the currently documented filter families include:
 | B1 interview language | Common Phrases; topic work; B1 |
 | sarcastic B2 responses | Common Phrases; emotion sarcastic; B2 |
 | non-basic slang expressions | Common Phrases; register slang; B2–C1 |
+| informal expressions, no clarification allowed | Common Phrases; register informal; C1–C2 |
 | professional apologies | Common Phrases; function apology; register professional |
 | advanced slang words for conversation | Common Words; slang; B2–C1; daily utility |
 | alternatives around a known phrase | Suggestions; the phrase as `q`; supported narrowing filters only |
@@ -77,6 +90,15 @@ the currently documented filter families include:
 For a requested answer of roughly six to ten choices, a candidate limit of
 twelve to twenty is often useful: curate the result rather than publishing the
 whole payload. Use the minimum adequate limit for narrower requests.
+
+CEFR is a candidate boundary, not a quality score. For “expressions,”
+“informal,” “interesting,” or “non-basic” requests, prefer reusable idiomatic,
+collocational, or colloquial chunks with distinct communicative functions.
+For an upper-level selection, each core choice should add a nonliteral meaning,
+pragmatic or register nuance, or a reusable construction beyond transparent
+beginner English. Replace elementary generic reactions and transparent
+beginner-level imperatives that add no distinct value; frequency or an early
+rank is not enough. Preserve server order only for an API-ranking request.
 
 Start with one request. Add one or two sequential requests only when each has a
 different job—for example, core B1 work statements and a narrower B1 work
@@ -92,6 +114,10 @@ searches.
 If an agent-inferred level or property caused the weak result, it may be
 broadened once. Say what changed. Do not hide a second query as though it used
 the original filters.
+
+If the API is unavailable and the model selects candidates, preserve the same
+resolved CEFR range and quality bar. Do not silently fall back to safer,
+lower-level material merely because catalog ranking could not be checked.
 
 Treat server order as candidate priority, not presentation order. Preserve it
 when the user asks for API-ranked results. For a PlayPhrase-first answer, select
