@@ -1,6 +1,15 @@
 {
   "schema-version": 2,
   "skill": "playphraseme",
+  "agent-selected-common-phrase-invariants": {
+    "allowed-api-paths": [
+      "/api/v1/learning/common-phrases",
+      "/api/v1/learning/common-phrases/suggestions"
+    ],
+    "minimum-common-phrase-count": 5,
+    "requires-exact-returned-text": true,
+    "must-not-use-classic-search-or-browser-as-membership-proof": true
+  },
   "cases": [
     {
       "id": "suggest-common-phrase",
@@ -9,6 +18,9 @@
         "mode": "learning-api-suggestions-then-search-url",
         "api-paths": ["/api/v1/learning/common-phrases/suggestions"],
         "requires-link": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true,
         "must-not-claim-full-corpus": true
       }
     },
@@ -22,7 +34,9 @@
         "requires-prominent-link-before-examples": true,
         "requires-primary-link-brand-and-listening-payoff": true,
         "requires-exact-visible-brand-spelling": "PlayPhrase.me",
+        "requires-user-supplied-text-for-direct-classic-search": true,
         "must-not-ask-level": true,
+        "must-not-add-reels-footer": true,
         "api-paths": []
       }
     },
@@ -32,6 +46,7 @@
       "expected": {
         "mode": "classic-search-browser",
         "query": "hello * world",
+        "requires-user-supplied-text-for-direct-classic-search": true,
         "requires-link": true
       }
     },
@@ -41,6 +56,7 @@
       "expected": {
         "mode": "classic-search-grammar-browser",
         "query": "gr: go home",
+        "requires-user-supplied-text-for-direct-classic-search": true,
         "requires-link": true
       }
     },
@@ -48,10 +64,14 @@
       "id": "idioms-cefr",
       "prompt": "Give me six English idioms between B1 and C1, then a link to browse them.",
       "expected": {
-        "mode": "learning-api-phrases-then-catalog-url",
+        "mode": "learning-api-phrases-then-search-links",
         "api-paths": ["/api/v1/learning/common-phrases"],
         "filters": {"idiom": true, "language-level-from": "B1", "language-level-to": "C1"},
-        "requires-link": true
+        "requires-link-per-phrase": true,
+        "allows-filtered-catalog-exploration-link": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true
       }
     },
     {
@@ -62,7 +82,10 @@
         "api-paths": ["/api/v1/learning/common-phrases"],
         "filters": {"topic": "travel", "is-question": true, "language-level-from": "A1", "language-level-to": "A2"},
         "requires-disclosed-inferred-level-range": true,
-        "requires-link-per-phrase": true
+        "requires-link-per-phrase": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true
       }
     },
     {
@@ -75,7 +98,11 @@
         "requires-disclosed-inferred-level-range": true,
         "must-not-use-common-words-as-phrase-proof": true,
         "requires-classic-search-link-per-item": true,
-        "must-not-put-api-only-filter-in-catalog-url": true
+        "must-not-put-api-only-filter-in-catalog-url": true,
+        "must-not-add-reels-footer": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true
       }
     },
     {
@@ -86,7 +113,44 @@
         "api-paths": ["/api/v1/learning/common-phrases"],
         "filters": {"function": "apology", "register": "professional", "language-level-from": "B1", "language-level-to": "B2"},
         "requires-link-per-phrase": true,
-        "must-not-put-api-only-filter-in-catalog-url": true
+        "must-not-add-formality-formal-filter": true,
+        "must-not-put-api-only-filter-in-catalog-url": true,
+        "must-not-add-reels-footer": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true
+      }
+    },
+    {
+      "id": "formal-phrases-use-formality",
+      "prompt": "Give me five B2 formal English phrases and link each one to PlayPhrase.me.",
+      "expected": {
+        "mode": "learning-api-phrases-then-search-links",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"formality": "formal", "language-level-from": "B2", "language-level-to": "B2"},
+        "must-not-add-register-professional-filter": true,
+        "requires-link-per-phrase": true,
+        "must-not-put-api-only-filter-in-catalog-url": true,
+        "must-not-add-reels-footer": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true
+      }
+    },
+    {
+      "id": "explicit-formal-professional-intersection",
+      "prompt": "Give me five B2 phrases that are both formal and professional, and link each one to PlayPhrase.me.",
+      "expected": {
+        "mode": "learning-api-phrases-then-search-links",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"formality": "formal", "register": "professional", "language-level-from": "B2", "language-level-to": "B2"},
+        "requires-both-filters-because-both-were-explicit": true,
+        "requires-link-per-phrase": true,
+        "must-not-put-api-only-filter-in-catalog-url": true,
+        "must-not-add-reels-footer": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true
       }
     },
     {
@@ -107,6 +171,7 @@
         "api-paths": [],
         "requires-one-short-level-question": true,
         "must-wait-before-returning-candidates": true,
+        "must-not-add-reels-footer": true,
         "must-not-show-provisional-basic-list": true,
         "must-not-infer-level-from-writing-style-or-locale": true,
         "must-not-use-transport-default-as-learner-default": true
@@ -121,10 +186,13 @@
         "filters": {"topic": "travel", "language-level-from": "C1", "language-level-to": "C2"},
         "requires-disclosed-default-level-range": true,
         "must-not-use-transport-default-as-learner-default": true,
-        "must-preserve-resolved-level-on-model-fallback": true,
+        "must-not-use-model-written-phrase-fallback": true,
         "requires-distinctive-non-elementary-value-per-item": true,
         "must-not-default-to-beginner-safe-reactions": true,
-        "must-not-block-for-level": true
+        "must-not-block-for-level": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true
       }
     },
     {
@@ -140,7 +208,11 @@
         "filters": {"register": "informal", "language-level-from": "C1", "language-level-to": "C1"},
         "must-reuse-explicit-prior-level": true,
         "must-not-repeat-level-question": true,
-        "requires-link-per-phrase": true
+        "requires-link-per-phrase": true,
+        "must-not-add-reels-footer": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true
       }
     },
     {
@@ -153,10 +225,14 @@
       "expected": {
         "mode": "learning-api-phrases-then-search-links",
         "api-paths": ["/api/v1/learning/common-phrases"],
-        "filters": {"language-level-from": "C1", "language-level-to": "C2"},
+        "filters": {"register": "informal", "language-level-from": "C1", "language-level-to": "C2"},
         "must-use-prior-level-as-baseline": true,
         "must-raise-lower-cefr-bound": true,
-        "must-not-merely-swap-basic-phrases": true
+        "must-not-merely-swap-basic-phrases": true,
+        "must-not-add-reels-footer": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true
       }
     },
     {
@@ -166,7 +242,7 @@
         "mode": "learning-api-empty-result-guidance",
         "must-treat-empty-items-as-success": true,
         "must-not-remove-explicit-filters": true,
-        "must-offer-one-specific-relaxation-or-public-search": true,
+        "must-offer-one-specific-relaxation-or-supported-catalog": true,
         "must-not-present-relaxed-results-as-original-query": true
       }
     },
@@ -183,7 +259,11 @@
         "requires-sequential-requests": true,
         "maximum-api-requests": 2,
         "must-deduplicate-candidates": true,
-        "must-not-page-for-variety": true
+        "must-not-page-for-variety": true,
+        "must-not-add-reels-footer": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true
       }
     },
     {
@@ -196,6 +276,23 @@
       }
     },
     {
+      "id": "common-phrase-text-preserved",
+      "prompt": "The B1-B2 Common Phrases response for apology contains text 'Unfortunately, I won't be able to.' with count 10. Use that returned item as one linked example without filling in its open slot.",
+      "expected": {
+        "mode": "learning-api-phrases-then-search-links",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"function": "apology", "language-level-from": "B1", "language-level-to": "B2"},
+        "api-item": {"text": "Unfortunately, I won't be able to.", "count": 10},
+        "query": "Unfortunately, I won't be able to.",
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true,
+        "must-not-complete-shorten-or-rewrite-returned-text": true,
+        "must-not-use-classic-search-count-as-membership-proof": true,
+        "must-not-add-reels-footer": true
+      }
+    },
+    {
       "id": "api-ranked-slang-phrases",
       "prompt": "Return the first five B2 slang Common Phrases in the API's ranking order.",
       "expected": {
@@ -203,7 +300,11 @@
         "api-paths": ["/api/v1/learning/common-phrases"],
         "filters": {"register": "slang", "language-level-from": "B2", "language-level-to": "B2"},
         "must-preserve-server-order": true,
-        "must-not-call-curated-order-api-ranked": true
+        "must-not-call-curated-order-api-ranked": true,
+        "must-not-add-reels-footer": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true
       }
     },
     {
@@ -213,6 +314,10 @@
         "mode": "learning-api-words-then-catalog-url",
         "api-paths": ["/api/v1/learning/common-words"],
         "filters": {"domain": "American-English", "part-of-speech": "verb", "language-level-from": "B2", "language-level-to": "B2"},
+        "requires-common-word-source": true,
+        "must-not-use-common-phrases-for-individual-words": true,
+        "requires-individual-word-unit": true,
+        "requires-exact-returned-word": true,
         "requires-link": true
       }
     },
@@ -272,7 +377,8 @@
         "mode": "reels-browser",
         "route": "/#/reels/en",
         "source": "custom-search",
-        "requires-link": true
+        "requires-link": true,
+        "must-not-add-reels-footer": true
       }
     },
     {
@@ -326,9 +432,10 @@
         "requires-primary-link-brand-and-listening-payoff": true,
         "requires-exact-visible-brand-spelling": "PlayPhrase.me",
         "requires-short-nuance": true,
-        "requires-model-example-sentences": true,
-        "requires-useful-nearby-linked-phrases": true,
-        "nearby-phrase-count": {"min": 1, "max": 2},
+        "allows-user-supplied-direct-search": true,
+        "must-not-invent-additional-dialogue-line": true,
+        "nearby-options-must-be-common-phrase-suggestions": true,
+        "nearby-phrase-count": {"min": 0, "max": 2},
         "must-not-ask-level": true,
         "must-not-add-generic-exercises": true
       }
@@ -343,15 +450,18 @@
         "requires-benefit-specific-link-labels": true,
         "must-not-repeat-generic-link-labels": true,
         "requires-same-situation-contrast": true,
+        "must-not-add-reels-footer": true,
         "must-not-lead-with-general-lecture": true,
         "must-not-add-generic-exercises": true
       }
     },
     {
       "id": "natural-wording-response",
-      "prompt": "How do I naturally say that I was the main person responsible for a project?",
+      "prompt": "I'm B1. How do I naturally promise a coworker that I'll keep them updated?",
       "expected": {
         "mode": "response-natural-wording",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"topic": "work", "language-level-from": "B1", "language-level-to": "B1"},
         "requires-best-fit-first-when-supported": true,
         "requires-visually-primary-best-fit-link": true,
         "requires-primary-link-brand-and-listening-payoff": true,
@@ -360,6 +470,10 @@
         "requires-benefit-specific-link-labels": true,
         "requires-fit-note-per-option": true,
         "requires-best-fit-recommendation": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true,
+        "must-not-use-model-written-phrase-options": true,
         "must-not-add-generic-exercises": true
       }
     },
@@ -379,6 +493,9 @@
         "requires-benefit-specific-link-labels": true,
         "requires-brief-distinctions": true,
         "allows-filtered-catalog-exploration-link": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true,
         "requires-exact-visible-brand-spelling": "PlayPhrase.me",
         "must-not-use-timeboxed-stages": true,
         "must-not-add-generic-exercises": true,
@@ -393,27 +510,59 @@
       "prompt": "I have a job interview tomorrow and my English is B2. Help me prepare.",
       "expected": {
         "mode": "response-situation-topic",
+        "api-paths": ["/api/v1/learning/common-phrases"],
         "must-recognize-implicit-learning-need": true,
         "filters": {"topic": "work", "language-level-from": "B2", "language-level-to": "B2"},
         "requires-intent-based-groups": true,
         "requires-link-per-phrase": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true,
         "must-not-add-generic-exercises": true
       }
     },
     {
       "id": "vocabulary-discovery-response",
-      "prompt": "I'm C1. Give me ten useful informal English phrases for today.",
+      "prompt": "I'm B2. Give me ten useful English idioms for today.",
       "expected": {
         "mode": "response-vocabulary-discovery",
         "api-paths": ["/api/v1/learning/common-phrases"],
-        "filters": {"register": "informal", "language-level-from": "C1", "language-level-to": "C1"},
+        "filters": {"idiom": true, "language-level-from": "B2", "language-level-to": "B2"},
         "requires-scannable-linked-table": true,
         "requires-link-per-phrase": true,
         "requires-benefit-specific-link-labels": true,
         "requires-distinctive-level-appropriate-expressions": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true,
         "must-not-fill-with-elementary-generic-reactions": true,
         "must-keep-deeper-explanations-selective": true,
         "must-not-add-generic-exercises": true
+      }
+    },
+    {
+      "id": "common-phrases-reels-continuation",
+      "prompt": "I'm B2. Give me five useful English idioms with individual PlayPhrase.me links, then finish with one optional Reels collection for more of the same.",
+      "expected": {
+        "mode": "response-vocabulary-discovery",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"idiom": true, "language-level-from": "B2", "language-level-to": "B2"},
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true,
+        "requires-link-per-phrase": true,
+        "requires-reels-footer": true,
+        "requires-reels-footer-framed-as-optional": true,
+        "requires-reels-link-after-learning-content": true,
+        "reels-source": "common-phrases",
+        "reels-filters": {"idiom": true, "language-level-from": "B2", "language-level-to": "B2"},
+        "reels-url": "https://www.playphrase.me/#/reels/en?source=common-phrases&filters=%7B%22idiom%22%3Atrue%2C%22language-level-from%22%3A%22B2%22%2C%22language-level-to%22%3A%22B2%22%7D",
+        "maximum-reels-links": 1,
+        "requires-canonical-reels-url": true,
+        "must-use-only-public-reels-filters": true,
+        "forbids-tracking-parameters": true,
+        "must-not-replace-primary-search-links-with-reels": true,
+        "must-not-add-reels-task-or-report-back": true
       }
     },
     {
@@ -434,9 +583,11 @@
     },
     {
       "id": "high-intent-disagreement-path",
-      "prompt": "I need to disagree with my manager without sounding rude. Give me natural options from soft to firm.",
+      "prompt": "I'm B2. I need to disagree with my manager without sounding rude. Give me natural options from soft to firm.",
       "expected": {
         "mode": "response-natural-wording",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"topic": "work", "language-level-from": "B2", "language-level-to": "B2"},
         "requires-several-distinct-linked-options": true,
         "requires-soft-to-firm-path": true,
         "requires-best-fit-first-when-supported": true,
@@ -447,6 +598,9 @@
         "requires-exact-visible-brand-spelling": "PlayPhrase.me",
         "requires-each-core-option-to-perform-requested-goal": true,
         "requires-distinct-options": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true,
         "must-not-call-curated-order-api-ranked": true,
         "must-not-repeat-generic-link-labels": true,
         "must-not-add-generic-exercises": true
@@ -457,11 +611,32 @@
       "prompt": "I'm B2. Quiz me interactively on how to describe my level of responsibility in a job interview. Use PlayPhrase.me choices and ask one question at a time.",
       "expected": {
         "mode": "response-explicit-practice",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"topic": "work", "language-level-from": "B2", "language-level-to": "B2"},
         "requires-linked-phrase-choices": true,
         "requires-meaning-or-context-decision": true,
         "must-wait-for-learner-answer": true,
         "must-not-reveal-answer-in-same-turn": true,
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true,
+        "must-not-add-reels-footer": true,
         "must-not-use-generic-gap-fill": true
+      }
+    },
+    {
+      "id": "explicit-no-extras-response",
+      "prompt": "I'm B2. Give me five useful English idioms with individual PlayPhrase.me links. Do not add a catalog, Reels, or any other extra continuation.",
+      "expected": {
+        "mode": "response-vocabulary-discovery",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"idiom": true, "language-level-from": "B2", "language-level-to": "B2"},
+        "requires-common-phrase-source": true,
+        "minimum-common-phrase-count": 5,
+        "requires-exact-returned-text": true,
+        "requires-link-per-phrase": true,
+        "must-not-add-reels-footer": true,
+        "must-not-add-exploration-links": true
       }
     }
   ]

@@ -1,0 +1,61 @@
+{
+  "schema-version": 1,
+  "source": "https://www.playphrase.me/api/v1/learning/common-phrases",
+  "verified-on": "2026-09-04",
+  "retention": {
+    "owner": "repository maintainers",
+    "condition": "Keep while an item is used as a literal README, response-pattern, or eval example; refresh or remove it when that example or its filters change."
+  },
+  "queries": [
+    {
+      "id": "b2-idioms",
+      "verified-with": "python3 skills/playphraseme/scripts/playphrase_learning.py phrases --language en --idiom --language-level-from B2 --language-level-to B2 --limit 20",
+      "language": "en",
+      "filters": {
+        "idiom": true,
+        "language-level-from": "B2",
+        "language-level-to": "B2"
+      },
+      "limit": 20,
+      "items": [
+        {"text": "I wouldn't miss it for the world.", "count": 150},
+        {"text": "I couldn't have said it better myself.", "count": 29},
+        {"text": "Like a kid in a candy store.", "count": 22}
+      ]
+    },
+    {
+      "id": "b1-work",
+      "verified-with": "python3 skills/playphraseme/scripts/playphrase_learning.py phrases --language en --topic work --language-level-from B1 --language-level-to B1 --limit 20",
+      "language": "en",
+      "filters": {
+        "topic": "work",
+        "language-level-from": "B1",
+        "language-level-to": "B1"
+      },
+      "limit": 20,
+      "items": [
+        {"text": "I'll keep you in the loop.", "count": 10},
+        {"text": "I'll get back to you ASAP.", "count": 11},
+        {"text": "Yeah, I'll get right on it.", "count": 11},
+        {"text": "Thank you for agreeing to meet with me.", "count": 10},
+        {"text": "I think we can work something out.", "count": 18},
+        {"text": "I look forward to working with you.", "count": 45},
+        {"text": "It's been a pleasure working with you.", "count": 22}
+      ]
+    },
+    {
+      "id": "b1-b2-apology",
+      "verified-with": "python3 skills/playphraseme/scripts/playphrase_learning.py phrases --language en --function apology --language-level-from B1 --language-level-to B2 --limit 20",
+      "language": "en",
+      "filters": {
+        "function": "apology",
+        "language-level-from": "B1",
+        "language-level-to": "B2"
+      },
+      "limit": 20,
+      "items": [
+        {"text": "Unfortunately, I won't be able to.", "count": 10}
+      ]
+    }
+  ]
+}

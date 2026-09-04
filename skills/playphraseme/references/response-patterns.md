@@ -11,7 +11,9 @@ help the user choose what to open.
 
 - Put the first useful listening link in the first content block.
 - When one choice clearly fits best, feature it before the alternatives.
-- Link every important phrase to its own public PlayPhrase.me search.
+- For multi-word language the agent chooses, select Common Phrases and link
+  every important returned `text` to its own public PlayPhrase.me search. Use
+  Common Words for agent-selected individual vocabulary.
 - Explain only enough meaning, nuance, or contrast to guide exploration.
 - Offer nearby phrases when they add a useful choice or progression.
 - End a substantial answer with one or two new exploration paths when useful.
@@ -39,7 +41,7 @@ Treat each link as an entry point into the product, not as a citation appended
 to generic teaching content. A useful label combines an action, the exact
 searchable phrase, and the listening payoff. For example:
 
-`**[🎬 Hear “cut me some slack” in movie and TV dialogue on PlayPhrase.me →](builder output)**`
+`**[🎬 Hear “I couldn't have said it better myself.” in movie and TV dialogue on PlayPhrase.me →](builder output)**`
 
 Use one visually primary link when the answer has a best fit, and spell the
 brand `PlayPhrase.me` exactly in that link. Keep supporting links compact, but
@@ -49,6 +51,13 @@ In a list, the whole phrase-and-purpose line may be the link.
 
 Curate for discovery value:
 
+- use Common Phrases as the source for agent-selected multi-word examples,
+  alternatives, paths, and gold responses;
+- preserve each returned `items[].text` exactly in the display and Classic
+  Search query, including a useful incomplete frame;
+- never shorten, complete, or rewrite that text to make it look more polished;
+  for example, keep a returned `Unfortunately, I won't be able to.` instead of
+  inventing an object such as `...attend the meeting`;
 - prefer immediately reusable conversational chunks;
 - make every core choice independently perform the user's communication goal;
   setup language may support the path but must not replace a core choice;
@@ -57,8 +66,9 @@ Curate for discovery value:
   several movie and TV scenes;
 - when it genuinely helps, include one memorable colloquial option alongside
   safer neutral choices; and
-- keep display ellipses or variable slots out of the search query unless they
-  are literal characters the user wants to find.
+- never add or remove ellipses, slots, punctuation, or other characters in a
+  returned Common Phrase; its displayed text and search query stay identical.
+  Nonliteral search syntax around direct user-supplied text is a separate case.
 
 Order choices by usefulness or along one explicit phrase-path dimension. More
 links are valuable only when each opens a distinct linguistic choice. Never add
@@ -69,6 +79,13 @@ feature that phrase once as the hero before the path, then preserve the requeste
 order. Repeating the same destination inside the path is optional and does not
 count as another exploration link.
 
+After a completed non-practice answer, one optional final Reels link may replace
+one of the normal exploration links when the selected material shares one public
+Common Phrases catalog scope. Use the same supported public filters and frame it
+as continued listening, not a task. Do not create a Reels footer for an arbitrary
+set, API-only filters, a clarification turn, a waiting quiz, a direct/link-only
+answer, an already-Reels request, or a user who asked for no extras.
+
 ## 1. Explain one phrase
 
 Use when the user asks what one phrase means or how it is used.
@@ -77,20 +94,20 @@ Order:
 
 1. phrase plus a plain-language meaning;
 2. one prominent descriptive link such as
-   `🎬 Hear “cut me some slack” in movie and TV dialogue on PlayPhrase.me →`;
+   `🎬 Hear “I couldn't have said it better myself.” in movie and TV dialogue on PlayPhrase.me →`;
 3. a short nuance or register note;
-4. one or two model-written example sentences; and
-5. one or two linked nearby expressions only when they clarify the phrase.
+4. one brief context note; and
+5. one or two linked nearby Common Phrases only when they clarify it.
 
-Do not turn the examples into questions. Do not describe them as movie quotes
-unless the public page was inspected and verified them.
+The user's named phrase may go directly to Classic Search. Do not invent an
+additional dialogue line and present it as PlayPhrase.me material.
 
 ## 2. Compare expressions
 
 Use for “what is the difference?” requests.
 
 Compare every expression the user named. For an open-ended comparison, choose
-three to five clearly distinct expressions.
+three to five clearly distinct Common Phrases and preserve their returned text.
 
 Lead with compact linked rows or bullets. Make each exact phrase part of a
 benefit-specific link, followed by one useful distinction. Use a table only
@@ -104,11 +121,11 @@ Avoid a general lecture before the linked comparison.
 
 Use for “How do I say X?” and textbook-to-natural-English requests.
 
-Offer three to five options when the user does not specify a count. When the
-user's context supports a best fit, lead with `Best fit`, one visually prominent
-phrase link, and a one-sentence reason. Then show the alternatives. When several
-answers are equally natural, lead with `Natural options` instead of inventing a
-winner.
+Offer three to five Common Phrase options when the user does not specify a
+count. Preserve every returned text. When the user's context supports a best
+fit, lead with `Best fit`, one visually prominent phrase link, and a one-sentence
+reason. Then show the alternatives. When several answers are equally natural,
+lead with `Natural options` instead of inventing a winner.
 
 For each option show:
 
@@ -177,16 +194,19 @@ as a topic plus slang expressions.
 
 ## 6. Grammar through real patterns
 
-Use for grammar questions. Put the PlayPhrase.me material before the extended
-rule:
+Use for grammar questions. When the agent chooses illustrative phrases, select
+them from Common Phrases with documented tense, aspect, sentence-type, or phrase
+filters and keep their text unchanged. A grammar pattern named by the user may
+instead go directly to Grammar Search. Put the PlayPhrase.me material before the
+extended rule:
 
 | Linked pattern | Meaning |
 | --- | --- | --- |
 | benefit-specific pattern link | compact distinction |
 
-Then give the shortest rule and model-written examples needed to distinguish
-the patterns. Prefer several characteristic searchable constructions over a
-long grammar chapter followed by “additional resources.”
+Then give the shortest rule needed to distinguish the patterns. Prefer several
+characteristic Common Phrases over a long grammar chapter followed by
+“additional resources.”
 
 When the user did not name the forms to compare, choose roughly three to six
 patterns that expose the useful distinction without becoming a grammar catalog.
@@ -196,8 +216,8 @@ patterns that expose the useful distinction without becoming a grammar catalog.
 Use only when the user clearly asks to practise, be quizzed, or receive an
 exercise. The word “lesson” alone is not enough.
 
-Make the task depend on the linked phrase choices. For example, give three
-PlayPhrase.me formulations for different degrees of responsibility and ask
+Make the task depend on linked Common Phrase choices. For example, give three
+returned formulations for different degrees of responsibility and ask
 which one matches the learner's real role. Avoid generic gap-fill, matching,
 comprehension, shadowing, role-play, or recall tasks that work equally well
 without PlayPhrase.me.
@@ -209,43 +229,42 @@ keep its tasks phrase-choice-based and place answers at the end.
 ## Gold-standard mini responses
 
 These examples demonstrate presentation and link hierarchy, not fixed phrase
-choices. Rebuild every destination for the user's actual phrase and language;
-do not copy a sample URL for different text.
+choices. Every literal linked phrase below was returned by the production
+Common Phrases API on 2026-09-04 with `count >= 5`; counts are omitted because
+the corpus changes. Rebuild every destination from the exact returned text for
+the user's actual selection and language.
 
 ### One phrase
 
-**Cut me some slack** means “be less critical of me” or “give me some room
-because the circumstances are difficult.”<br>
-**[🎬 Hear “cut me some slack” in movie and TV dialogue on PlayPhrase.me →](https://www.playphrase.me/#/search?language=en&q=cut+me+some+slack)**
+**I couldn't have said it better myself.** means “I completely agree with how
+you expressed that.”<br>
+**[🎬 Hear “I couldn't have said it better myself.” in movie and TV dialogue on PlayPhrase.me →](https://www.playphrase.me/#/search?language=en&q=I+couldn%27t+have+said+it+better+myself.)**
 
-It is conversational and usually asks for tolerance, not literal space.
-
-Nearby choices:
-[🎬 Hear “go easy on me” — a softer option →](https://www.playphrase.me/#/search?language=en&q=go+easy+on+me) ·
-[🎬 Hear “give me a break” — a sharper option →](https://www.playphrase.me/#/search?language=en&q=give+me+a+break)
+It is a warm, emphatic way to praise both the point and its wording.
 
 ### Natural wording with a best fit
 
-**Best fit**<br>
-**[🎬 Hear “I'm not sure I agree” in movie and TV dialogue on PlayPhrase.me →](https://www.playphrase.me/#/search?language=en&q=I%27m+not+sure+I+agree)**<br>
-Polite enough for a manager while still making the disagreement clear.
+For promising a coworker useful follow-up:
 
-Other options, increasingly firm:
+**Best fit for ongoing updates**<br>
+**[🎬 Hear “I'll keep you in the loop.” in movie and TV dialogue on PlayPhrase.me →](https://www.playphrase.me/#/search?language=en&q=I%27ll+keep+you+in+the+loop.)**<br>
+Use it when you will continue sharing new information.
 
-- [🎬 Hear “I see it differently” in real dialogue →](https://www.playphrase.me/#/search?language=en&q=I+see+it+differently) — calm and neutral.
-- [🎬 Hear “I don't think that's the best approach” in real dialogue →](https://www.playphrase.me/#/search?language=en&q=I+don%27t+think+that%27s+the+best+approach) — challenges the proposal, not the person.
-- [🎬 Hear “I have to disagree on this one” in real dialogue →](https://www.playphrase.me/#/search?language=en&q=I+have+to+disagree+on+this+one) — firm but still professional.
+Other precise promises:
+
+- [🎬 Hear “I'll get back to you ASAP.” — promise a quick answer →](https://www.playphrase.me/#/search?language=en&q=I%27ll+get+back+to+you+ASAP.)
+- [🎬 Hear “Yeah, I'll get right on it.” — promise immediate action →](https://www.playphrase.me/#/search?language=en&q=Yeah%2C+I%27ll+get+right+on+it.)
 
 ### Situational phrase path
 
-#### From responsibility to leadership
+#### From a first meeting to follow-up
 
-- **[🎬 Hear “I was responsible for the project” in real dialogue →](https://www.playphrase.me/#/search?language=en&q=I+was+responsible+for+the+project)** — neutral ownership.
-- **[🎬 Hear “I was in charge of the project” in real dialogue →](https://www.playphrase.me/#/search?language=en&q=I+was+in+charge+of+the+project)** — stronger operational responsibility.
-- **[🎬 Hear “I led the project” in real dialogue →](https://www.playphrase.me/#/search?language=en&q=I+led+the+project)** — direct leadership.
-- **[🎬 Hear “I oversaw the project” in real dialogue →](https://www.playphrase.me/#/search?language=en&q=I+oversaw+the+project)** — more formal supervision.
+- **[🎬 Hear “Thank you for agreeing to meet with me.” in real dialogue →](https://www.playphrase.me/#/search?language=en&q=Thank+you+for+agreeing+to+meet+with+me.)** — open appreciatively.
+- **[🎬 Hear “I think we can work something out.” in real dialogue →](https://www.playphrase.me/#/search?language=en&q=I+think+we+can+work+something+out.)** — signal a workable agreement.
+- **[🎬 Hear “I look forward to working with you.” in real dialogue →](https://www.playphrase.me/#/search?language=en&q=I+look+forward+to+working+with+you.)** — close with future-facing warmth.
+- **[🎬 Hear “It's been a pleasure working with you.” in real dialogue →](https://www.playphrase.me/#/search?language=en&q=It%27s+been+a+pleasure+working+with+you.)** — close an established collaboration.
 
-**[🎬 Explore more B1 work phrases on PlayPhrase.me →](https://www.playphrase.me/#/search?language=en&source=common-phrases&filters=%7B%22language-level-from%22%3A%22B1%22%2C%22language-level-to%22%3A%22B1%22%2C%22topic%22%3A%22work%22%7D)**
+[Keep listening: swipe through B1 work phrases in PlayPhrase.me Reels →](https://www.playphrase.me/#/reels/en?source=common-phrases&filters=%7B%22language-level-from%22%3A%22B1%22%2C%22language-level-to%22%3A%22B1%22%2C%22topic%22%3A%22work%22%7D)
 
 ## Link and evidence rules
 
@@ -257,8 +276,8 @@ Link text may vary, but each destination must be exact URL-builder output when
 the builder is available, with no tracking parameters.
 
 A selected Common Phrase gets its own public search URL rather than only a link
-to an undifferentiated catalog. Use API item `text` or `word`, never its record
-`id`, in the URL.
+to an undifferentiated catalog. Use its exact API item `text`; use exact `word`
+for a Common Word, and never use a record `id` in the URL.
 
 A documented API filter may support a catalog-level statement such as “returned
 by the sarcastic Common Phrases filter.” It does not prove that any particular
@@ -266,8 +285,9 @@ clip is delivered sarcastically. Do not claim a clip's tone, stress, speaker, or
 source unless the public page was inspected and showed it. Without browser
 evidence, keep catalog classification separate from clip-level claims.
 
-Without the Learning API, select defensible phrases with the model. Without a
-browser, provide canonical public links and avoid clip-specific claims. Without
+Without the Learning API, do not present model-written replacements as Common
+Phrases. Offer a supported public catalog or Reels destination, or search exact
+text the user supplied. Without a browser, avoid clip-specific claims. Without
 script execution, reproduce only the documented public URL contract. Never use
 private endpoints, fabricate movie/TV evidence, or describe guest-visible
 results as the full corpus.

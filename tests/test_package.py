@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import importlib.util
+import json
 import re
 import tempfile
 import unittest
@@ -21,6 +22,21 @@ URL_SPEC = importlib.util.spec_from_file_location("playphrase_url", URL_MODULE_P
 assert URL_SPEC and URL_SPEC.loader
 playphrase_url = importlib.util.module_from_spec(URL_SPEC)
 URL_SPEC.loader.exec_module(playphrase_url)
+
+COMMON_PHRASE_EVIDENCE_PATH = REPOSITORY_ROOT / "evals/common_phrase_examples.json"
+
+
+def load_common_phrase_evidence() -> dict:
+    return json.loads(COMMON_PHRASE_EVIDENCE_PATH.read_text(encoding="utf-8"))
+
+
+def common_phrase_evidence_items() -> dict[str, int]:
+    payload = load_common_phrase_evidence()
+    return {
+        item["text"]: item["count"]
+        for query in payload["queries"]
+        for item in query["items"]
+    }
 
 
 class SkillPackageTests(unittest.TestCase):
@@ -102,11 +118,9 @@ class SkillPackageTests(unittest.TestCase):
 
     def test_readme_offers_canonical_product_taste_links(self) -> None:
         readme = (REPOSITORY_ROOT / "README.md").read_text(encoding="utf-8")
-        phrases = {
-            "I'm down for that",
-            "I'm not sure I agree",
-            "I was in charge of the project",
-        }
+        evidence = load_common_phrase_evidence()
+        idioms = next(query for query in evidence["queries"] if query["id"] == "b2-idioms")
+        phrases = {item["text"] for item in idioms["items"]}
         expected = {playphrase_url.build_search(phrase)["url"] for phrase in phrases}
         destinations = set(
             re.findall(r"\]\((https://www\.playphrase\.me/[^)]+)\)", readme)
@@ -119,6 +133,115 @@ class SkillPackageTests(unittest.TestCase):
         self.assertTrue(expected.issubset(search_destinations))
         for destination in search_destinations:
             playphrase_url.validate_url(destination)
+
+    def test_retained_common_phrase_example_evidence_is_valid(self) -> None:
+        evidence = load_common_phrase_evidence()
+        self.assertEqual(1, evidence["schema-version"])
+        self.assertEqual(
+            "https://www.playphrase.me/api/v1/learning/common-phrases",
+            evidence["source"],
+        )
+        self.assertRegex(evidence["verified-on"], r"^\d{4}-\d{2}-\d{2}$")
+        self.assertTrue(evidence["retention"]["owner"])
+        self.assertTrue(evidence["retention"]["condition"])
+
+        queries = {query["id"]: query for query in evidence["queries"]}
+        self.assertEqual({"b2-idioms", "b1-work", "b1-b2-apology"}, set(queries))
+        self.assertEqual(
+            {
+                "idiom": True,
+                "language-level-from": "B2",
+                "language-level-to": "B2",
+            },
+            queries["b2-idioms"]["filters"],
+        )
+        self.assertEqual(
+            {
+                "topic": "work",
+                "language-level-from": "B1",
+                "language-level-to": "B1",
+            },
+            queries["b1-work"]["filters"],
+        )
+        self.assertEqual(
+            {
+                "function": "apology",
+                "language-level-from": "B1",
+                "language-level-to": "B2",
+            },
+            queries["b1-b2-apology"]["filters"],
+        )
+
+        seen: set[str] = set()
+        for query in evidence["queries"]:
+            self.assertIn("playphrase_learning.py phrases", query["verified-with"])
+            self.assertEqual("en", query["language"])
+            self.assertEqual(20, query["limit"])
+            self.assertIn("language-level-from", query["filters"])
+            self.assertIn("language-level-to", query["filters"])
+            for item in query["items"]:
+                self.assertEqual(item["text"], item["text"].strip())
+                self.assertGreaterEqual(item["count"], 5)
+                self.assertNotIn(item["text"], seen)
+                seen.add(item["text"])
+
+        documented = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in (
+                REPOSITORY_ROOT / "README.md",
+                REPOSITORY_ROOT / "skills/playphraseme/references/response-patterns.md",
+                REPOSITORY_ROOT / "evals/cases.json",
+            )
+        )
+        for text in seen:
+            self.assertIn(text, documented)
+
+    def test_documented_common_phrase_links_match_api_evidence_exactly(self) -> None:
+        evidence_items = common_phrase_evidence_items()
+        link_pattern = re.compile(
+            r"\[([^\]\n]*“([^”]+)”[^\]\n]*)\]"
+            r"\((https://www\.playphrase\.me/#/search\?[^)\s]+)\)"
+        )
+        documents = (
+            REPOSITORY_ROOT / "README.md",
+            REPOSITORY_ROOT / "skills/playphraseme/references/response-patterns.md",
+        )
+        for document in documents:
+            text = document.read_text(encoding="utf-8")
+            search_urls = re.findall(
+                r"\]\((https://www\.playphrase\.me/#/search\?[^)\s]+)\)", text
+            )
+            matches = link_pattern.findall(text)
+            self.assertEqual(len(search_urls), len(matches), document)
+            for _label, phrase, destination in matches:
+                with self.subTest(document=document.name, phrase=phrase):
+                    self.assertIn(phrase, evidence_items)
+                    self.assertGreaterEqual(evidence_items[phrase], 5)
+                    self.assertEqual(playphrase_url.build_search(phrase)["url"], destination)
+                    decoded = playphrase_url.validate_url(destination)
+                    self.assertEqual(phrase, decoded["state"]["q"])
+
+    def test_documented_b1_work_reels_link_matches_public_fixture_scope(self) -> None:
+        evidence = load_common_phrase_evidence()
+        work = next(query for query in evidence["queries"] if query["id"] == "b1-work")
+        self.assertTrue(
+            set(work["filters"]).issubset(playphrase_url.COMMON_PHRASE_DEFAULTS)
+        )
+        expected = playphrase_url.build_reels(
+            source="common-phrases",
+            language=work["language"],
+            filters=work["filters"],
+        )["url"]
+        patterns = (
+            REPOSITORY_ROOT / "skills/playphraseme/references/response-patterns.md"
+        ).read_text(encoding="utf-8")
+        reels_urls = re.findall(
+            r"\]\((https://www\.playphrase\.me/#/reels/[^)\s]+)\)", patterns
+        )
+        self.assertEqual([expected], reels_urls)
+        self.assertEqual(
+            work["filters"], playphrase_url.validate_url(expected)["state"]["filters"]
+        )
 
     def test_documented_deep_links_follow_the_public_url_contract(self) -> None:
         documents = (

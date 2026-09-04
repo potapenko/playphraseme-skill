@@ -1,17 +1,18 @@
 # Explore real English in ChatGPT with PlayPhrase.me
 
 The PlayPhrase.me skill turns an English question or communication goal into an
-answer built around real movie and TV dialogue. ChatGPT chooses and organizes
-the phrases; every phrase leads back to PlayPhrase.me so you can hear it in
-context.
+answer built around real movie and TV dialogue. For open-ended selections,
+ChatGPT chooses from Common Phrases—curated expressions found at least five
+times in the corpus—and every phrase leads back to PlayPhrase.me so you can hear
+it in context.
 
 **[Download the PlayPhrase.me skill for ChatGPT](https://github.com/potapenko/playphraseme-skill/releases/latest/download/skill.zip)**
 
 Want a quick taste before installing?
 
-- **[🎬 Hear “I'm down for that” in movie and TV dialogue →](https://www.playphrase.me/#/search?language=en&q=I%27m+down+for+that)**
-- **[🎬 Hear “I'm not sure I agree” in movie and TV dialogue →](https://www.playphrase.me/#/search?language=en&q=I%27m+not+sure+I+agree)**
-- **[🎬 Hear “I was in charge of the project” in movie and TV dialogue →](https://www.playphrase.me/#/search?language=en&q=I+was+in+charge+of+the+project)**
+- **[🎬 Hear “I wouldn't miss it for the world.” in movie and TV dialogue →](https://www.playphrase.me/#/search?language=en&q=I+wouldn%27t+miss+it+for+the+world.)**
+- **[🎬 Hear “I couldn't have said it better myself.” in movie and TV dialogue →](https://www.playphrase.me/#/search?language=en&q=I+couldn%27t+have+said+it+better+myself.)**
+- **[🎬 Hear “Like a kid in a candy store.” in movie and TV dialogue →](https://www.playphrase.me/#/search?language=en&q=Like+a+kid+in+a+candy+store.)**
 
 Keep `skill.zip` zipped. Installation takes three steps and does not require
 code.
@@ -29,18 +30,15 @@ code.
 Start a new chat, type `@PlayPhrase.me`, and send this prompt:
 
 ```text
-@PlayPhrase.me Give me 5 useful informal English expressions for today.
-Group them by what they help me express and give me a PlayPhrase.me link for
-each one.
+@PlayPhrase.me Give me 5 useful B2 English idioms for today. Group them by what
+they help me express and give me a PlayPhrase.me link for each one.
 ```
 
-<p align="center">
-  <img src="docs/assets/chatgpt-playphraseme-example.png" width="860" alt="A ChatGPT response with five informal English expressions and links to hear each one on PlayPhrase.me">
-</p>
-
-This is a real result from the installed skill. ChatGPT explains each
-expression and adds a PlayPhrase.me link for hearing it in movie and TV
-dialogue.
+When the Learning API is available, you get a compact, link-first selection
+from Common Phrases rather than a generic quiz or an invented phrase list.
+Exact choices can change as the curated catalog evolves. If the API is
+unavailable, the skill says so and offers the closest supported public catalog
+or Reels path instead of inventing examples.
 
 ## Find the part of PlayPhrase.me you need
 

@@ -25,13 +25,18 @@ a useful entry point into real dialogue.
    For any learner-selected collection or lesson, including when level is
    unknown, also read
    [learning query planning](references/learning-query-planning.md).
-4. For exact, wildcard, grammar, Clip Search, actor, or Reels intent, build a
-   public URL directly. Read [the URL contract](references/url-contract.md).
+4. For exact, wildcard, or grammar search text supplied by the user, build the
+   corresponding public search URL directly. For explicit Clip Search, actor,
+   or Reels intent, build that public route directly. A response-pattern Reels
+   continuation instead follows the same public Common Phrases catalog scope
+   as the selected set. Read [the URL contract](references/url-contract.md).
 5. Open that URL with an available browser when the user asks for scenes,
    pronunciation, source titles, or browser-visible verification. Follow
    [browser extraction](references/browser-extraction.md).
-6. If a Learning API item is selected, use its `text` or `word` as the public
-   search query. Never treat its `id` as a video phrase id.
+6. If a Learning API item is selected, use its `text` or `word` unchanged as
+   the displayed item and public search query. Common Phrase text may be an
+   intentional incomplete frame; never shorten, complete, or rewrite it. Never
+   treat its `id` as a video phrase id.
 
 Start with one well-shaped API request. One or two additional sequential
 requests are appropriate only for distinct communicative groups or a disclosed
@@ -57,9 +62,10 @@ execution is unavailable, reproduce only the documented URL encoding or bounded
 GET behavior with tools available in the current host. If the Learning API
 client fails because the execution environment has no outbound network or DNS
 resolution, do not treat that as a PlayPhrase.me service failure or retry the
-request. Select suitable phrases with the model, build canonical public URLs
-with `playphrase_url.py`, and do not try another or private API. Mention the
-unavailable catalog ranking only when that limitation is useful to the user.
+request. For open-ended phrase examples, do not replace Common Phrases with
+model-invented candidates: offer an honestly scoped public catalog or Reels link
+when its filters are supported, or state that curated selection was not
+available. Direct user-supplied text may still receive its canonical search URL.
 
 ## Preserve product boundaries
 
@@ -90,10 +96,12 @@ For direct search requests, include:
 4. a precise limitation such as guest-visible sample, browser unavailable,
    selector not found, autoplay blocked, or Learning API unavailable.
 
-For a learner goal or lesson request, lead with the selected phrases and their
-PlayPhrase.me links. Follow
-[response patterns](references/response-patterns.md); do not wrap them in a
-generic lesson or add exercises unless the user explicitly asked for practice.
+For a learner goal or lesson request that needs agent-selected multi-word
+examples, lead with Common Phrases selected through the Learning API and link
+each exact returned `text`. Use Common Words for agent-selected individual
+vocabulary. Follow [response patterns](references/response-patterns.md); do not
+wrap the material in a generic lesson or add exercises unless the user
+explicitly asked for practice.
 
 For installation and client-specific behavior, read
 [platform installation](references/platform-installation.md). For compatibility

@@ -140,6 +140,11 @@ register, function, or other Common Phrase filters. The upstream suggestion
 stream has no filter payload, and the Learning API does not post-filter a
 bounded page as though it were a complete filtered result.
 
+Suggestions are nearby records from Common Phrases around user-supplied text,
+so they inherit the catalog's five-occurrence membership threshold. Their
+response does not expose the individual `count`, so do not use Suggestions to
+verify a long-lived gold example or a claim about a specific CEFR/filter set.
+
 ## Common Words
 
 ```bash
@@ -168,7 +173,11 @@ Catalog responses contain:
 ```
 
 A Common Phrase item always contains `id`, `text`, `count`, `index`, `language`,
-and `language-level`. When the source record has them, it also contains
+and `language-level`. Common Phrases are curated expressions observed at least
+five times in the corpus, so returned `count` is at least `5`. The stored `text`
+may intentionally be an incomplete reusable frame. Preserve it exactly; do not
+complete, shorten, or rewrite it before building its Classic Search link. When
+the source record has them, it also contains
 `phrase-type`, `formality`, `tense`, `aspect`, `register`, `function`,
 `sentence-type`, `is-question`, `emotion`, `polarity`, and `topic`. Optional
 stored metadata may be a string/boolean, `null`, or omitted when the source key
@@ -180,7 +189,8 @@ Common Word items use `word` and may include `lemma`, `language-level`, `count`,
 `translate`, and `meanings`. Missing optional fields are normal.
 
 Suggestions contain `items` and `limit`; each selected suggestion uses its
-`text`.
+`text` unchanged. They prove Common Phrases membership through the endpoint
+contract, but do not expose `count` or prove filtered membership.
 
 A successful filtered Common Phrase response proves membership in the
 documented selection predicate. Returned metadata supports additional

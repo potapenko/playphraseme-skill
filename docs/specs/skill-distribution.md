@@ -2,7 +2,7 @@
 
 - Status: Active
 - Stability: Evolving
-- Revision: 3
+- Revision: 4
 - Domain: `skill-distribution`
 - Authority: user decisions approved 2026-09-04
 
@@ -66,35 +66,32 @@ agent installation as a separate supported path later on the page.
 4. Every local path referenced by the packaged skill exists inside the archive.
 5. A manual ChatGPT smoke test uploads `skill.zip`, shows `PlayPhrase.me`,
    supports `@PlayPhrase.me`, and exercises a public PlayPhrase.me URL.
-6. URL validation rejects tracking parameters, and lesson references and evals
-   remain present in the packaged source and repository QA.
+6. URL validation rejects tracking parameters; repository QA retains the
+   production Common Phrases query evidence for literal examples and verifies
+   that their displayed text and Classic Search queries remain exact.
 
-Manual ChatGPT acceptance is reported separately from automated package
-validation and is not claimed until it has actually been performed. The
-2026-09-04 test passed: the installed skill handled an explicit mention and
-returned public PlayPhrase.me links. The README screenshot records that result.
-The installation screenshot records the ZIP upload entry point.
+Manual ChatGPT acceptance is reported separately from automated package validation and is not claimed until it has actually been performed. The 2026-09-04 test passed: the installed skill handled an explicit mention and returned public PlayPhrase.me links.
+Its response screenshot remains historical repository evidence rather than the current README example. The installation screenshot records the ZIP upload entry point.
 
 ## SD.DELTA-2 — ChatGPT-first public installation
 
 - Mode: Evolve.
-- External authority: user direction on 2026-09-04 to make ZIP installation the
-  main path for the broader ChatGPT audience and optimize the README for fast
-  installation.
-- Previous behavior: ZIP upload was documented as an additional channel beside
-  prompt-assisted installation.
-- New behavior: learner-facing material leads with ZIP download and ChatGPT;
-  prompt-assisted installation remains supported below it.
-- Compatibility: packaging, skill behavior, Codex invocation, Claude
-  invocation, and other compatible Agent Skills hosts are unchanged.
+- External authority: user direction on 2026-09-04 to make ZIP installation the main path for the broader ChatGPT audience and optimize the README for fast installation.
+- Previous behavior: ZIP upload was documented as an additional channel beside prompt-assisted installation.
+- New behavior: learner-facing material leads with ZIP download and ChatGPT; prompt-assisted installation remains supported below it.
+- Compatibility: packaging, skill behavior, Codex invocation, Claude invocation, and other compatible Agent Skills hosts are unchanged.
 
 ## SD.DELTA-3 — Canonical links and production API status
 
 - Mode: Evolve.
 - External authority: user approval on 2026-09-04 following agent feedback.
-- Previous behavior: URL-builder use was advisory and documentation still
-  described the production Learning API rollout as pending.
-- New behavior: builder output is immutable, tracking is forbidden, and the
-  production API is documented as deployed after a bounded successful smoke.
-- Compatibility: documented no-script, no-browser, and no-network fallbacks;
-  public routes; endpoint allowlist; and product-limit boundaries are preserved.
+- Previous behavior: URL-builder use was advisory and documentation still described the production Learning API rollout as pending.
+- New behavior: builder output is immutable, tracking is forbidden, and the production API is documented as deployed after a bounded successful smoke.
+- Compatibility: documented no-script, no-browser, and no-network fallbacks; public routes; endpoint allowlist; and product-limit boundaries are preserved.
+
+## SD.DELTA-4 — Current Common Phrases README example
+
+- Mode: Evolve.
+- External authority: user approval on 2026-09-04 after correcting example provenance.
+- New behavior: README taste links and its starter prompt use verified Common Phrases at an explicit level; the stale response screenshot is no longer presented as the current result.
+- Compatibility: ZIP installation, historical smoke evidence, packaging, client invocation, and public API/URL boundaries are unchanged.

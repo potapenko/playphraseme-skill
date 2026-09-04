@@ -1,11 +1,20 @@
 from __future__ import annotations
 
+import importlib.util
 import json
 import unittest
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+URL_MODULE_PATH = ROOT / "skills/playphraseme/scripts/playphrase_url.py"
+URL_SPEC = importlib.util.spec_from_file_location("playphrase_url_for_evals", URL_MODULE_PATH)
+assert URL_SPEC and URL_SPEC.loader
+playphrase_url = importlib.util.module_from_spec(URL_SPEC)
+URL_SPEC.loader.exec_module(playphrase_url)
+
+COMMON_PHRASES_API_PATH = "/api/v1/learning/common-phrases"
+COMMON_PHRASE_EVIDENCE_PATH = ROOT / "evals/common_phrase_examples.json"
 
 
 class EvalDefinitionTests(unittest.TestCase):
@@ -39,7 +48,14 @@ class EvalDefinitionTests(unittest.TestCase):
         self.assertTrue(exact["requires-prominent-link-before-examples"])
         self.assertTrue(exact["requires-primary-link-brand-and-listening-payoff"])
         self.assertEqual("PlayPhrase.me", exact["requires-exact-visible-brand-spelling"])
+        self.assertTrue(exact["requires-user-supplied-text-for-direct-classic-search"])
         self.assertTrue(exact["must-not-ask-level"])
+        self.assertTrue(exact["must-not-add-reels-footer"])
+
+        for case_id in ("wildcard", "grammar-english"):
+            self.assertTrue(
+                cases[case_id]["requires-user-supplied-text-for-direct-classic-search"]
+            )
 
     def test_learning_query_planning_eval_contract_is_present(self) -> None:
         payload = json.loads((ROOT / "evals/cases.json").read_text(encoding="utf-8"))
@@ -49,6 +65,8 @@ class EvalDefinitionTests(unittest.TestCase):
             "beginner-travel-questions",
             "non-basic-slang-expressions",
             "professional-apologies",
+            "formal-phrases-use-formality",
+            "explicit-formal-professional-intersection",
             "broad-personalization-asks-level",
             "unknown-level-informal-expressions-asks-once",
             "immediate-request-uses-c1-c2",
@@ -58,6 +76,7 @@ class EvalDefinitionTests(unittest.TestCase):
             "empty-explicit-filter-result",
             "orthogonal-interview-groups",
             "catalog-classification-not-clip-tone",
+            "common-phrase-text-preserved",
             "api-ranked-slang-phrases",
         }
         self.assertTrue(required.issubset(cases))
@@ -66,6 +85,60 @@ class EvalDefinitionTests(unittest.TestCase):
         self.assertEqual("slang", slang["filters"]["register"])
         self.assertTrue(slang["must-not-use-common-words-as-phrase-proof"])
         self.assertTrue(slang["must-not-put-api-only-filter-in-catalog-url"])
+
+        professional = cases["professional-apologies"]
+        self.assertEqual(
+            {
+                "function": "apology",
+                "register": "professional",
+                "language-level-from": "B1",
+                "language-level-to": "B2",
+            },
+            professional["filters"],
+        )
+        self.assertTrue(professional["must-not-add-formality-formal-filter"])
+
+        formal = cases["formal-phrases-use-formality"]
+        self.assertEqual(
+            {
+                "formality": "formal",
+                "language-level-from": "B2",
+                "language-level-to": "B2",
+            },
+            formal["filters"],
+        )
+        self.assertTrue(formal["must-not-add-register-professional-filter"])
+
+        combined = cases["explicit-formal-professional-intersection"]
+        self.assertEqual(
+            {
+                "formality": "formal",
+                "register": "professional",
+                "language-level-from": "B2",
+                "language-level-to": "B2",
+            },
+            combined["filters"],
+        )
+        self.assertTrue(combined["requires-both-filters-because-both-were-explicit"])
+
+        preserved = cases["common-phrase-text-preserved"]
+        self.assertEqual(5, preserved["minimum-common-phrase-count"])
+        self.assertGreaterEqual(preserved["api-item"]["count"], 5)
+        self.assertEqual(preserved["api-item"]["text"], preserved["query"])
+        self.assertTrue(preserved["requires-common-phrase-source"])
+        self.assertTrue(preserved["requires-exact-returned-text"])
+        self.assertTrue(preserved["must-not-complete-shorten-or-rewrite-returned-text"])
+        self.assertTrue(preserved["must-not-use-classic-search-count-as-membership-proof"])
+        evidence = json.loads(COMMON_PHRASE_EVIDENCE_PATH.read_text(encoding="utf-8"))
+        evidence_items = {
+            item["text"]: item["count"]
+            for query in evidence["queries"]
+            for item in query["items"]
+        }
+        self.assertEqual(
+            preserved["api-item"]["count"],
+            evidence_items[preserved["api-item"]["text"]],
+        )
 
         personalized = cases["broad-personalization-asks-level"]
         self.assertEqual([], personalized["api-paths"])
@@ -84,7 +157,7 @@ class EvalDefinitionTests(unittest.TestCase):
         self.assertEqual("C2", immediate["filters"]["language-level-to"])
         self.assertTrue(immediate["requires-disclosed-default-level-range"])
         self.assertTrue(immediate["must-not-use-transport-default-as-learner-default"])
-        self.assertTrue(immediate["must-preserve-resolved-level-on-model-fallback"])
+        self.assertTrue(immediate["must-not-use-model-written-phrase-fallback"])
         self.assertTrue(immediate["requires-distinctive-non-elementary-value-per-item"])
         self.assertTrue(immediate["must-not-default-to-beginner-safe-reactions"])
         self.assertTrue(immediate["must-not-block-for-level"])
@@ -100,12 +173,14 @@ class EvalDefinitionTests(unittest.TestCase):
         self.assertTrue(case_defs["higher-than-b2-followup"]["prior-turns"])
         self.assertEqual("C1", higher["filters"]["language-level-from"])
         self.assertEqual("C2", higher["filters"]["language-level-to"])
+        self.assertEqual("informal", higher["filters"]["register"])
         self.assertTrue(higher["must-use-prior-level-as-baseline"])
         self.assertTrue(higher["must-raise-lower-cefr-bound"])
         self.assertTrue(higher["must-not-merely-swap-basic-phrases"])
 
         empty = cases["empty-explicit-filter-result"]
         self.assertTrue(empty["must-not-remove-explicit-filters"])
+        self.assertTrue(empty["must-offer-one-specific-relaxation-or-supported-catalog"])
         self.assertTrue(empty["must-not-present-relaxed-results-as-original-query"])
 
         orthogonal = cases["orthogonal-interview-groups"]
@@ -124,6 +199,62 @@ class EvalDefinitionTests(unittest.TestCase):
         american = cases["american-verbs"]
         self.assertEqual("B2", american["filters"]["language-level-from"])
         self.assertEqual("B2", american["filters"]["language-level-to"])
+        self.assertTrue(american["requires-common-word-source"])
+        self.assertTrue(american["must-not-use-common-phrases-for-individual-words"])
+        self.assertTrue(american["requires-individual-word-unit"])
+        self.assertTrue(american["requires-exact-returned-word"])
+
+    def test_agent_selected_phrase_cases_require_common_phrase_evidence(self) -> None:
+        payload = json.loads((ROOT / "evals/cases.json").read_text(encoding="utf-8"))
+        cases = {case["id"]: case["expected"] for case in payload["cases"]}
+        invariants = payload["agent-selected-common-phrase-invariants"]
+        self.assertEqual(5, invariants["minimum-common-phrase-count"])
+        self.assertTrue(invariants["requires-exact-returned-text"])
+        self.assertTrue(
+            invariants["must-not-use-classic-search-or-browser-as-membership-proof"]
+        )
+        allowed_api_paths = set(invariants["allowed-api-paths"])
+        self.assertEqual(
+            {
+                COMMON_PHRASES_API_PATH,
+                "/api/v1/learning/common-phrases/suggestions",
+            },
+            allowed_api_paths,
+        )
+        agent_selected = {
+            "suggest-common-phrase",
+            "idioms-cefr",
+            "beginner-travel-questions",
+            "non-basic-slang-expressions",
+            "professional-apologies",
+            "formal-phrases-use-formality",
+            "explicit-formal-professional-intersection",
+            "immediate-request-uses-c1-c2",
+            "reuse-prior-turn-c1-level",
+            "higher-than-b2-followup",
+            "orthogonal-interview-groups",
+            "common-phrase-text-preserved",
+            "api-ranked-slang-phrases",
+            "natural-wording-response",
+            "job-interview-response",
+            "implicit-job-interview-response",
+            "vocabulary-discovery-response",
+            "common-phrases-reels-continuation",
+            "high-intent-disagreement-path",
+            "explicit-phrase-native-quiz",
+            "explicit-no-extras-response",
+        }
+        for case_id in sorted(agent_selected):
+            with self.subTest(case_id=case_id):
+                expected = cases[case_id]
+                self.assertTrue(expected["api-paths"])
+                self.assertTrue(set(expected["api-paths"]).issubset(allowed_api_paths))
+                self.assertTrue(expected["requires-common-phrase-source"])
+                self.assertEqual(5, expected["minimum-common-phrase-count"])
+                self.assertTrue(expected["requires-exact-returned-text"])
+                filters = expected.get("filters", {})
+                if set(filters) - set(playphrase_url.COMMON_PHRASE_DEFAULTS):
+                    self.assertTrue(expected["must-not-add-reels-footer"])
 
     def test_response_pattern_eval_contract_is_present(self) -> None:
         payload = json.loads((ROOT / "evals/cases.json").read_text(encoding="utf-8"))
@@ -137,8 +268,10 @@ class EvalDefinitionTests(unittest.TestCase):
                 "implicit-job-interview-response",
                 "vocabulary-discovery-response",
                 "grammar-through-examples-response",
+                "common-phrases-reels-continuation",
                 "high-intent-disagreement-path",
                 "explicit-phrase-native-quiz",
+                "explicit-no-extras-response",
             }.issubset(cases)
         )
 
@@ -154,7 +287,10 @@ class EvalDefinitionTests(unittest.TestCase):
             "PlayPhrase.me", one_phrase["requires-exact-visible-brand-spelling"]
         )
         self.assertTrue(one_phrase["requires-short-nuance"])
-        self.assertEqual({"min": 1, "max": 2}, one_phrase["nearby-phrase-count"])
+        self.assertTrue(one_phrase["allows-user-supplied-direct-search"])
+        self.assertTrue(one_phrase["must-not-invent-additional-dialogue-line"])
+        self.assertTrue(one_phrase["nearby-options-must-be-common-phrase-suggestions"])
+        self.assertEqual({"min": 0, "max": 2}, one_phrase["nearby-phrase-count"])
         self.assertTrue(one_phrase["must-not-ask-level"])
 
         comparison = cases["compare-phrases-response"]
@@ -162,6 +298,7 @@ class EvalDefinitionTests(unittest.TestCase):
         self.assertTrue(comparison["requires-benefit-specific-link-labels"])
         self.assertTrue(comparison["must-not-repeat-generic-link-labels"])
         self.assertTrue(comparison["requires-same-situation-contrast"])
+        self.assertTrue(comparison["must-not-add-reels-footer"])
 
         natural = cases["natural-wording-response"]
         self.assertTrue(natural["requires-best-fit-first-when-supported"])
@@ -170,6 +307,10 @@ class EvalDefinitionTests(unittest.TestCase):
         self.assertEqual({"min": 3, "max": 5}, natural["default-option-count"])
         self.assertTrue(natural["requires-benefit-specific-link-labels"])
         self.assertTrue(natural["requires-best-fit-recommendation"])
+        self.assertTrue(natural["requires-common-phrase-source"])
+        self.assertEqual(5, natural["minimum-common-phrase-count"])
+        self.assertTrue(natural["requires-exact-returned-text"])
+        self.assertTrue(natural["must-not-use-model-written-phrase-options"])
 
         interview = cases["job-interview-response"]
         self.assertEqual("work", interview["filters"]["topic"])
@@ -183,6 +324,9 @@ class EvalDefinitionTests(unittest.TestCase):
         self.assertTrue(interview["requires-link-per-phrase"])
         self.assertTrue(interview["requires-benefit-specific-link-labels"])
         self.assertTrue(interview["allows-filtered-catalog-exploration-link"])
+        self.assertTrue(interview["requires-common-phrase-source"])
+        self.assertEqual(5, interview["minimum-common-phrase-count"])
+        self.assertTrue(interview["requires-exact-returned-text"])
         self.assertEqual(
             "PlayPhrase.me", interview["requires-exact-visible-brand-spelling"]
         )
@@ -193,17 +337,47 @@ class EvalDefinitionTests(unittest.TestCase):
 
         implicit = cases["implicit-job-interview-response"]
         self.assertTrue(implicit["must-recognize-implicit-learning-need"])
+        self.assertTrue(implicit["requires-common-phrase-source"])
+        self.assertEqual(5, implicit["minimum-common-phrase-count"])
+        self.assertTrue(implicit["requires-exact-returned-text"])
         self.assertTrue(implicit["must-not-add-generic-exercises"])
 
         discovery = cases["vocabulary-discovery-response"]
-        self.assertEqual("informal", discovery["filters"]["register"])
-        self.assertEqual("C1", discovery["filters"]["language-level-from"])
-        self.assertEqual("C1", discovery["filters"]["language-level-to"])
+        self.assertTrue(discovery["filters"]["idiom"])
+        self.assertEqual("B2", discovery["filters"]["language-level-from"])
+        self.assertEqual("B2", discovery["filters"]["language-level-to"])
         self.assertTrue(discovery["requires-scannable-linked-table"])
         self.assertTrue(discovery["requires-benefit-specific-link-labels"])
         self.assertTrue(discovery["requires-distinctive-level-appropriate-expressions"])
+        self.assertTrue(discovery["requires-common-phrase-source"])
+        self.assertEqual(5, discovery["minimum-common-phrase-count"])
+        self.assertTrue(discovery["requires-exact-returned-text"])
         self.assertTrue(discovery["must-not-fill-with-elementary-generic-reactions"])
         self.assertTrue(discovery["must-keep-deeper-explanations-selective"])
+
+        reels = cases["common-phrases-reels-continuation"]
+        self.assertEqual("common-phrases", reels["reels-source"])
+        self.assertEqual(reels["filters"], reels["reels-filters"])
+        self.assertEqual(1, reels["maximum-reels-links"])
+        self.assertTrue(reels["requires-reels-footer"])
+        self.assertTrue(reels["requires-reels-footer-framed-as-optional"])
+        self.assertTrue(reels["requires-reels-link-after-learning-content"])
+        self.assertTrue(reels["must-not-replace-primary-search-links-with-reels"])
+        self.assertTrue(reels["must-not-add-reels-task-or-report-back"])
+        self.assertTrue(reels["requires-canonical-reels-url"])
+        self.assertTrue(reels["must-use-only-public-reels-filters"])
+        self.assertTrue(reels["forbids-tracking-parameters"])
+        self.assertTrue(
+            set(reels["reels-filters"]).issubset(playphrase_url.COMMON_PHRASE_DEFAULTS)
+        )
+        built_reels = playphrase_url.build_reels(
+            source=reels["reels-source"],
+            language="en",
+            filters=reels["reels-filters"],
+        )
+        self.assertEqual(reels["reels-url"], built_reels["url"])
+        self.assertEqual(built_reels, playphrase_url.validate_url(reels["reels-url"]))
+        self.assertNotIn("utm_", reels["reels-url"])
 
         offline = cases["grammar-through-examples-response"]
         self.assertTrue(offline["requires-pattern-table-before-rule"])
@@ -234,6 +408,28 @@ class EvalDefinitionTests(unittest.TestCase):
         self.assertTrue(interactive["requires-meaning-or-context-decision"])
         self.assertTrue(interactive["must-wait-for-learner-answer"])
         self.assertTrue(interactive["must-not-reveal-answer-in-same-turn"])
+        self.assertTrue(interactive["requires-common-phrase-source"])
+        self.assertEqual(5, interactive["minimum-common-phrase-count"])
+        self.assertTrue(interactive["requires-exact-returned-text"])
+        self.assertTrue(interactive["must-not-add-reels-footer"])
+
+        no_extras = cases["explicit-no-extras-response"]
+        self.assertTrue(no_extras["must-not-add-reels-footer"])
+        self.assertTrue(no_extras["must-not-add-exploration-links"])
+
+        reels_negative_cases = {
+            "exact-quote",
+            "compare-phrases-response",
+            "unknown-level-informal-expressions-asks-once",
+            "orthogonal-interview-groups",
+            "professional-apologies",
+            "reels-custom-search",
+            "explicit-phrase-native-quiz",
+            "explicit-no-extras-response",
+        }
+        for case_id in sorted(reels_negative_cases):
+            with self.subTest(reels_negative_case=case_id):
+                self.assertTrue(cases[case_id]["must-not-add-reels-footer"])
 
 
 if __name__ == "__main__":

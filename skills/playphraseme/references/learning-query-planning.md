@@ -14,8 +14,8 @@ Identify these dimensions before choosing an endpoint:
 3. **Situation:** topic or domain when the API documents one.
 4. **Use:** question, idiom, communicative function, or another documented
    phrase property.
-5. **Register and tone:** slang, informal, formal, emotion, or polarity when
-   supported for that unit.
+5. **Style and tone:** the exact formality, register, emotion, or polarity
+   dimension supported for that unit.
 6. **Output:** requested count and the dimension that should organize the
    phrase path.
 
@@ -25,6 +25,13 @@ do not become composable merely because they describe the same user request.
 Map a communication goal to `function` only when an exact documented value
 captures it. Do not substitute a merely adjacent function such as `critique` or
 `opinion` for an unsupported goal and present it as an exact match.
+
+Treat `formality` and `register` as independent server fields, not synonyms.
+Map explicit “formal” to `formality=formal` and “professional” to
+`register=professional`; never add one because the other was requested. If both
+are explicit, send both and expect AND semantics. For a general request for
+informal expressions, keep the established `register=informal` mapping; use
+`formality=informal` only when the user explicitly frames formality itself.
 
 ## Resolve the level
 
@@ -56,19 +63,21 @@ to mix elementary and advanced material for an unspecified learner.
 ## Choose words or phrases
 
 - Use Common Phrases for reusable formulations, questions, idioms, situations,
-  and other documented phrase-level properties.
+  and other documented phrase-level properties. Every multi-word example the
+  agent chooses for the answer must be one of the returned items.
 - Use Common Words for individual vocabulary, including documented word-level
   slang, domain, part-of-speech, and utility sorting.
 - A request for slang **words** may use Common Words. A request for slang
   **phrases or expressions** requires a documented Common Phrases register or
-  slang filter. If the current API reference has none, use model-selected
-  expressions with direct public search links and state that they were not
-  API-filtered as slang.
+  slang filter. If the current API reference has none, state that the requested
+  curated phrase selection is unsupported; do not substitute Common Words or
+  model-written phrases.
 - Use Suggestions when the user starts from a known expression and wants nearby
   formulations. Apply only the suggestion filters documented by the API.
 
-Never present word results as phrases or claim that a model-selected expression
-was returned by a catalog.
+Never present word results as phrases. Never replace a Common Phrase item with a
+model-selected expression. Preserve returned phrase `text` exactly, including
+an incomplete reusable frame; do not complete, shorten, or polish it.
 
 ## Shape the candidate request
 
@@ -108,16 +117,18 @@ across candidate sets.
 ## Handle weak or empty results
 
 Do not remove a filter the user explicitly requested. State that the combination
-was empty or too weak and offer one precise relaxation or model-selected public
-searches.
+was empty or too weak and offer one precise relaxation or a supported Common
+Phrases catalog destination.
 
 If an agent-inferred level or property caused the weak result, it may be
 broadened once. Say what changed. Do not hide a second query as though it used
 the original filters.
 
-If the API is unavailable and the model selects candidates, preserve the same
-resolved CEFR range and quality bar. Do not silently fall back to safer,
-lower-level material merely because catalog ranking could not be checked.
+If the API is unavailable, do not invent candidates for an open-ended phrase
+selection. Offer a supported filtered Common Phrases catalog or Reels link when
+the public URL contract can preserve the request, or state that curated
+selection could not be completed. Exact text supplied by the user may still go
+to direct Classic Search.
 
 Treat server order as candidate priority, not presentation order. Preserve it
 when the user asks for API-ranked results. For a PlayPhrase-first answer, select
@@ -127,7 +138,8 @@ stages of a situation. Otherwise keep relative server order as the tie-breaker.
 Never describe curated or merged results as API-ranked.
 
 A successful filtered response proves that its items matched the documented
-selection predicate. Exposed item fields support additional record-level claims.
-Neither proves a particular clip's tone, delivery, speaker, or stress. Build
-every selected item's public search link from `text` or `word`, never its
-learning-record `id`.
+selection predicate. A Common Phrase `count >= 5` proves catalog membership;
+exposed item fields support additional record-level claims. Neither proves a
+particular clip's tone, delivery, speaker, or stress. Build every selected item's
+public search link from its exact `text` or `word`, never its learning-record
+`id`.
