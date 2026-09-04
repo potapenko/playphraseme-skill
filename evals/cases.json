@@ -156,6 +156,58 @@
         "allowed-api-prefix": "/api/v1/learning/",
         "requires-link": true
       }
+    },
+    {
+      "id": "job-interview-lesson",
+      "prompt": "Make me a 20-minute B1 English lesson for a job interview with phrases I can hear in movies or TV.",
+      "expected": {
+        "mode": "lesson-common-phrases-topic",
+        "api-paths": ["/api/v1/learning/common-phrases"],
+        "filters": {"topic": "work", "language-level-from": "B1", "language-level-to": "B1"},
+        "target-phrase-count": {"min": 4, "max": 7},
+        "activity-count": {"min": 3, "max": 5},
+        "requires-active-listening": true,
+        "requires-production": "role-play",
+        "requires-retrieval": true,
+        "requires-builder-output-unchanged": true,
+        "forbids-tracking-parameters": true,
+        "allowed-api-prefix": "/api/v1/learning/"
+      }
+    },
+    {
+      "id": "grammar-lesson-no-browser",
+      "prompt": "Create a self-study lesson on the English pattern 'used to', but assume you have no browser, API access, or script execution.",
+      "expected": {
+        "mode": "lesson-classic-search-no-browser",
+        "api-paths": [],
+        "requires-complete-offline-lesson": true,
+        "requires-documented-url-fallback": true,
+        "requires-link": true,
+        "must-state-live-scenes-unverified": true,
+        "must-not-invent-results": true,
+        "must-not-name-unverified-sources": true
+      }
+    },
+    {
+      "id": "same-phrase-different-tone",
+      "prompt": "Build a listening activity where I compare how 'That's great' can sound sincere or sarcastic. You cannot inspect the clips yourself.",
+      "expected": {
+        "mode": "lesson-listening-and-nuance",
+        "requires-link": true,
+        "requires-active-listening": true,
+        "requires-learner-classification": true,
+        "must-not-prelabel-unverified-tone": true
+      }
+    },
+    {
+      "id": "interactive-quiz",
+      "prompt": "Quiz me interactively on natural English responses using PlayPhrase.me. Ask one question at a time.",
+      "expected": {
+        "mode": "interactive-tutor",
+        "must-wait-for-learner-answer": true,
+        "must-not-reveal-answer-in-same-turn": true,
+        "must-not-include-answer-key-yet": true
+      }
     }
   ]
 }

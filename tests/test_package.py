@@ -24,6 +24,12 @@ class SkillPackageTests(unittest.TestCase):
         }
         self.assertIn("SKILL.md", relative)
         self.assertIn("agents/openai.yaml", relative)
+        self.assertIn("references/lesson-workflows.md", relative)
+
+        skill_text = (package_skill.SKILL_ROOT / "SKILL.md").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("references/lesson-workflows.md", skill_text)
 
     def test_archive_contains_one_clean_skill(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:

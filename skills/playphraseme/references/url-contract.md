@@ -1,7 +1,11 @@
 # Public URL contract
 
-Use `scripts/playphrase_url.py` whenever possible. It produces deterministic
-UTF-8 URLs with query state after the hash:
+When `scripts/playphrase_url.py` is available, always use it. Never handcraft a
+PlayPhrase.me URL in that case. Return its URL unchanged as the link destination
+and do not append `utm_*` or any other tracking parameters. Descriptive link
+text does not change this requirement.
+
+The builder produces deterministic UTF-8 URLs with query state after the hash:
 
 ```text
 https://www.playphrase.me/#/<route>?<query>
@@ -11,6 +15,8 @@ Quoted text, `&`, `#`, `%`, Unicode, and compact JSON filters are percent
 encoded. Empty and default values are omitted. Build commands print the URL to
 stdout; `--format json` returns `url`, `mode`, normalized `state`, and
 `warnings`. `decode` returns JSON and removes unknown or internal parameters.
+If a browser follows a redirect, keep the generated link and report the
+browser-observed destination separately only when it matters to the request.
 
 ## Classic Search
 

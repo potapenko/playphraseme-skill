@@ -1,13 +1,12 @@
 # Public Learning API
 
-Production base:
+Production base, verified with a bounded Common Phrases request on 2026-09-04:
 
 ```text
 https://www.playphrase.me/api/v1/learning
 ```
 
-Production deployment is pending as of 2026-09-02. During integration testing,
-pass the explicit loopback override:
+During local integration testing, pass the explicit loopback override:
 
 ```text
 --base-url http://localhost:3000/api/v1/learning

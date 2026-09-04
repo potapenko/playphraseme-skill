@@ -1,6 +1,6 @@
 # Maintenance
 
-Last contract review: 2026-09-02.
+Last contract review: 2026-09-04.
 
 Review the skill when the Learning API, public URL state, browser DOM, Agent
 Skills specification, or host installation guidance changes.
@@ -8,13 +8,14 @@ Skills specification, or host installation guidance changes.
 ## Compatibility review
 
 1. Re-read the current public Learning API contract and confirm the exact three
-   endpoint paths, parameters, limits, response envelopes, and rollout status.
+   endpoint paths, parameters, limits, response envelopes, and deployment
+   status.
 2. Re-check Classic Search, catalog, Clip Search, Reels, actor, and share-link
    contracts. Never infer a new URL field from an internal service parameter.
 3. Run all offline tests and Agent Skills validation.
-4. Run bounded localhost API smoke tests while production deployment is
-   pending. After owner-confirmed rollout, run the same small smoke against the
-   production base.
+4. Run bounded localhost API smoke tests for development changes and one small
+   production smoke when deployment status or production compatibility is under
+   review.
 5. Fresh-install on each client before changing its matrix status.
 6. Update the compatibility date and record any limitation without fixing
    result counts, since corpus contents change.

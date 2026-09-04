@@ -168,6 +168,12 @@ class URLBuilderTests(unittest.TestCase):
                 "https://www.playphrase.me/#/search?language=en&q=hello&auth-token=secret"
             )
 
+    def test_validate_rejects_tracking_parameters(self) -> None:
+        with self.assertRaises(url_builder.URLContractError):
+            url_builder.validate_url(
+                "https://www.playphrase.me/#/search?language=en&q=hello&utm_source=chatgpt"
+            )
+
     def test_public_reels_path_decodes_search_text(self) -> None:
         decoded = url_builder.decode_url(
             "https://www.playphrase.me/reels/en/break%20a%20leg/"

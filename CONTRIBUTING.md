@@ -44,8 +44,9 @@ reference validator is available. Also run any client-specific validator used
 by the release target.
 
 Offline tests must not contact PlayPhrase.me. HTTP behavior uses a loopback
-stub. Live smoke tests are opt-in and, while production deployment is pending,
-must pass the explicit base:
+stub. Live production smoke tests are opt-in, bounded, and reserved for reviews
+of deployment status or production compatibility. Local integration may pass
+the explicit loopback base:
 
 ```text
 http://localhost:3000/api/v1/learning

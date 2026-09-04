@@ -2,7 +2,7 @@
 
 - Status: Active
 - Stability: Evolving
-- Revision: 2
+- Revision: 3
 - Domain: `skill-distribution`
 - Authority: user decisions approved 2026-09-04
 
@@ -33,11 +33,17 @@ archives.
 The skill keeps its bundled standard-library Python helpers. A host may run
 them when script execution and any required network access are available.
 
+When the URL builder is available, public link destinations are its unchanged
+output with no tracking. Browser-observed redirects may be reported separately.
+
 When script execution or outbound HTTP is unavailable, the skill still
 classifies the requested search mode, constructs a public PlayPhrase.me URL
 from the documented contract, explains the selected filters, and uses available
 browser or web capabilities when appropriate. It never falls back to private
 APIs or bypasses product limits.
+
+The production Learning API is deployed; bounded requests still degrade to
+canonical public links when the API or outbound HTTP is unavailable.
 
 ChatGPT explicitly invokes the installed skill with `@PlayPhrase.me`. Codex
 uses `$playphraseme`; Claude and other hosts retain their own documented
@@ -60,6 +66,8 @@ agent installation as a separate supported path later on the page.
 4. Every local path referenced by the packaged skill exists inside the archive.
 5. A manual ChatGPT smoke test uploads `skill.zip`, shows `PlayPhrase.me`,
    supports `@PlayPhrase.me`, and exercises a public PlayPhrase.me URL.
+6. URL validation rejects tracking parameters, and lesson references and evals
+   remain present in the packaged source and repository QA.
 
 Manual ChatGPT acceptance is reported separately from automated package
 validation and is not claimed until it has actually been performed. The
@@ -79,3 +87,14 @@ The installation screenshot records the ZIP upload entry point.
   prompt-assisted installation remains supported below it.
 - Compatibility: packaging, skill behavior, Codex invocation, Claude
   invocation, and other compatible Agent Skills hosts are unchanged.
+
+## SD.DELTA-3 — Canonical links and production API status
+
+- Mode: Evolve.
+- External authority: user approval on 2026-09-04 following agent feedback.
+- Previous behavior: URL-builder use was advisory and documentation still
+  described the production Learning API rollout as pending.
+- New behavior: builder output is immutable, tracking is forbidden, and the
+  production API is documented as deployed after a bounded successful smoke.
+- Compatibility: documented no-script, no-browser, and no-network fallbacks;
+  public routes; endpoint allowlist; and product-limit boundaries are preserved.
