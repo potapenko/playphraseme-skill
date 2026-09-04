@@ -239,6 +239,15 @@ def _validated_timeout(value: Any) -> float:
     return timeout
 
 
+def _boolean_cli_value(value: str) -> bool:
+    normalized = value.lower()
+    if normalized == "true":
+        return True
+    if normalized == "false":
+        return False
+    raise argparse.ArgumentTypeError("expected true or false")
+
+
 def build_request(command: str, options: dict[str, Any], base_url: str = PRODUCTION_BASE) -> tuple[str, ValidatedBase]:
     if command not in PATHS:
         raise InputError("unsupported Learning API command")
@@ -453,8 +462,22 @@ def _parser() -> argparse.ArgumentParser:
         command.add_argument("--language-level-from", default="A1")
         command.add_argument("--language-level-to", default="C2")
         if name == "phrases":
-            command.add_argument("--idiom", action="store_true")
-            command.add_argument("--is-question", "--question", dest="is_question", action="store_true")
+            command.add_argument(
+                "--idiom",
+                nargs="?",
+                const=True,
+                default=False,
+                type=_boolean_cli_value,
+            )
+            command.add_argument(
+                "--is-question",
+                "--question",
+                dest="is_question",
+                nargs="?",
+                const=True,
+                default=False,
+                type=_boolean_cli_value,
+            )
             for option_key, api_key, allowed_values in PHRASE_ENUM_FILTERS:
                 command.add_argument(
                     f"--{api_key}",

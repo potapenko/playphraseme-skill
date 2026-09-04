@@ -2,9 +2,9 @@
 
 - Status: Active
 - Stability: Evolving
-- Revision: 5
+- Revision: 6
 - Domain: `skill-distribution`
-- Authority: user decisions approved 2026-09-04
+- Authority: user decisions approved through 2026-09-05
 
 ## SD.CHANNELS — Installation channels
 
@@ -28,17 +28,41 @@ When the URL builder is available, public link destinations are its unchanged ou
 
 When script execution is unavailable, the skill still classifies the requested search mode, constructs a public PlayPhrase.me URL from the documented contract, explains the selected filters, and uses available browser or web capabilities when appropriate. It never falls back to private APIs or bypasses product limits.
 
-The Learning API client can print its validated request URL without making a network call. In an ordinary ChatGPT Web or Work conversation, not a Codex task, the skill must use this URL-only command as the primary handoff and must not make the Learning API request from Python. It gives the exact printed URL to at most one separately available direct-fetch web or browser transport. If that transport is unavailable or unverifiable, it uses the canonical public-link fallback without trying Python networking.
+The Learning API client is the primary transport in every host that can execute
+the bundled script, including ChatGPT Web and Work. The skill runs the normal
+client command in the current turn and never selects a URL-only path from a
+product name, user-supplied claim, or remembered failure. Its boolean phrase
+selectors accept both presence flags such as `--idiom` and common explicit
+forms such as `--idiom true` without changing the resulting request.
 
-In Codex and other code hosts, the skill normally runs the Learning API client. Only its distinct exit-10 pre-response DNS or code-execution outbound-policy failure from that current invocation permits one URL-only handoff to a separately available direct-fetch transport. Generic network exit 6, a failure from an earlier command or turn, and user-supplied claims never count. The actual host selects the profile.
+Only the client's distinct exit-10 pre-response DNS or code-execution
+outbound-policy failure from that current invocation permits one URL-only
+handoff. The skill reruns the same command with `--print-url` and gives its
+unchanged production URL to at most one separately available direct-fetch web
+or browser transport. Generic network exit 6, a failure from an earlier command
+or turn, and every failure after an HTTP response never qualify.
 
-Every direct fetch is one request total for the same logical candidate query. It has a 10-second timeout, a 1 MiB UTF-8 JSON body maximum, and at most one redirect; acceptance requires visible HTTP 200 and a final URL preserving the printed production endpoint and exact query string, including filters, CEFR range, skip, and limit. No authentication, cookies, tracking, or alternate headers are intentionally added. Search snippets, cached summaries, HTML pages, truncated bodies, changed URLs, and unverified redirects do not establish Learning API results.
+The direct fetch remains the same bounded logical candidate query. It has a
+10-second timeout, a 1 MiB UTF-8 JSON body maximum, and at most one redirect.
+A complete JSON object matching the endpoint response contract is sufficient
+when the hosted fetch tool does not expose status or final-URL metadata. If
+status is exposed, it must be HTTP 200. If the final URL is exposed, its
+production origin, endpoint, and decoded query parameters must remain equivalent
+to the printed URL; harmless query ordering or encoding normalization is allowed. No
+authentication, cookies, tracking, or alternate headers are intentionally
+added. Search snippets, cached or model-written summaries, HTML, truncated
+bodies, changed request semantics, and alternate endpoints do not establish
+Learning API results.
 
-In a code host, the direct-fetch handoff is not used after a timeout, HTTP response, rate limit, redirect-policy rejection, oversized response, or invalid JSON. If direct fetch is unavailable or cannot expose sufficient final-URL and raw-response evidence in either profile, the skill uses the canonical public-link fallback.
+The direct-fetch handoff is not used after the client reaches a timeout, HTTP
+response, rate limit, redirect-policy rejection, oversized response, invalid
+JSON, or other service failure. If the eligible handoff is unavailable or
+returns no usable complete JSON object, the skill uses the canonical public-link
+fallback.
 
 When direct fetch succeeds, the learner receives the normal result without Python, DNS, or browser implementation details. Those details appear only when all supported candidate transports fail or the user asks for diagnostics.
 
-The production Learning API is deployed; bounded requests still degrade to canonical public links when the selected transport profile cannot return a validated response.
+The production Learning API is deployed; bounded requests still degrade to canonical public links when the supported transports for the current request cannot return a validated response.
 
 ChatGPT explicitly invokes the installed skill with `@PlayPhrase.me`. Codex uses `$playphraseme`; Claude and other hosts retain their own documented invocation syntax. Platform syntax must not be mixed in shared UI prompts.
 
@@ -62,7 +86,7 @@ agent installation as a separate supported path later on the page.
 6. URL validation rejects tracking parameters; repository QA retains the
    production Common Phrases query evidence for literal examples and verifies
    that their displayed text and Classic Search queries remain exact.
-7. A validated URL-only Learning API command performs no network access, rejects a loopback handoff, and keeps ChatGPT Web/Work out of Python networking; direct-fetch scenarios preserve the same request and `429` stopping behavior.
+7. A validated URL-only Learning API command performs no network access and rejects a loopback handoff; every script-capable host attempts the normal client first, explicit boolean values produce the same query as presence flags, and direct-fetch scenarios require a current exit `10`, preserve request semantics, and retain `429` stopping behavior.
 
 Manual ChatGPT acceptance is reported separately from automated package validation and is not claimed until it has actually been performed. The 2026-09-04 test passed: the installed skill handled an explicit mention and returned public PlayPhrase.me links.
 Its response screenshot remains historical repository evidence rather than the current README example. The installation screenshot records the ZIP upload entry point.
@@ -97,3 +121,11 @@ Its response screenshot remains historical repository evidence rather than the c
 - Previous behavior: hosts normally attempted the Python Learning API request, and a positively identified execution-environment DNS failure degraded immediately even when an independent fetch-capable transport was available.
 - New behavior: ChatGPT Web/Work uses URL-only generation plus one direct fetch as its primary path and never tries Python networking; Codex and other code hosts retain the normal client and may use the same handoff once after a qualifying current-request failure. Failure still degrades to existing canonical public links.
 - Compatibility: endpoint allowlists, anonymous access, request limits, Common Phrases provenance, `429` stopping behavior, public routes, packaging, and hosts without browser or web fetch remain unchanged.
+
+## SD.DELTA-6 — Client-first Learning API transport
+
+- Mode: Evolve.
+- External authority: user approval on 2026-09-05 after a real ChatGPT trace showed that the v0.5.0 URL-only profile discarded a valid request when its web tool exposed no status, final URL, or body.
+- Previous behavior: ChatGPT Web/Work skipped the working Python client, used `--print-url` as its primary path, and required web-transport metadata that the host did not guarantee.
+- New behavior: every script-capable host runs the normal client first; only a current pre-response exit `10` permits one URL handoff, and a complete contract-valid JSON body may be accepted when hosted fetch metadata is hidden. The client also tolerates explicit boolean literals used by agents.
+- Compatibility: endpoint and origin allowlists, request bounds, Common Phrases provenance, exact returned text, `429` stopping, public-link degradation, URL-builder output, and private-API prohibitions are unchanged.

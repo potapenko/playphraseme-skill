@@ -193,6 +193,60 @@ class LearningClientTests(unittest.TestCase):
         self.assertEqual(client.MAX_TIMEOUT_SECONDS, call_kwargs["timeout"])
         self.assertEqual('{"items":[]}\n', stdout.getvalue())
 
+    def test_explicit_true_phrase_booleans_match_presence_flags(self) -> None:
+        outputs: list[str] = []
+        for boolean_args in (
+            ["--idiom", "--is-question"],
+            ["--idiom", "true", "--is-question", "true"],
+        ):
+            with self.subTest(boolean_args=boolean_args):
+                stdout = io.StringIO()
+                with redirect_stdout(stdout):
+                    exit_code = client.main(
+                        [
+                            "--print-url",
+                            "phrases",
+                            *boolean_args,
+                            "--language-level-from",
+                            "B2",
+                            "--language-level-to",
+                            "B2",
+                        ]
+                    )
+                self.assertEqual(0, exit_code)
+                outputs.append(stdout.getvalue())
+
+        self.assertEqual(outputs[0], outputs[1])
+        query = parse_qs(urlsplit(outputs[0].strip()).query)
+        self.assertEqual(["true"], query["idiom"])
+        self.assertEqual(["true"], query["is-question"])
+
+    def test_explicit_false_phrase_booleans_leave_filters_inactive(self) -> None:
+        stdout = io.StringIO()
+        with redirect_stdout(stdout):
+            exit_code = client.main(
+                [
+                    "--print-url",
+                    "phrases",
+                    "--idiom",
+                    "false",
+                    "--is-question=false",
+                ]
+            )
+
+        self.assertEqual(0, exit_code)
+        query = parse_qs(urlsplit(stdout.getvalue().strip()).query)
+        self.assertNotIn("idiom", query)
+        self.assertNotIn("is-question", query)
+
+    def test_invalid_explicit_phrase_boolean_is_rejected(self) -> None:
+        stderr = io.StringIO()
+        with redirect_stderr(stderr), self.assertRaises(SystemExit) as caught:
+            client.main(["phrases", "--idiom", "yes"])
+
+        self.assertEqual(2, caught.exception.code)
+        self.assertIn("expected true or false", stderr.getvalue())
+
     def test_suggestions_encodes_unicode_apostrophe_and_clamps_limit(self) -> None:
         url, _ = client.build_request(
             "suggestions",

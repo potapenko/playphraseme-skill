@@ -2,10 +2,10 @@
 
 - Status: Active
 - Stability: Evolving
-- Revision: 5
+- Revision: 6
 - Domain: `lesson-experience`
-- Authority: user decisions approved 2026-09-04
-- Requires: `skill-distribution` Revision 5, clause `SD.COMPATIBILITY`
+- Authority: user decisions approved through 2026-09-05
+- Requires: `skill-distribution` Revision 6, clause `SD.COMPATIBILITY`
 
 ## LE.ROUTING — Choose a response pattern
 Route English questions to the closest PlayPhrase-first pattern: explain one phrase, compare expressions, say an idea naturally, collect phrases for a situation,
@@ -53,11 +53,11 @@ Explicit practice uses linked formulations and asks the learner to choose for a 
 
 ## LE.DEGRADATION — Public-link fallback
 
-Without a validated Learning API response, do not replace Common Phrases with model-invented learning examples. Use the host-specific transport profile in `SD.COMPATIBILITY`: ChatGPT Web/Work uses URL-only generation and direct fetch without a Python network attempt; a code host may use that handoff only after a qualifying current-request failure, never one remembered from an earlier turn. If direct fetch succeeds, answer normally without exposing infrastructure details. Otherwise offer a supported public Common Phrases catalog or Reels destination, or link exact text the user supplied, and state what was not verified. Never use a private API or invent movie/TV evidence.
+Without a validated Learning API response, do not replace Common Phrases with model-invented learning examples. Follow the client-first transport in `SD.COMPATIBILITY` in every script-capable host. A URL-only direct fetch is allowed only after a qualifying current-request exit `10`, never because of the host name or a remembered failure. A complete endpoint-contract JSON object may support the normal answer even when the hosted fetch hides status or final-URL metadata. Otherwise offer a supported public Common Phrases catalog or Reels destination, or link exact text the user supplied, and state what was not verified. Never use a private API or invent movie/TV evidence.
 
 ## LE.QA — Acceptance scenarios
 Across response scenarios, the first useful link appears early, the best fit is visually primary when one exists, and important phrases use descriptive deep links rather than repeated generic anchors. Link text promises no unverified clip property.
-Scenarios cover one-phrase explanation, comparison, natural wording, an imminent unknown-level job interview answered with a disclosed B2–C1 working range, generic unknown-level clarification, vocabulary discovery, grammar through examples, an explicit phrase-native interactive quiz, exact Common Phrase item use, eligible and ineligible Reels continuations, ChatGPT Web URL-only routing, and omission of irrelevant transport narration after success.
+Scenarios cover one-phrase explanation, comparison, natural wording, an imminent unknown-level job interview answered with a disclosed B2–C1 working range, generic unknown-level clarification, vocabulary discovery, grammar through examples, an explicit phrase-native interactive quiz, exact Common Phrase item use, eligible and ineligible Reels continuations, client-first routing with one eligible transport handoff, and omission of irrelevant transport narration after success.
 
 ## LE.DELTA-1 — Pedagogical workflow
 Evolve, authorized by user approval on 2026-09-04 after initial agent feedback. It added a flexible active-listening workflow where no lesson composition guidance existed; public search/API and offline behavior stayed compatible.
@@ -74,3 +74,7 @@ Evolve, authorized by user approval on 2026-09-04 after agent feedback and corre
 ## LE.DELTA-5 — Immediate help for imminent situations
 
 Evolve, authorized by user approval on 2026-09-04 after reviewing the published v0.4.0 behavior. A concrete imminent situational need with no level signal now receives an immediate, disclosed B2–C1 working selection instead of a clarification-only first turn. Generic discovery still asks for level; explicit and remembered levels, Common Phrases provenance, link-first composition, optional-only practice, and all public URL/evidence boundaries remain protected.
+
+## LE.DELTA-6 — Recover the phrase path before degradation
+
+Evolve, authorized by user approval on 2026-09-05 after the published v0.5.0 skill degraded a valid B2 idiom request to one catalog link. Script-capable hosts now try the Learning API client before considering degradation, and an eligible direct fetch may use a complete contract-valid JSON body without unavailable transport metadata. Common Phrases-only agent selection, exact returned text, compact link-first composition, and honest public-link fallback remain protected.

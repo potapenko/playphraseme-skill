@@ -135,15 +135,16 @@ the original filters.
 For an inferred imminent-situation B2–C1 range, broaden upward to B2–C2 when
 needed; do not silently include B1 material.
 
-Follow the host-specific transport profile in
-[the Learning API reference](learning-api.md): ChatGPT Web/Work uses the
-validated URL-only command and direct fetch without a Python network attempt;
-Codex and other code hosts may hand off only after one of the qualifying
-pre-response diagnostics from the current client invocation. For an unavailable or unvalidated result, do not invent
-candidates for an open-ended phrase selection. Offer a supported filtered Common
-Phrases catalog or Reels link when the public URL contract can preserve the
-request, or state that curated selection could not be completed. Exact text
-supplied by the user may still go to direct Classic Search.
+Follow the unified transport in
+[the Learning API reference](learning-api.md): every script-capable host runs
+the normal client first, and a URL-only direct fetch is allowed only after a
+qualifying exit `10` from that current invocation. A complete endpoint-contract
+JSON object remains usable when a hosted fetch omits status or final-URL
+metadata. For an unavailable or unusable result, do not invent candidates for
+an open-ended phrase selection. Offer a supported filtered Common Phrases
+catalog or Reels link when the public URL contract can preserve the request, or
+state that curated selection could not be completed. Exact text supplied by the
+user may still go to direct Classic Search.
 
 Treat server order as candidate priority, not presentation order. Preserve it
 when the user asks for API-ranked results. For a PlayPhrase-first answer, select
