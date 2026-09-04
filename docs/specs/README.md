@@ -14,6 +14,8 @@ PlayPhrase.me language-learning skill.
 
 ## Release baselines
 
+- [v0.5.0](releases/v0.5.0.md) — host-specific Learning API transport and
+  immediate selection for imminent situations.
 - [v0.4.0](releases/v0.4.0.md) — level-first discovery and Common Phrase-backed
   examples release.
 - [v0.3.0](releases/v0.3.0.md) — PlayPhrase-first responses and Learning API
