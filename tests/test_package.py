@@ -74,13 +74,18 @@ class SkillPackageTests(unittest.TestCase):
             "https://github.com/potapenko/playphraseme-skill/"
             "releases/latest/download/skill.zip"
         )
+        chatgpt_skills_url = "https://chatgpt.com/skills"
         repository_url = (
             "https://github.com/potapenko/playphraseme-skill/"
             "tree/master/skills/playphraseme"
         )
         readme = (REPOSITORY_ROOT / "README.md").read_text(encoding="utf-8")
         self.assertIn(release_url, readme)
+        self.assertIn(chatgpt_skills_url, readme)
         self.assertLess(readme.index(release_url), readme.index(repository_url))
+        self.assertLess(
+            readme.index(chatgpt_skills_url), readme.index(repository_url)
+        )
 
 
 if __name__ == "__main__":

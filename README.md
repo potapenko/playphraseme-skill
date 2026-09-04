@@ -10,10 +10,15 @@ code.
 
 ## Install in ChatGPT
 
-1. Open ChatGPT and go to **Plugins → Skills**.
-2. Choose **Create** or **+**, select **Upload from your computer**, and upload
-   `skill.zip`.
-3. Start a new chat, type `@PlayPhrase.me`, and send this prompt:
+1. Open [ChatGPT Skills](https://chatgpt.com/skills).
+2. Choose **+**, then select **Upload from your computer**.
+3. Upload `skill.zip`.
+
+<p align="center">
+  <img src="docs/assets/chatgpt-skill-upload.png" width="1000" alt="The ChatGPT Skills page with the plus menu open and Upload from your computer selected">
+</p>
+
+Start a new chat, type `@PlayPhrase.me`, and send this prompt:
 
 ```text
 @PlayPhrase.me Give me 5 useful informal English expressions for today.

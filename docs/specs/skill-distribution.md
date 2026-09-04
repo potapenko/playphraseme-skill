@@ -65,6 +65,7 @@ Manual ChatGPT acceptance is reported separately from automated package
 validation and is not claimed until it has actually been performed. The
 2026-09-04 test passed: the installed skill handled an explicit mention and
 returned public PlayPhrase.me links. The README screenshot records that result.
+The installation screenshot records the ZIP upload entry point.
 
 ## SD.DELTA-2 — ChatGPT-first public installation
 
