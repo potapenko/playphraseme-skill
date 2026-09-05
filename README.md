@@ -1,28 +1,61 @@
-# Find the words. Hear them in dialogue.
+# Learn English with ChatGPT. Hear it in movies.
 
-Know what you want to say, but can't quite find the English for it?
-Tell ChatGPT. The **PlayPhrase.me skill** helps you find a natural expression,
-understand when to use it, and hear it in movies and TV.
+Ask ChatGPT about an expression you've heard, a message you want to get right,
+or a conversation coming up tomorrow. With **PlayPhrase.me**, the answer comes
+with links to hear the English in movie and TV dialogue.
 
-**[Download the skill for ChatGPT](https://github.com/potapenko/playphraseme-skill/releases/latest/download/skill.zip)**
+Keep the conversation going: ask why a phrase works, try a different tone,
+or find something that sounds more like you. Then open a listening link and
+hear the words beyond the chat.
 
-## From your words to real dialogue
+**[Get PlayPhrase.me for ChatGPT →](https://github.com/potapenko/playphraseme-skill/releases/latest/download/skill.zip)**
 
-Here's an example of what you can ask:
+<p align="center">
+  <img src="docs/assets/chatgpt-playphraseme-example.png" width="800" alt="A conversation in ChatGPT: the user asks PlayPhrase.me for informal English expressions, and ChatGPT explains each one with examples and listening links">
+  <br>
+  <em>Ask a question in ChatGPT. Explore the expressions on PlayPhrase.me.</em>
+</p>
+
+## A question can turn into a conversation
+
+For example:
 
 > **You:** How do I say “Ни за что не пропущу” in English?
 >
-> **[“I wouldn't miss it for the world.” — listen on PlayPhrase.me →](https://www.playphrase.me/#/search?language=en&q=I+wouldn%27t+miss+it+for+the+world.)**
+> **ChatGPT:** **[“I wouldn't miss it for the world.” — listen on PlayPhrase.me →](https://www.playphrase.me/#/search?language=en&q=I+wouldn%27t+miss+it+for+the+world.)**
+> A warm, enthusiastic way to say you're determined to be there—at a friend's
+> wedding or a concert you're excited about.
 >
-> Use it when you're determined to be there—for a friend's wedding, a concert,
-> or anything you really don't want to miss.
+> **You:** What does “for the world” mean here?
+>
+> **ChatGPT:** It means nothing could persuade you to miss it. You're showing
+> how much being there matters to you.
 
-Open the link to hear the expression in dialogue. Ask in your own language
-whenever it's easier; the skill can explain in that language too.
+You can start in your own language, ask a follow-up, or take the conversation
+somewhere new. ChatGPT helps you understand the expression; PlayPhrase.me gives
+you dialogue to listen to.
 
-## Try it in ChatGPT
+## What would you like to talk about?
 
-Download `skill.zip` above and keep it zipped. No code needed.
+**Something you've heard and want to understand**
+> “What does ‘cut me some slack’ mean? Would I say it to a friend or my boss?”
+
+**Something you want to say more naturally**
+> “Help me politely say no. A little softer. Now make it work in an email.”
+
+**Something you're preparing for**
+> “I have a job interview tomorrow. Help me talk about my experience.”
+
+**Something you haven't learned yet**
+> “Give me five useful B2 idioms. I already know the first one—show me another.”
+
+Ask for a quick explanation, spend time comparing expressions, or request a
+lesson and practise together. You choose where the conversation goes.
+
+## Start your first conversation
+
+**[Download the PlayPhrase.me skill](https://github.com/potapenko/playphraseme-skill/releases/latest/download/skill.zip)**,
+then add it to ChatGPT. Keep `skill.zip` zipped.
 
 1. Open [ChatGPT Skills](https://chatgpt.com/skills).
 2. Choose **+**, then **Upload from your computer**.
@@ -32,48 +65,20 @@ Download `skill.zip` above and keep it zipped. No code needed.
   <img src="docs/assets/chatgpt-skill-upload.png" width="1000" alt="In ChatGPT Skills, open the plus menu and choose Upload from your computer">
 </p>
 
-Start a new chat, select `@PlayPhrase.me`, and ask:
+Start a new chat, select `@PlayPhrase.me`, and ask something you've been wanting
+to say. Or try this:
 
 ```text
 @PlayPhrase.me How do I politely say no?
 ```
 
-## Start with something you actually want to say
-
-| What's on your mind? | Try asking |
-| --- | --- |
-| A phrase you keep hearing | “What does ‘cut me some slack’ mean?” |
-| Two expressions that seem alike | “What's the difference between ‘I guess’ and ‘I suppose’?” |
-| A conversation coming up | “I have a job interview tomorrow. Help me talk about my experience.” |
-| Something new to learn | “Give me five useful B2 idioms.” |
-
-Each useful expression comes with its own listening link and a short explanation
-of where it fits. You can ask for one good option or explore several.
-
-## Keep talking
-
-You don't need to get the whole request right on the first try:
-
-> “How do I politely say no?”
->
-> “A little softer.”
->
-> “The second one works. Can I use it in a work email?”
-
-The skill follows the conversation, so you can refine the wording without
-starting over. Say “Make it simpler”, “I already know that one”, or “Give me
-three more”.
-
-Want a lesson? Say how much time you have. Want practice? Ask for a quiz.
-If a listening link doesn't give you a useful example, ask for another search.
-
-## From the creator of PlayPhrase.me
+## Made by PlayPhrase.me
 
 I build [PlayPhrase.me](https://www.playphrase.me/), where you can explore
-language through movie and TV dialogue. This skill gives you a conversational
-way to find expressions worth listening to—starting with what you want to say.
+language through movie and TV dialogue. I made this skill to bring that
+experience into your conversations with ChatGPT.
 
-**[Get the PlayPhrase.me skill for ChatGPT →](https://github.com/potapenko/playphraseme-skill/releases/latest/download/skill.zip)**
+**[Try PlayPhrase.me in ChatGPT →](https://github.com/potapenko/playphraseme-skill/releases/latest/download/skill.zip)**
 
 <details>
 <summary><strong>Install in Codex, Claude, or another agent</strong></summary>
