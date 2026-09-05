@@ -20,16 +20,35 @@ hear the words beyond the chat.
 
 For example:
 
-> **You:** How do I say “Ни за что не пропущу” in English?
->
-> **ChatGPT:** **[“I wouldn't miss it for the world.” — listen on PlayPhrase.me →](https://www.playphrase.me/#/search?language=en&q=I+wouldn%27t+miss+it+for+the+world.)**
-> A warm, enthusiastic way to say you're determined to be there—at a friend's
-> wedding or a concert you're excited about.
->
-> **You:** What does “for the world” mean here?
->
-> **ChatGPT:** It means nothing could persuade you to miss it. You're showing
-> how much being there matters to you.
+**You:**
+
+```text
+How do I say “Ни за что не пропущу” in English?
+```
+
+**ChatGPT:**
+
+```text
+I wouldn't miss it for the world.
+
+A warm, enthusiastic way to say you're determined to be there—at a friend's
+wedding or a concert you're excited about.
+```
+
+**[“I wouldn't miss it for the world.” — listen on PlayPhrase.me →](https://www.playphrase.me/#/search?language=en&q=I+wouldn%27t+miss+it+for+the+world.)**
+
+**You:**
+
+```text
+What does “for the world” mean here?
+```
+
+**ChatGPT:**
+
+```text
+It means nothing could persuade you to miss it. You're showing how much
+being there matters to you.
+```
 
 You can start in your own language, ask a follow-up, or take the conversation
 somewhere new. ChatGPT helps you understand the expression; PlayPhrase.me gives
@@ -38,16 +57,28 @@ you dialogue to listen to.
 ## What would you like to talk about?
 
 **Something you've heard and want to understand**
-> “What does ‘cut me some slack’ mean? Would I say it to a friend or my boss?”
+
+```text
+What does ‘cut me some slack’ mean? Would I say it to a friend or my boss?
+```
 
 **Something you want to say more naturally**
-> “Help me politely say no. A little softer. Now make it work in an email.”
+
+```text
+Help me politely say no. A little softer. Now make it work in an email.
+```
 
 **Something you're preparing for**
-> “I have a job interview tomorrow. Help me talk about my experience.”
+
+```text
+I have a job interview tomorrow. Help me talk about my experience.
+```
 
 **Something you haven't learned yet**
-> “Give me five useful B2 idioms. I already know the first one—show me another.”
+
+```text
+Give me five useful B2 idioms. I already know the first one—show me another.
+```
 
 Ask for a quick explanation, spend time comparing expressions, or request a
 lesson and practise together. You choose where the conversation goes.
