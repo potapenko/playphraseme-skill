@@ -33,15 +33,20 @@ only when both are explicit. For general informal expressions, use
 - Useful disclosed mappings are beginner → A1–A2, intermediate → B1–B2,
   upper-intermediate or “not basic” → B2–C1, advanced → C1–C2.
 - For generic level-sensitive discovery with no signal, ask one short level
-  question and wait.
-- For an imminent real-world situation, use and disclose a B2–C1 working range
-  and answer immediately.
-- If the learner explicitly refuses clarification for a generic collection,
-  disclose a C1–C2 working assumption.
-- After “harder” or “too easy,” raise the lower bound; after B2 material,
-  normally use C1–C2.
+  question in ordinary language and wait. Offer simple, intermediate, or advanced
+  material; a CEFR code is optional.
+- For an imminent situation or explicit no-clarification request, answer
+  immediately with common task-appropriate language. Briefly describe the
+  starting difficulty and offer adjustment. Neither trigger implies B2–C1 or
+  C1–C2. If calling the API, choose and disclose a narrow range suitable for the
+  task as a material setting, never as an assessment of the learner.
+- For “easier,” simplify wording and explanation while retaining the situation.
+  For “harder” or “too easy,” increase useful nuance, complexity, or unfamiliarity
+  without substituting obscure language for useful language. An explicit request
+  for a higher level than B2 normally uses C1–C2; keep topic and register.
 
-When calling the API, pass both CEFR bounds. Do not rely on its broad defaults.
+When calling a level-filtered catalog, pass both CEFR bounds. Do not rely on
+its broad defaults. Suggestions does not support CEFR filters.
 
 ## Choose the catalog or fallback
 
@@ -71,11 +76,11 @@ catalog provenance requires stopping short of unsupported claims.
 | six non-basic English idioms | Common Phrases; idiom; B2–C1 |
 | beginner travel questions | Common Phrases; topic travel; question; A1–A2 |
 | B1 interview language | Common Phrases; topic work; B1 |
-| interview tomorrow, level unknown | Common Phrases; topic work; disclosed B2–C1 |
+| interview tomorrow, level unknown | Common Phrases; topic work; task-appropriate disclosed range |
 | sarcastic B2 responses | Common Phrases; emotion sarcastic; B2 |
 | non-basic slang expressions | Common Phrases; register slang; B2–C1 |
 | professional apologies | Common Phrases; function apology; register professional |
-| advanced slang words | Common Words; slang; B2–C1; daily utility |
+| advanced slang words | Common Words; slang; C1–C2; daily utility |
 | alternatives around a known phrase | Suggestions; phrase as `q` |
 
 For roughly six to ten requested choices, twelve to twenty candidates are
@@ -83,7 +88,9 @@ usually enough. Curate rather than dumping the payload.
 
 ## Curate for value
 
-CEFR is a boundary, not a quality score. For interesting, informal, non-basic,
+Honor explicit counts; otherwise start compactly as described in response
+patterns. Avoid repeating expressions already shown or rejected in the available
+conversation. CEFR is a boundary, not a quality score. For interesting, informal, non-basic,
 or upper-level material, prefer idiomatic, collocational, or colloquial chunks
 with distinct communicative value. Avoid elementary reactions and transparent
 imperatives that add nothing new.

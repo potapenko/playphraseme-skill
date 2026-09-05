@@ -42,13 +42,17 @@ instead of fabricated.
 
 ## Level and response quality
 
-Generic unknown-level discovery asks one short question and waits. An imminent
-real-world situation uses a disclosed B2–C1 working range; a generic request
-that explicitly forbids clarification uses C1–C2. Explicit and remembered
-levels win. “Harder” raises the lower CEFR bound.
+Generic unknown-level discovery asks one plain-language question and waits. An
+imminent situation or explicit no-questions request gets common task-appropriate
+language immediately, without a fixed advanced default or a proficiency claim.
+Explicit and remembered levels win. Explicit “higher than B2” raises the lower
+bound; “easier” and “harder” also adapt the actual wording and nuance.
 
 Responses put PlayPhrase.me links early, use distinct useful choices, and avoid
-generic lesson scaffolding or exercises unless practice is explicit. An
+unsolicited lesson scaffolding or exercises. Explicit lessons preserve requested
+duration; practice remains opt-in. Explanations follow the user's language.
+Follow-up turns retain context, resolve references, avoid known/repeated phrases,
+and recover from unsuitable listening links without inventing verification. An
 interactive quiz asks one linked meaning/context decision and waits.
 
 ## Release gate
@@ -58,3 +62,12 @@ both release-regression cases represented by the same prompt. The real host
 must return five grouped B2 idioms with five individual links and no
 infrastructure refusal. Automated repository tests do not replace this manual
 installed-ZIP evidence.
+
+## v0.7.0 conversation checks
+
+In the installed candidate, check a Russian wording request and follow it with
+“попроще”, “эту уже знаю”, and a reference to a numbered option. Check a
+no-questions travel request without a supplied level, an explicit timed lesson,
+and user-reported empty listening results. Judge generated responses, not only
+the presence of expected flags in cases.json. Keep public conversation URLs and
+compact outcomes in the release baseline; temporary transcripts are not source.

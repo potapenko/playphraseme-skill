@@ -1,18 +1,17 @@
 # Explore real English in ChatGPT with PlayPhrase.me
 
-The PlayPhrase.me skill turns an English question or communication goal into an
-answer built around movie and TV listening links. When live catalog data is
-available, ChatGPT can choose from Common Phrases—curated expressions found at
-least five times in the corpus. Either way, every useful phrase leads back to
-PlayPhrase.me so you can hear it in context.
+Ask how to say something, compare expressions, or prepare for a conversation.
+The skill gives you useful English with links to hear it in movie and TV
+dialogue on PlayPhrase.me. Ask in your own language; you do not need to know
+CEFR levels or search filters.
 
 **[Download the PlayPhrase.me skill for ChatGPT](https://github.com/potapenko/playphraseme-skill/releases/latest/download/skill.zip)**
 
 Want a quick taste before installing?
 
-- **[🎬 Hear “I wouldn't miss it for the world.” in movie and TV dialogue →](https://www.playphrase.me/#/search?language=en&q=I+wouldn%27t+miss+it+for+the+world.)**
-- **[🎬 Hear “I couldn't have said it better myself.” in movie and TV dialogue →](https://www.playphrase.me/#/search?language=en&q=I+couldn%27t+have+said+it+better+myself.)**
-- **[🎬 Hear “Like a kid in a candy store.” in movie and TV dialogue →](https://www.playphrase.me/#/search?language=en&q=Like+a+kid+in+a+candy+store.)**
+- **[“I wouldn't miss it for the world.”](https://www.playphrase.me/#/search?language=en&q=I+wouldn%27t+miss+it+for+the+world.)**
+- **[“I couldn't have said it better myself.”](https://www.playphrase.me/#/search?language=en&q=I+couldn%27t+have+said+it+better+myself.)**
+- **[“Like a kid in a candy store.”](https://www.playphrase.me/#/search?language=en&q=Like+a+kid+in+a+candy+store.)**
 
 Keep `skill.zip` zipped. Installation takes three steps and does not require
 code.
@@ -27,45 +26,36 @@ code.
   <img src="docs/assets/chatgpt-skill-upload.png" width="1000" alt="The ChatGPT Skills page with the plus menu open and Upload from your computer selected">
 </p>
 
-Start a new chat, type `@PlayPhrase.me`, and send this prompt:
+Start a new chat, type `@PlayPhrase.me`, and ask an everyday question:
 
 ```text
-@PlayPhrase.me Give me 5 useful B2 English idioms for today. Group them by what
-they help me express and give me a PlayPhrase.me link for each one.
+@PlayPhrase.me How do I politely say no?
 ```
 
-You get a compact, link-first selection rather than a generic quiz. Exact
-choices may change as the catalog evolves. A temporary API or tool limitation
-does not replace the requested five phrases with an infrastructure explanation:
-the skill still gives useful language and an individual PlayPhrase.me listening
-link for every choice, while reserving Common Phrases claims for verified data.
-
-## Find the part of PlayPhrase.me you need
-
-Start with a situation, a meaning, a phrase, or a grammar point. You do not need
-to know what to search for. For example:
+Or ask in Russian:
 
 ```text
-@PlayPhrase.me I have a job interview tomorrow. Show me natural ways to talk
-about my experience, ordered from participating in work to leading it.
+@PlayPhrase.me Как сказать «я передумал»?
 ```
 
-```text
-@PlayPhrase.me Show me different ways to say “I think,” from uncertain to
-confident, with a PlayPhrase.me link for each one.
-```
+You get a short explanation and a listening link for each useful expression.
+The skill can explain in your language and keep the examples in English.
 
-```text
-@PlayPhrase.me Turn “I am good at programming” into a naturalness path: give me
-several real alternatives and briefly explain when each one fits.
-```
+## Keep the conversation going
 
-The result is a PlayPhrase-first answer: sometimes one explained expression,
-sometimes a comparison, and sometimes a phrase path through several useful
-formulations. The best match becomes a prominent listening link, each important
-alternative gets its own PlayPhrase.me search, and useful answers can end with
-a new path to explore. Quizzes and exercises are optional—ask for one when you
-want practice.
+Start from what you need:
+
+- “What's the difference between I guess and I suppose?”
+- “Завтра собеседование. Помоги рассказать об опыте”.
+- “Give me five useful B2 idioms”.
+
+Then adjust the answer naturally: “Попроще”, “Эту фразу уже знаю”, “Ещё похожие”
+or “Теперь для переписки”. The skill uses the current conversation so you do
+not have to repeat your situation and preferences.
+
+Ask for a lesson when you want structure, including how much time you have.
+Ask for a quiz or practice when you want exercises. If a listening link gives
+no useful results, tell the assistant and it will suggest another search.
 
 ## Made by PlayPhrase.me
 

@@ -29,30 +29,12 @@ make check
 This runs the tests, validates the canonical skill, and deterministically builds
 `dist/skill.zip`. To build only the upload package, run `make package`.
 
-The underlying script checks remain:
-
-```bash
-python3 -m py_compile \
-  skills/playphraseme/scripts/playphrase_url.py \
-  skills/playphraseme/scripts/playphrase_learning.py
-
-python3 -m unittest discover -s tests -v
-```
-
-Validate `skills/playphraseme/SKILL.md` with `skills-ref validate` when the
-reference validator is available. Also run any client-specific validator used
-by the release target.
-
-Offline tests must not contact PlayPhrase.me. HTTP behavior uses a loopback
-stub. Live production smoke tests are opt-in, bounded, and reserved for reviews
-of deployment status or production compatibility. Local integration may pass
-the explicit loopback base:
-
-```text
-http://localhost:3000/api/v1/learning
-```
-
-Do not fix assertions to exact result counts; corpus data changes.
+The package is instruction-only. Python is used for repository validation and
+packaging, not by the installed skill. Automated tests check packaging and
+scenario definitions; they do not run an LLM or replace installed-client QA.
+Follow `skills/playphraseme/references/maintenance.md` for live checks and gold
+example changes. Public API checks are bounded and only needed when the API
+contract or a documented literal example changes.
 
 ## Pull requests
 

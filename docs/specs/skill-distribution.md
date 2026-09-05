@@ -2,22 +2,21 @@
 
 - Status: Active
 - Stability: Evolving
-- Revision: 7
+- Revision: 8
 - Domain: `skill-distribution`
-- Authority: user decisions approved through 2026-09-05
-
+- Authority: user approval of the UX audit and new release on 2026-09-05
 ## SD.CHANNELS — Installation channels
 
 The canonical skill source is `skills/playphraseme/`.
 
 A ready-made `skill.zip` is the primary public installation path for ChatGPT.
 The README leads with the direct download, the shortest supported upload flow,
-and a first `@PlayPhrase.me` prompt.
+and a short everyday `@PlayPhrase.me` prompt. Show that users can ask in their
+own language without specifying filters, CEFR codes, or response structure.
 
 Prompt-based installation remains available for Codex, Claude, and other
 compatible Agent Skills hosts. ChatGPT-first distribution must not remove that
 path.
-
 ## SD.PACKAGE — Upload package
 
 `make package` produces `dist/skill.zip`. The archive contains exactly one
@@ -30,7 +29,6 @@ and are not part of this skill's runtime contract.
 
 The package is deterministic: unchanged source files produce byte-identical
 archives.
-
 ## SD.COMPATIBILITY — Host behavior
 
 The skill describes the public PlayPhrase.me Learning API and frontend URL
@@ -62,13 +60,11 @@ or infrastructure narration in an ordinary learner response.
 
 ChatGPT explicitly invokes the installed skill with `@PlayPhrase.me`. Codex
 uses `$playphraseme`; other hosts retain their documented syntax.
-
 ## SD.RELEASE — Non-developer installation
 
 GitHub Releases expose a ready-to-download artifact named `skill.zip`. The
 README links directly to the latest release asset. Repository documentation
 presents ChatGPT ZIP upload first and prompt-assisted installation afterward.
-
 ## SD.QA — Acceptance scenarios
 
 1. `make check` passes package, documentation, and behavioral-contract tests.
@@ -87,23 +83,15 @@ presents ChatGPT ZIP upload first and prompt-assisted installation afterward.
 7. Common Phrases or API-filter provenance is claimed only when a valid API
    response was actually observed; fallback selections remain useful and
    honestly unlabeled.
+8. Fresh ChatGPT checks cover changed difficulty defaults, concise answers,
+   Russian explanation, context-preserving follow-ups, and explicit timed lessons.
 
 Manual ChatGPT acceptance is separate from automated package validation and is
 never claimed until performed against the candidate ZIP in the target account.
+## SD.DELTA-8 — Easier first use
 
-## SD.DELTA-7 — Instruction-only runtime
-
-- Mode: Evolve.
-- External authority: the user's 2026-09-05 direction to remove bundled Python
-  scripts after repeated real ChatGPT failures and to require a useful response
-  before release.
-- Previous behavior: the skill required a bundled Python client, a special
-  transport handoff, and validated API data before it could choose phrases;
-  transport failure intentionally degraded to one catalog/Reels link.
-- New behavior: the public package is instruction-only. The host chooses its
-  available public fetch capability, and ordinary learner answers remain useful
-  without API access. Provenance claims remain evidence-bound.
-- Compatibility: public endpoint and route shapes, filters, level handling,
-  exact API text preservation, product limits, private-API prohibitions,
-  ChatGPT ZIP installation, and non-ChatGPT installation channels remain
-  protected.
+Evolve, authorized by the user's approval of the UX audit on 2026-09-05.
+README first-use prompts become short everyday requests, including Russian;
+release QA adds the changed conversation scenarios. ZIP layout, instruction-only
+runtime, invocation syntax, public routes, provenance, and installation channels
+remain unchanged. Candidate v0.7.0 requires fresh installed-ZIP ChatGPT evidence.

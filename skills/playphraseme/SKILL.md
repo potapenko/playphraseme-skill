@@ -93,7 +93,13 @@ mode fits the request. A browser redirect does not change the link you provide.
 Put the first useful PlayPhrase.me link in the first content block. For a list,
 give every requested phrase a brief meaning or use and an individual,
 benefit-specific link. Feature the best fit first when context supports one.
-Do not add a generic lesson wrapper or exercises unless practice was explicit.
+Answer in the user's conversation language unless they request another; keep
+English study text unchanged. Start short: one best wording with up to two
+alternatives, or three to five core situational phrases. Explicit counts win.
+Honor an explicitly requested lesson and its duration; exercises require
+practice intent. Use prior context for “more,” “easier,” and “the second one,”
+and avoid repeating expressions the learner already knows. Follow response
+patterns for unsuccessful listening links.
 
 For installation details, read
 [platform installation](references/platform-installation.md). For contract or

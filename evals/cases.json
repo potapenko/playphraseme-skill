@@ -26,16 +26,25 @@
   "cases": [
     {
       "id": "release-regression-api-available",
-      "runtime-event": {"learning-api": "success"},
+      "runtime-event": {
+        "learning-api": "success"
+      },
       "prompt": "Give me 5 useful B2 English idioms for today. Group them by what they help me express and give me a PlayPhrase.me link for each one.",
       "expected": {
         "mode": "response-vocabulary-discovery",
-        "api-paths": ["/api/v1/learning/common-phrases"],
-        "filters": {"idiom": true, "language-level-from": "B2", "language-level-to": "B2"},
+        "api-paths": [
+          "/api/v1/learning/common-phrases"
+        ],
+        "filters": {
+          "idiom": true,
+          "language-level-from": "B2",
+          "language-level-to": "B2"
+        },
         "output-count": 5,
         "requires-grouping-by-communicative-purpose": true,
         "requires-link-per-phrase": true,
-        "requires-benefit-specific-link-labels": true,
+        "requires-descriptive-phrase-links-with-nearby-use": true,
+        "must-not-repeat-promotional-link-labels": true,
         "requires-common-phrase-source": true,
         "minimum-common-phrase-count": 5,
         "requires-exact-returned-text": true,
@@ -45,7 +54,9 @@
     },
     {
       "id": "release-regression-api-unavailable",
-      "runtime-event": {"learning-api": "unavailable"},
+      "runtime-event": {
+        "learning-api": "unavailable"
+      },
       "prompt": "Give me 5 useful B2 English idioms for today. Group them by what they help me express and give me a PlayPhrase.me link for each one.",
       "expected": {
         "mode": "response-vocabulary-discovery-model-fallback",
@@ -53,7 +64,8 @@
         "level": "B2",
         "requires-grouping-by-communicative-purpose": true,
         "requires-link-per-phrase": true,
-        "requires-benefit-specific-link-labels": true,
+        "requires-descriptive-phrase-links-with-nearby-use": true,
+        "must-not-repeat-promotional-link-labels": true,
         "allows-model-selected-language": true,
         "must-not-claim-common-phrase-or-api-provenance": true,
         "must-not-return-catalog-only-refusal": true,
@@ -63,7 +75,9 @@
     },
     {
       "id": "ordinary-rate-limit-still-useful",
-      "runtime-event": {"learning-api": "http-429"},
+      "runtime-event": {
+        "learning-api": "http-429"
+      },
       "prompt": "Give me five useful B2 English idioms with PlayPhrase.me links.",
       "expected": {
         "output-count": 5,
@@ -77,11 +91,19 @@
     },
     {
       "id": "explicit-api-ranking-needs-evidence",
-      "runtime-event": {"learning-api": "unavailable"},
+      "runtime-event": {
+        "learning-api": "unavailable"
+      },
       "prompt": "Return the first five B2 slang Common Phrases in the API's ranking order.",
       "expected": {
-        "api-paths": ["/api/v1/learning/common-phrases"],
-        "filters": {"register": "slang", "language-level-from": "B2", "language-level-to": "B2"},
+        "api-paths": [
+          "/api/v1/learning/common-phrases"
+        ],
+        "filters": {
+          "register": "slang",
+          "language-level-from": "B2",
+          "language-level-to": "B2"
+        },
         "must-state-provenance-unavailable": true,
         "must-not-substitute-model-ranking": true,
         "must-not-use-private-api": true
@@ -94,41 +116,60 @@
         "api-paths": [],
         "requires-one-short-level-question": true,
         "must-wait-before-returning-candidates": true,
-        "must-not-infer-level-from-writing-style-or-locale": true
+        "must-not-infer-level-from-writing-style-or-locale": true,
+        "requires-plain-language-level-options": true
       }
     },
     {
-      "id": "no-question-uses-c1-c2",
+      "id": "no-question-uses-task-appropriate-language",
       "prompt": "Give me eight useful travel phrases right now. Don't ask a follow-up; choose a sensible level and tell me what you chose.",
       "expected": {
-        "filters": {"topic": "travel", "language-level-from": "C1", "language-level-to": "C2"},
-        "requires-disclosed-working-range": true,
+        "filters": {
+          "topic": "travel"
+        },
         "must-not-block-for-level": true,
         "output-count": 8,
-        "requires-link-per-phrase": true
+        "requires-link-per-phrase": true,
+        "requires-common-task-appropriate-language": true,
+        "must-not-infer-advanced-level-from-urgency-or-no-questions": true,
+        "requires-plain-language-difficulty-description": true
       }
     },
     {
-      "id": "imminent-interview-uses-b2-c1",
+      "id": "imminent-interview-uses-task-appropriate-language",
       "prompt": "I have a job interview tomorrow. Help me prepare.",
       "expected": {
-        "filters": {"topic": "work", "language-level-from": "B2", "language-level-to": "C1"},
-        "requires-disclosed-working-range": true,
+        "filters": {
+          "topic": "work"
+        },
         "must-not-present-range-as-learner-level": true,
         "must-not-ask-level": true,
         "requires-intent-based-groups": true,
-        "requires-link-per-phrase": true
+        "requires-link-per-phrase": true,
+        "requires-common-task-appropriate-language": true,
+        "must-not-infer-advanced-level-from-urgency-or-no-questions": true,
+        "requires-plain-language-difficulty-description": true
       }
     },
     {
       "id": "remembered-level-wins",
       "prior-turns": [
-        {"role": "user", "content": "My English level is C1."},
-        {"role": "assistant", "content": "Got it."}
+        {
+          "role": "user",
+          "content": "My English level is C1."
+        },
+        {
+          "role": "assistant",
+          "content": "Got it."
+        }
       ],
       "prompt": "Give me five informal expressions with PlayPhrase.me links.",
       "expected": {
-        "filters": {"register": "informal", "language-level-from": "C1", "language-level-to": "C1"},
+        "filters": {
+          "register": "informal",
+          "language-level-from": "C1",
+          "language-level-to": "C1"
+        },
         "must-reuse-explicit-prior-level": true,
         "must-not-repeat-level-question": true
       }
@@ -136,12 +177,22 @@
     {
       "id": "higher-than-b2-followup",
       "prior-turns": [
-        {"role": "user", "content": "Give me B2 informal expressions."},
-        {"role": "assistant", "content": "Here are five linked B2 expressions."}
+        {
+          "role": "user",
+          "content": "Give me B2 informal expressions."
+        },
+        {
+          "role": "assistant",
+          "content": "Here are five linked B2 expressions."
+        }
       ],
       "prompt": "Those were too easy. Give me five at a higher level.",
       "expected": {
-        "filters": {"register": "informal", "language-level-from": "C1", "language-level-to": "C2"},
+        "filters": {
+          "register": "informal",
+          "language-level-from": "C1",
+          "language-level-to": "C2"
+        },
         "must-raise-lower-cefr-bound": true,
         "must-not-merely-swap-basic-phrases": true
       }
@@ -150,7 +201,11 @@
       "id": "slang-expressions-use-register",
       "prompt": "Give me eight non-basic B2 slang expressions, not single words.",
       "expected": {
-        "filters": {"register": "slang", "language-level-from": "B2", "language-level-to": "B2"},
+        "filters": {
+          "register": "slang",
+          "language-level-from": "B2",
+          "language-level-to": "B2"
+        },
         "must-not-use-common-words-as-phrase-proof": true,
         "must-not-put-api-only-filter-in-catalog-url": true
       }
@@ -159,18 +214,30 @@
       "id": "formal-professional-are-independent",
       "prompt": "Give me five B2 phrases that are both formal and professional.",
       "expected": {
-        "filters": {"formality": "formal", "register": "professional", "language-level-from": "B2", "language-level-to": "B2"},
+        "filters": {
+          "formality": "formal",
+          "register": "professional",
+          "language-level-from": "B2",
+          "language-level-to": "B2"
+        },
         "requires-both-filters": true,
         "requires-and-semantics": true
       }
     },
     {
       "id": "exact-common-phrase-text",
-      "runtime-event": {"learning-api": "success"},
+      "runtime-event": {
+        "learning-api": "success"
+      },
       "prompt": "The API returned 'Unfortunately, I won't be able to.' with count 10. Link that exact phrase.",
       "expected": {
-        "api-paths": ["/api/v1/learning/common-phrases"],
-        "api-item": {"text": "Unfortunately, I won't be able to.", "count": 10},
+        "api-paths": [
+          "/api/v1/learning/common-phrases"
+        ],
+        "api-item": {
+          "text": "Unfortunately, I won't be able to.",
+          "count": 10
+        },
         "requires-exact-returned-text": true,
         "must-not-complete-shorten-or-rewrite-returned-text": true,
         "must-not-use-record-id-in-link": true
@@ -189,12 +256,18 @@
     {
       "id": "wildcard",
       "prompt": "Find movie lines matching hello, then one or more words, then world.",
-      "expected": {"mode": "classic-search-wildcard", "query": "hello * world"}
+      "expected": {
+        "mode": "classic-search-wildcard",
+        "query": "hello * world"
+      }
     },
     {
       "id": "grammar-search",
       "prompt": "Find English examples of the grammar pattern go home.",
-      "expected": {"mode": "classic-search-grammar", "query": "gr: go home"}
+      "expected": {
+        "mode": "classic-search-grammar",
+        "query": "gr: go home"
+      }
     },
     {
       "id": "explain-one-phrase",
@@ -219,11 +292,17 @@
       "id": "job-interview-lesson",
       "prompt": "Make me a 20-minute B1 English lesson for a job interview with phrases I can hear in movies or TV.",
       "expected": {
-        "filters": {"topic": "work", "language-level-from": "B1", "language-level-to": "B1"},
+        "filters": {
+          "topic": "work",
+          "language-level-from": "B1",
+          "language-level-to": "B1"
+        },
         "requires-intent-based-groups": true,
         "requires-substantial-linked-path": true,
-        "must-not-use-timeboxed-stages": true,
-        "must-not-add-generic-exercises": true
+        "must-not-add-generic-exercises": true,
+        "requires-explicit-lesson-structure": true,
+        "duration-minutes": 20,
+        "requires-stage-durations-to-sum-to-request": true
       }
     },
     {
@@ -238,10 +317,16 @@
     },
     {
       "id": "common-phrases-reels",
-      "runtime-event": {"learning-api": "success"},
+      "runtime-event": {
+        "learning-api": "success"
+      },
       "prompt": "I'm B2. Give me five useful English idioms with individual links, then one optional Reels collection.",
       "expected": {
-        "filters": {"idiom": true, "language-level-from": "B2", "language-level-to": "B2"},
+        "filters": {
+          "idiom": true,
+          "language-level-from": "B2",
+          "language-level-to": "B2"
+        },
         "requires-link-per-phrase": true,
         "requires-one-reels-continuation": true,
         "reels-source": "common-phrases",
@@ -250,7 +335,9 @@
     },
     {
       "id": "model-fallback-does-not-invent-reels-scope",
-      "runtime-event": {"learning-api": "unavailable"},
+      "runtime-event": {
+        "learning-api": "unavailable"
+      },
       "prompt": "Give me five B2 idioms and keep me listening afterward.",
       "expected": {
         "output-count": 5,
@@ -268,6 +355,173 @@
         "allowed-api-prefix": "/api/v1/learning/",
         "must-offer-bounded-public-path": true
       }
+    },
+    {
+      "id": "russian-concise-wording",
+      "prompt": "Как вежливо сказать по-английски, что я не согласен?",
+      "expected": {
+        "requires-russian-explanation": true,
+        "requires-english-linked-expressions": true,
+        "maximum-options": 3,
+        "requires-primary-link-brand-and-listening-payoff": true,
+        "must-not-ask-level": true,
+        "must-not-repeat-promotional-link-labels": true
+      }
+    },
+    {
+      "id": "advanced-slang-consistent",
+      "prompt": "Give me five advanced slang words with listening links.",
+      "expected": {
+        "filters": {
+          "is-slang": true,
+          "language-level-from": "C1",
+          "language-level-to": "C2"
+        },
+        "output-count": 5,
+        "requires-individual-words": true
+      }
+    },
+    {
+      "id": "easier-keeps-context",
+      "prompt": "Попроще, пожалуйста.",
+      "expected": {
+        "requires-russian-explanation": true,
+        "must-preserve-topic-and-purpose": true,
+        "requires-simpler-wording-and-explanation": true,
+        "must-not-repeat-level-question": true
+      },
+      "prior-turns": [
+        {
+          "role": "user",
+          "content": "У меня B1. Дай два выражения для общения с коллегами с коротким объяснением по-русски."
+        },
+        {
+          "role": "assistant",
+          "content": "1. [I'll keep you in the loop. — слушать на PlayPhrase.me](https://www.playphrase.me/#/search?language=en&q=I%27ll+keep+you+in+the+loop.) — буду держать в курсе.\n2. [I'll get back to you ASAP.](https://www.playphrase.me/#/search?language=en&q=I%27ll+get+back+to+you+ASAP.) — скоро вернусь с ответом."
+        }
+      ]
+    },
+    {
+      "id": "known-phrase-replacement",
+      "prompt": "Первую уже знаю. Замени только её.",
+      "expected": {
+        "requires-replace-first-item-only": true,
+        "must-preserve-other-items": true,
+        "must-not-repeat-known-phrase": true,
+        "must-preserve-level-and-topic": true
+      },
+      "prior-turns": [
+        {
+          "role": "user",
+          "content": "У меня B1. Дай два выражения для общения с коллегами с коротким объяснением по-русски."
+        },
+        {
+          "role": "assistant",
+          "content": "1. [I'll keep you in the loop. — слушать на PlayPhrase.me](https://www.playphrase.me/#/search?language=en&q=I%27ll+keep+you+in+the+loop.) — буду держать в курсе.\n2. [I'll get back to you ASAP.](https://www.playphrase.me/#/search?language=en&q=I%27ll+get+back+to+you+ASAP.) — скоро вернусь с ответом."
+        }
+      ]
+    },
+    {
+      "id": "more-without-repeats",
+      "prompt": "Give me three more like those.",
+      "expected": {
+        "output-count": 3,
+        "must-preserve-level-and-topic": true,
+        "must-not-repeat-prior-phrases": true,
+        "requires-link-per-phrase": true
+      },
+      "prior-turns": [
+        {
+          "role": "user",
+          "content": "Give me two B2 idioms about focus and enthusiasm."
+        },
+        {
+          "role": "assistant",
+          "content": "[Keep your eye on the prize. — listen on PlayPhrase.me](https://www.playphrase.me/#/search?language=en&q=Keep+your+eye+on+the+prize.) — stay focused.\n[Like a kid in a candy store.](https://www.playphrase.me/#/search?language=en&q=Like+a+kid+in+a+candy+store.) — feel delighted by many choices."
+        }
+      ]
+    },
+    {
+      "id": "referenced-choice-for-writing",
+      "prompt": "Вторая подходит. А как написать это в деловом письме?",
+      "expected": {
+        "requires-resolve-second-prior-item": true,
+        "requires-russian-explanation": true,
+        "must-preserve-communicative-intent": true,
+        "requires-written-register": true,
+        "must-not-restart-unrelated-selection": true
+      },
+      "prior-turns": [
+        {
+          "role": "user",
+          "content": "У меня B1. Дай два выражения для общения с коллегами с коротким объяснением по-русски."
+        },
+        {
+          "role": "assistant",
+          "content": "1. [I'll keep you in the loop. — слушать на PlayPhrase.me](https://www.playphrase.me/#/search?language=en&q=I%27ll+keep+you+in+the+loop.) — буду держать в курсе.\n2. [I'll get back to you ASAP.](https://www.playphrase.me/#/search?language=en&q=I%27ll+get+back+to+you+ASAP.) — скоро вернусь с ответом."
+        }
+      ]
+    },
+    {
+      "id": "listening-link-no-results",
+      "prompt": "По первой ссылке ничего не нашлось. Что попробовать?",
+      "expected": {
+        "requires-acknowledgement": true,
+        "requires-alternative-search-link": true,
+        "must-preserve-communicative-intent": true,
+        "must-keep-original-expression-distinct": true,
+        "must-not-invent-result-verification": true,
+        "must-not-bypass-access-limits": true
+      },
+      "prior-turns": [
+        {
+          "role": "user",
+          "content": "У меня B1. Дай два выражения для общения с коллегами с коротким объяснением по-русски."
+        },
+        {
+          "role": "assistant",
+          "content": "1. [I'll keep you in the loop. — слушать на PlayPhrase.me](https://www.playphrase.me/#/search?language=en&q=I%27ll+keep+you+in+the+loop.) — буду держать в курсе.\n2. [I'll get back to you ASAP.](https://www.playphrase.me/#/search?language=en&q=I%27ll+get+back+to+you+ASAP.) — скоро вернусь с ответом."
+        }
+      ]
+    },
+    {
+      "id": "listening-example-mismatch",
+      "prompt": "The first clip does not seem to fit the meaning you explained.",
+      "expected": {
+        "requires-acknowledgement": true,
+        "requires-meaning-preserving-next-step": true,
+        "must-not-invent-clip-content": true,
+        "maximum-clarifying-questions": 1
+      },
+      "prior-turns": [
+        {
+          "role": "user",
+          "content": "У меня B1. Дай два выражения для общения с коллегами с коротким объяснением по-русски."
+        },
+        {
+          "role": "assistant",
+          "content": "1. [I'll keep you in the loop. — слушать на PlayPhrase.me](https://www.playphrase.me/#/search?language=en&q=I%27ll+keep+you+in+the+loop.) — буду держать в курсе.\n2. [I'll get back to you ASAP.](https://www.playphrase.me/#/search?language=en&q=I%27ll+get+back+to+you+ASAP.) — скоро вернусь с ответом."
+        }
+      ]
+    },
+    {
+      "id": "quiz-feedback-next-item",
+      "prompt": "I choose the second option.",
+      "expected": {
+        "requires-feedback-before-next-item": true,
+        "requires-at-most-one-next-question": true,
+        "must-not-reveal-next-answer": true
+      },
+      "prior-turns": [
+        {
+          "role": "user",
+          "content": "Quiz me on these expressions, one question at a time."
+        },
+        {
+          "role": "assistant",
+          "content": "Which expression says you are determined to attend?\n1. [Like a kid in a candy store. — listen on PlayPhrase.me](https://www.playphrase.me/#/search?language=en&q=Like+a+kid+in+a+candy+store.)\n2. [I wouldn't miss it for the world.](https://www.playphrase.me/#/search?language=en&q=I+wouldn%27t+miss+it+for+the+world.)"
+        }
+      ]
     }
   ]
 }

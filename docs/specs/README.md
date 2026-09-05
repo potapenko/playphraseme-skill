@@ -12,6 +12,11 @@ PlayPhrase.me language-learning skill.
 - [Learning material selection](learning-material-selection.md) — translating
   learner intent and level into bounded Learning API candidate queries.
 
+## Release candidates
+
+- [v0.7.0](releases/v0.7.0.md) — compact, context-aware learner experience;
+  built locally, awaiting installed-ZIP ChatGPT acceptance.
+
 ## Release baselines
 
 - [v0.6.0](releases/v0.6.0.md) — instruction-only ChatGPT runtime with useful

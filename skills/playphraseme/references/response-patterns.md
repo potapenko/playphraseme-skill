@@ -17,29 +17,36 @@ catalog provenance. A failed API attempt must never turn an ordinary learner
 request into a catalog-only refusal.
 
 Resolve level through [learning query planning](learning-query-planning.md).
-Generic unknown-level discovery asks one short level question. A concrete
-imminent situation instead uses a disclosed B2–C1 working range and answers in
-the same turn.
+Generic unknown-level discovery asks one plain-language level question. For an
+imminent situation or an explicit no-questions request, answer immediately with
+common task-appropriate expressions. Urgency does not imply advanced English.
 
 Organize multi-phrase answers along one useful dimension: situation, meaning,
-intensity, formality, naturalness, or grammar. The path—not a worksheet around
-it—is the finished response. Do not add exercises unless the user explicitly
-asks to practise.
+intensity, formality, naturalness, or grammar. Ordinary questions need no lesson
+wrapper. If the user explicitly requests a lesson, honor its format and
+duration; exercises still require practice intent.
+
+Explain in the language the user is using unless they request another. Keep
+English expressions and their search queries unchanged. Add a short meaning
+and a useful distinction, without translating every heading into both languages.
 
 ## Make links worth opening
 
-A strong link label combines the exact searchable phrase, an action, and the
-listening value:
+The first primary link identifies PlayPhrase.me and the listening purpose.
+Keep the label short; the surrounding sentence can explain its value:
 
 ```markdown
-**[🎬 Hear “I couldn't have said it better myself.” in movie and TV dialogue on PlayPhrase.me →](https://www.playphrase.me/#/search?language=en&q=I+couldn%27t+have+said+it+better+myself.)**
+**[I couldn't have said it better myself. — listen on PlayPhrase.me](https://www.playphrase.me/#/search?language=en&q=I+couldn%27t+have+said+it+better+myself.)**
 ```
 
-Use one visually primary link when there is a best fit. Supporting links can be
-compact, but avoid repeated generic labels such as “link” or “click here.”
+Use one visually primary link when there is a best fit. Supporting links should
+normally be just the exact phrase, with its meaning or use beside it. Do not
+repeat “Hear … in movie and TV dialogue” on every row.
+Avoid generic labels such as “link” or “click here.”
 
 Every core choice should add a distinct reason to open it. Favor reusable,
-idiomatic, collocational, or colloquial language over elementary filler. Do not
+idiomatic, collocational, or colloquial language at the chosen difficulty.
+Simple common expressions are valuable for simple tasks; avoid weak duplicates. Do not
 promise a particular source, speaker, delivery, stress, or tone without
 browser-visible evidence.
 
@@ -57,20 +64,23 @@ Avoid a lecture before the links.
 
 ## 3. Say an idea naturally
 
-Offer three to five options unless the user requests another count. Feature a
-best fit when context supports one, then give linked alternatives and one brief
-fit note each. When choices are equally natural, say “Natural options” rather
-than inventing a winner.
+For a short wording question, feature one best fit when context supports it,
+with up to two useful alternatives. A single sufficient formulation needs no
+extra options. Honor explicit requests for more choices or a particular count.
+When choices are equally natural, say so rather than inventing a winner.
 
 ## 4. Phrases for a situation
 
 Group by what the learner needs to do—for example, describing experience,
-showing responsibility, discussing next steps, and asking questions—not by
-lesson stages or minutes. For a broad situation, eight to twelve distinct links
-across three or four groups is usually enough.
+showing responsibility, discussing next steps, and asking questions. An ordinary
+preparation request needs roughly three to five core expressions, grouped by use
+rather than lesson stages. Explicit timed lessons retain their requested stages.
+Expand when the user asks for breadth, a lesson, or a specific count;
+use groups only when they help the user choose.
 
-An imminent event with no stated level uses a disclosed B2–C1 working range
-immediately. Offer to adjust easier or harder at the end.
+For an imminent event without a stated level, start with common, readily usable
+wording and briefly describe that choice. Offer an easier or more nuanced
+version. Do not label the learner B2–C1 or assume advanced material.
 
 ## 5. Vocabulary or expression discovery
 
@@ -92,7 +102,32 @@ patterns and give the shortest rule needed to distinguish them.
 
 Use only when practice is explicit. Make the task depend on linked real-world
 formulations and ask the learner to choose for a meaning or context. An
-interactive quiz presents one decision and waits for the learner's answer.
+interactive quiz presents one decision and waits for the learner's answer. Then
+give concise feedback and the next item; stop or explain when asked.
+
+## Explicit lessons and follow-up turns
+
+An explicit lesson request deserves a coherent lesson. Preserve requested time
+and structure, with realistic stages that add up to the duration and linked
+language as the material. A timed lesson can cover explanation, comparison,
+and listening without inventing a quiz. Add practice when requested.
+
+Use the available conversation: retain level, situation, register, explanation
+language, and the expressions already shown. Resolve “the second one” to the
+actual prior item. For “more” or “I already know that,” provide distinct choices
+without repeating known material. For “easier,” simplify wording and explanation;
+for “harder,” add appropriate nuance or complexity. Preserve other constraints.
+A request “for writing” changes register rather than restarting the topic. Do
+not claim persistent memory or store a profile outside available host context.
+
+## When a listening link does not help
+
+If the user reports no results or an unsuitable example, acknowledge it and
+suggest a shorter search fragment or a meaning-preserving alternative, with a
+new link and a brief reason. Keep the original expression separate; do not
+rewrite a catalog item or imply the replacement search was verified. If needed,
+ask one concrete question about what failed while giving a useful next step.
+For access limits, use the normal public flow without promising a workaround.
 
 ## Release regression example
 
@@ -108,17 +143,17 @@ does not discuss API access, DNS, Python, tools, or fallback mechanics:
 
 ### Responsibility
 
-- **[🎬 Hear “With great power comes great responsibility.” in movie and TV dialogue on PlayPhrase.me →](https://www.playphrase.me/#/search?language=en&q=With+great+power+comes+great+responsibility.)** — influence and authority bring obligations.
+- **[“With great power comes great responsibility.” — listen on PlayPhrase.me](https://www.playphrase.me/#/search?language=en&q=With+great+power+comes+great+responsibility.)** — influence and authority bring obligations.
 
 ### Focus and enthusiasm
 
-- **[🎬 Hear “Keep your eye on the prize.” in real dialogue →](https://www.playphrase.me/#/search?language=en&q=Keep+your+eye+on+the+prize.)** — stay focused on the goal despite distractions.
-- **[🎬 Hear “Like a kid in a candy store.” in real dialogue →](https://www.playphrase.me/#/search?language=en&q=Like+a+kid+in+a+candy+store.)** — feel delighted by many exciting choices.
+- **[“Keep your eye on the prize.”](https://www.playphrase.me/#/search?language=en&q=Keep+your+eye+on+the+prize.)** — stay focused on the goal despite distractions.
+- **[“Like a kid in a candy store.”](https://www.playphrase.me/#/search?language=en&q=Like+a+kid+in+a+candy+store.)** — feel delighted by many exciting choices.
 
 ### Commitment and skepticism
 
-- **[🎬 Hear “I wouldn't miss it for the world.” in real dialogue →](https://www.playphrase.me/#/search?language=en&q=I+wouldn%27t+miss+it+for+the+world.)** — say you are absolutely determined to attend.
-- **[🎬 Hear “That's too good to be true.” in real dialogue →](https://www.playphrase.me/#/search?language=en&q=That%27s+too+good+to+be+true.)** — express doubt about an unusually attractive claim.
+- **[“I wouldn't miss it for the world.”](https://www.playphrase.me/#/search?language=en&q=I+wouldn%27t+miss+it+for+the+world.)** — say you are absolutely determined to attend.
+- **[“That's too good to be true.”](https://www.playphrase.me/#/search?language=en&q=That%27s+too+good+to+be+true.)** — express doubt about an unusually attractive claim.
 
 These five literal examples were returned by the production B2 idiom Common
 Phrases query on 2026-09-05 with `count >= 5`. They may be reused as verified

@@ -2,111 +2,86 @@
 
 - Status: Active
 - Stability: Evolving
-- Revision: 6
+- Revision: 7
 - Domain: `learning-material-selection`
-- Authority: user decisions approved through 2026-09-05
-- Requires: `lesson-experience` Revision 7, clauses `LE.ROUTING`,
-  `LE.COMPOSITION`, `LE.ACTIVE-LINKS`, `LE.DEGRADATION`;
-  `skill-distribution` Revision 7, clause `SD.COMPATIBILITY`
+- Authority: user approval of the UX audit and new release on 2026-09-05
+- Requires: `lesson-experience` Revision 8, clauses `LE.ROUTING`,
+  `LE.COMPOSITION`, `LE.ACTIVE-LINKS`, `LE.CONTINUATION`, `LE.DEGRADATION`;
+  `skill-distribution` Revision 8, clause `SD.COMPATIBILITY`
 
 ## LMS.INTENT — Compile the learner's request
 
-Identify the requested unit, CEFR range, situation or topic, communicative
-purpose, register, and phrase properties before choosing material. Use only
-documented public filters. Do not substitute slang words for slang expressions
-or invent a cross-catalog filter.
+Identify unit, explicit level, situation, communicative purpose, register, and
+requested count before selection. Use only documented filters; do not substitute
+words for expressions or invent a cross-catalog filter.
+The Learning API enriches answers when accessible. Common Phrases and Common
+Words are authoritative for their respective catalog, filter, ranking, and
+frequency claims. Model-selected suggestions carry none of those claims.
 
-The Learning API supplies candidate data for a PlayPhrase-first answer when it
-is accessible. Common Phrases is authoritative for any phrase described as
-curated, API-returned, filter-matched, or observed at least five times. Common
-Words is authoritative for equivalent individual-word claims.
+## LMS.LEVEL — Resolve difficulty without an advanced default
 
-The model may select ordinary learning suggestions itself when live candidate
-data is unavailable, but those suggestions carry no Common Phrases or API
-provenance claim.
+Honor explicit CEFR exactly. Reuse explicitly stated level from the conversation
+or reliable learner memory; never infer it from writing style or locale.
+Clear signals may map to disclosed narrow ranges: beginner A1–A2, intermediate
+B1–B2, upper-intermediate B2–C1, and advanced C1–C2. “Not basic” may use B2–C1.
+For generic level-sensitive discovery without a signal, ask one plain-language
+question offering simple, intermediate, or advanced material, then wait.
+For imminent situations or explicit no-clarification requests, answer with
+common task-appropriate expressions. Briefly describe the starting difficulty
+in ordinary language and offer adjustment. Do not assume B2–C1 or C1–C2 solely
+because the request is urgent or forbids questions. A task-selected API range
+is a material-selection setting, not a proficiency assessment of the learner.
+When calling a level-filtered catalog endpoint, pass both CEFR bounds and
+briefly disclose a chosen range if none was supplied. Suggestions has no CEFR
+filters. Never apply unsupported bounds to it.
+For “easier” or “harder,” adapt actual wording, nuance, and familiarity as well
+as level where appropriate. An explicit “higher than B2” raises the lower bound;
+“less basic” need not merely substitute rare words. Preserve topic and register.
 
-## LMS.LEVEL — Resolve CEFR before selection
+## LMS.QUERY — Use bounded public requests
 
-Use an explicit CEFR level or range exactly. A clear signal such as beginner,
-intermediate, advanced, not basic, easier, or harder may map to a narrow range
-when disclosed. Reuse an explicitly stated level from conversation or reliable
-learner memory. Do not infer it from writing style, interface language, or
-locale.
+Prefer one anonymous GET using the host's existing HTTP, web, or browser
+capability, with limit <= 20 and no automatic pagination or retries. One or two
+additional sequential queries are allowed only for distinct groups or one
+disclosed relaxation of an inferred constraint. No runtime script or transport
+diagnostic is required; never spend the learner turn debugging access.
+Active filters combine with AND. Never silently remove an explicit constraint.
+Formal means `formality=formal`; professional means `register=professional`;
+use both only when both were requested.
 
-For generic level-sensitive open-ended discovery, ask one short level question
-when no signal exists. For a concrete imminent situation, use and disclose a
-B2–C1 working range and answer immediately. If the learner explicitly asks for
-no clarification in a generic collection, disclose a C1–C2 working assumption.
+## LMS.CURATION — Select useful and distinct language
 
-When calling the API, always pass both CEFR bounds. API defaults are transport
-defaults, not learner defaults.
-
-## LMS.QUERY — Use one simple public request
-
-Prefer one well-shaped anonymous `GET` to the documented public Learning API,
-using any HTTP, web, or browser capability already available to the host. Use a
-candidate limit no greater than 20 and no automatic pagination or retries. One
-or two additional sequential requests are allowed only for genuinely distinct
-groups or one disclosed relaxation of an inferred constraint.
-
-No script, shell, Python client, printed-URL handoff, DNS classification, exit
-code, or host-specific transport sequence is required. Do not spend the learner
-turn debugging network access.
-
-Different active filters combine with AND. An explicit constraint is never
-removed silently. `formality` and `register` are independent: explicit
-“formal” maps to `formality=formal`; explicit “professional” maps to
-`register=professional`; use both only when both are requested.
-
-## LMS.CURATION — Turn candidates into valuable links
-
-For a valid Common Phrases response, preserve every selected `items[].text`
-exactly as display text and search query. A returned `count >= 5` establishes
-membership, not the quality of a particular clip. Returned metadata supports
-record-level filter claims, not clip speaker, tone, stress, or source claims.
-
-Treat server order as candidate priority. Preserve it for an explicit
-API-ranking request. Otherwise select a coherent, non-duplicative subset and
-organize it by the user's requested communicative path.
-
-For either API-backed or model-selected material, prefer level-appropriate
-idiomatic, collocational, or colloquial chunks with distinct practical value.
-Do not default to elementary generic reactions merely because they are safe or
-frequent. Every selected phrase or word receives its own public search link.
+Preserve Common Phrase `text` exactly as display and search query. Count >= 5
+establishes catalog membership, not clip quality. Metadata supports record-level
+claims, not speaker, source, stress, or tone claims about a clip.
+Preserve server order for explicit ranking requests; otherwise curate a coherent
+subset. Prefer immediately reusable chunks with distinct practical value at
+the requested level. Avoid weak duplicates and phrases already rejected or known
+in the available conversation. Every selected word or phrase has its own link.
+Start with the response size in `LE.COMPOSITION`, honoring explicit counts.
 
 ## LMS.DEGRADATION — Keep usefulness and evidence honest
 
-If one bounded API request is unavailable, times out, is rate-limited, or
-returns unusable data, do not retry through a transport maze. For an ordinary
-learner request, finish the answer with model-selected language and individual
-Classic Search links. Do not mention infrastructure and do not attribute the
-choices to Common Phrases, a server filter, or corpus frequency.
-
-If the user explicitly requires API ranking, Common Phrases membership, or
-another catalog fact, do not substitute model knowledge for that evidence.
-State the unavailable fact briefly and offer the matching public catalog link
-when representable.
-
-Never use private endpoints, credentials, hidden parameters, or a looser API
-query presented as though it preserved the original constraints.
+For empty, unusable, rate-limited, or unavailable data, ordinary learner answers
+continue with natural model-selected language and individual Classic Search
+links, preserving explicit constraints and making no catalog provenance claims.
+Do not retry through transports or use private endpoints. For explicit ranking
+or membership requests, briefly explain missing evidence and offer a matching
+public catalog link if representable. Do not substitute model ranking.
+For user-reported empty or unsuitable listening destinations, follow
+`LE.DEGRADATION`; exact catalog text remains intact when suggesting another query.
 
 ## LMS.QA — Acceptance scenarios
 
-Scenarios cover explicit and remembered CEFR, mapped signals, generic
-unknown-level clarification, imminent B2–C1 selection, disclosed C1–C2
-no-question selection, higher-level follow-up, word/phrase separation,
-formality/register independence, empty results, bounded public queries, exact
-API text and count when provenance is claimed, and useful model-selected
-fallback without provenance when live data is unavailable.
+Cover explicit and remembered levels, plain-language clarification, task-based
+immediate selection, advanced C1–C2 consistency, easier/harder follow-ups,
+word/phrase separation, register/formality independence, empty results, bounded
+queries, exact API text, and honest model fallback with preserved count/grouping.
 
-The same ordinary learner prompt must retain its requested count, level,
-organization, and individual PlayPhrase.me links across both API-available and
-API-unavailable host states.
+## LMS.DELTA-7 — Task-sensitive difficulty
 
-## LMS.DELTA-6 — Optional API enrichment
-
-Evolve, authorized by the user's 2026-09-05 direction to remove bundled Python
-runtime logic after repeated ChatGPT failures. The Learning API remains the
-preferred provenance-bearing candidate source but is no longer a hard
-dependency for ordinary language help. Model-selected fallback restores a
-useful answer while keeping all API and Common Phrases claims evidence-bound.
+Evolve, authorized by the user's approval of the 2026-09-05 audit. Remove fixed
+advanced ranges for urgent/no-question requests; use common task-appropriate
+language without diagnosing proficiency. Keep explicit level authority and
+bounded API access. Reconcile the advanced-slang example with C1–C2. Released
+API/URL semantics, private-API boundaries, and provenance remain protected.

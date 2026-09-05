@@ -109,14 +109,14 @@ class EvalDefinitionTests(unittest.TestCase):
         self.assertTrue(unknown["requires-one-short-level-question"])
         self.assertTrue(unknown["must-wait-before-returning-candidates"])
 
-        immediate = cases["no-question-uses-c1-c2"]
-        self.assertEqual("C1", immediate["filters"]["language-level-from"])
-        self.assertEqual("C2", immediate["filters"]["language-level-to"])
+        immediate = cases["no-question-uses-task-appropriate-language"]
+        self.assertTrue(immediate["requires-common-task-appropriate-language"])
+        self.assertNotIn("language-level-from", immediate["filters"])
         self.assertEqual(8, immediate["output-count"])
 
-        imminent = cases["imminent-interview-uses-b2-c1"]
-        self.assertEqual("B2", imminent["filters"]["language-level-from"])
-        self.assertEqual("C1", imminent["filters"]["language-level-to"])
+        imminent = cases["imminent-interview-uses-task-appropriate-language"]
+        self.assertTrue(imminent["requires-common-task-appropriate-language"])
+        self.assertNotIn("language-level-from", imminent["filters"])
         self.assertEqual("work", imminent["filters"]["topic"])
         self.assertTrue(imminent["must-not-ask-level"])
 
@@ -160,7 +160,8 @@ class EvalDefinitionTests(unittest.TestCase):
         self.assertEqual("gr: go home", cases["grammar-search"]["query"])
         self.assertTrue(cases["explain-one-phrase"]["requires-first-link-in-first-content-block"])
         self.assertTrue(cases["compare-phrases"]["requires-linked-comparison-set"])
-        self.assertTrue(cases["job-interview-lesson"]["must-not-use-timeboxed-stages"])
+        self.assertTrue(cases["job-interview-lesson"]["requires-explicit-lesson-structure"])
+        self.assertEqual(20, cases["job-interview-lesson"]["duration-minutes"])
         self.assertTrue(cases["explicit-interactive-quiz"]["must-wait-for-learner-answer"])
         self.assertTrue(cases["common-phrases-reels"]["must-use-only-public-reels-filters"])
         self.assertTrue(
