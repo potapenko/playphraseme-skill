@@ -1,50 +1,46 @@
 # Search modes
 
-Choose the least expensive mode that can answer the request.
+Choose the simplest mode that fits the request.
 
-| Intent | First action | Browser needed? |
-| --- | --- | --- |
-| Suggestions around a phrase | Learning API `suggestions` | Only for live scenes |
-| Phrases by CEFR, type, formality, tense/aspect, register/slang, function, sentence type, emotion, polarity, topic, idiom, or question | Learning API `phrases` | Only for live scenes |
-| Individual vocabulary by CEFR, domain, part of speech, slang, or utility sort | Learning API `words` | Only for live scenes |
-| User-supplied ordinary phrase or word | Classic Search URL | When visible examples are requested |
-| User-supplied exact quote | Classic Search with `--exact` | When visible examples are requested |
-| User-supplied words separated by an arbitrary span | Classic Search wildcard `*` | When visible examples are requested |
-| User-supplied English grammar pattern | Classic Search with `--grammar` | When visible examples are requested |
-| Year, kind, genre, cast, voice, director, movie, IMDb, series | Clip Search URL | Usually yes |
-| Known legacy actor URL/id | Actor route | Usually yes |
-| Swipe-first results | Reels URL | Usually yes |
+| Intent | Preferred path |
+| --- | --- |
+| Nearby expressions around known text | Learning API Suggestions, then individual Classic Search links |
+| Phrases by CEFR, idiom, register, function, topic, or another documented field | Learning API Common Phrases when available |
+| Individual vocabulary by CEFR, domain, part of speech, slang, or utility | Learning API Common Words when available |
+| Ordinary learner collection when API data is unavailable | Model-selected language plus individual Classic Search links |
+| User-supplied ordinary phrase or word | Classic Search |
+| User-supplied exact quote | Classic Search with encoded double quotes |
+| User-supplied arbitrary span | Classic Search with `*` |
+| User-supplied English grammar pattern | Classic Search with `gr: ` |
+| Year, kind, genre, cast, voice, director, movie, IMDb, or series | Clip Search |
+| Known public actor id | Actor route |
+| Swipe-first results | Reels |
 
-The Learning API is not a general-search fallback. Go directly to the public
-URL/browser workflow for exact, wildcard, grammar, Clip Search, actor, and Reels
-requests.
+The Learning API is not a general scene-search endpoint. Use public frontend
+routes for exact, wildcard, grammar, Clip Search, actor, and Reels requests.
 
-For an open-ended phrase collection, alternatives, lesson path, or examples
-chosen by the agent, Common Phrases is the material source. Select returned
-items first, then build each listening link from the exact `items[].text`.
-Classic Search finds scenes for that selected text; it does not establish that a
-model-written phrase belongs to Common Phrases. Direct user-supplied wording is
-the exception and may go straight to its documented search mode.
+When valid Common Phrases data is available, preserve returned `text` exactly
+and link it through Classic Search. When it is unavailable, ordinary language
+help continues from model knowledge; do not claim that fallback phrases belong
+to Common Phrases or matched API filters. Direct user-supplied wording may
+always go straight to its search route.
 
-For a collection chosen around a learner's level, register, situation, or
-communication goal, read [learning query planning](learning-query-planning.md)
-before combining these modes.
+For level, register, situation, or communication-goal collections, read
+[learning query planning](learning-query-planning.md).
 
 ## Meaning distinctions
 
-- `actor-id` is the legacy public `/actor/<actor-id>` scope. Use it only when
-  the id came from a user-supplied URL or a visible PlayPhrase.me link.
-- `cast-actor` means the person appears in the movie or episode cast. It does
-  not prove they spoke the phrase.
-- `voice-detection` is English-only, phrase-level probabilistic attribution.
-  Describe it as a likely voice match, not a verified credit.
+- `actor-id` is the legacy public `/actor/<id>` scope. Use it only from a
+  user-supplied or browser-visible public id.
+- `cast-actor` means the person appears in the source cast; it does not prove
+  they spoke the phrase.
+- `voice-detection` is English-only probabilistic attribution, not verified
+  speaking credit.
 
-If a user asks broadly for phrasal verbs, explain that there is no dedicated
-filter. Search a phrasal verb named by the user directly. For agent-selected
-multi-word examples, use only returned Common Phrases; Vocabulary verbs may be
-a supporting word list but are not phrase examples.
+There is no dedicated phrasal-verb filter. Search a phrasal verb named by the
+user directly, or choose suitable examples without claiming a nonexistent
+catalog filter.
 
-The extended phrase filters `phrase-type`, `formality`, `tense`, `aspect`,
-`register`, `function`, and `sentence-type` are API-only. They select candidates;
-they are not valid Common Phrases catalog-URL filter keys. Build each selected
-item's Classic Search link from its `text`.
+The extended fields `phrase-type`, `formality`, `tense`, `aspect`, `register`,
+`function`, and `sentence-type` are Learning API-only. Do not put them in a
+public Common Phrases catalog URL; link selected phrases individually.

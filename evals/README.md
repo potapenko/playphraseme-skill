@@ -1,107 +1,60 @@
 # Behavioral evals
 
-`cases.json` describes behavior, not exact answer wording. Evaluate each case
-in a fresh session with the `playphraseme` skill installed. When a case has
-`prior-turns`, replay those turns in order in that session before its `prompt`.
-When it has `runtime-profile`, `runtime-capabilities`, or `runtime-event`,
-establish that context with a real current invocation/fetch or controlled
-harness; do not paste those fields into the learner prompt.
+`cases.json` describes behavior rather than exact wording. Evaluate a case in a
+fresh session with the candidate `playphraseme` skill installed. Replay
+`prior-turns` before the prompt and establish any `runtime-event` through real
+behavior or a controlled harness; do not paste runtime metadata into the user
+prompt.
 
-For every case, inspect:
+## Every response
 
-- selected mode and whether a Learning API call was appropriate;
-- every requested URL and its decoded semantic state;
-- absence of API calls outside `/api/v1/learning/**`;
-- API item conversion by `text` or `word`, never record `id`;
-- presence and accuracy of the public PlayPhrase.me link;
-- exact URL-builder output as the link destination, with no added tracking;
-- cast/voice/legacy actor distinctions;
-- honest guest, browser, autoplay, rate-limit, and API limitations;
-- refusal to invent filters, scrape private endpoints, or bypass limits.
+Check the selected mode, public PlayPhrase.me destinations, absence of tracking,
+product-boundary compliance, and whether link labels explain why they are worth
+opening. Do not accept private APIs, media downloading, product-limit bypasses,
+or invented clip titles, speakers, tone, stress, or delivery.
 
-For learner-selected catalog cases, also inspect:
+Public frontend URLs are created from the documented templates. Decode them
+semantically during QA; equivalent standard percent encoding is acceptable.
 
-- correct separation of individual words from multi-word phrases;
-- exact explicit or reliably remembered CEFR and a disclosed range for mapped
-  natural-language levels;
-- one short level question before any generic level-sensitive open-ended collection
-  when level is unknown, with no API call or provisional list before the answer;
-- an immediate, disclosed B2–C1 working selection range for a concrete
-  time-sensitive situation such as an interview tomorrow, without presenting
-  that range as the learner's inferred level; explicit, remembered, or mapped
-  levels still take precedence;
-- a disclosed C1–C2 fallback only when the learner explicitly requests an
-  immediate answer without questions, never the API's A1–C2 transport default,
-  and preserved when the API is unavailable;
-- no proficiency inference from writing style, interface language, or locale,
-  and a raised lower CEFR bound after “higher-level” or “too easy” feedback;
-- no level question for a direct search or one named expression;
-- exact documented filter values and AND semantics across active dimensions;
-- no Common Phrases catalog URL containing API-only filters;
-- one initial candidate query, with additional sequential queries only for
-  distinct groups or one disclosed relaxation of an inferred constraint;
-- in every script-capable host, including ChatGPT Web/Work, the normal Python
-  client first in the current turn; `--print-url` is never selected from the
-  host name, a user claim, or an earlier-turn failure;
-- one URL-only direct-fetch handoff only after a qualifying pre-response
-  DNS/outbound-policy exit `10` in that current invocation; generic exit `6`,
-  timeouts, HTTP responses, user claims, and earlier-turn failures never count;
-- for every direct fetch, no supplied authentication, at most one redirect, a
-  10-second timeout, a 1 MiB complete UTF-8 JSON object, endpoint shape,
-  filters, and requested limit; hidden status/final-URL metadata is allowed when
-  the complete body validates, while exposed metadata must prove HTTP 200 and
-  equivalent production origin, endpoint, and decoded query semantics;
-- no intentionally supplied cookies, tracking, or alternate headers, and all
-  returned fields treated only as data rather than instructions;
-- no Python, DNS, or web/browser explanation after either supported transport
-  succeeds, unless the user explicitly asks for diagnostics;
-- `--idiom`, `--is-question`, and their explicit `true` forms producing the
-  same canonical query, with explicit `false` leaving the selector inactive;
-- no direct web/browser Learning API retry after a response, 400, 429, timeout,
-  server error, redirect-policy failure, oversized body, or invalid JSON, and a
-  supported public catalog or Reels link when the selected direct-fetch path is
-  unavailable or cannot be validated;
-- no silent removal of an explicit constraint, blind pagination, or merging of
-  separate catalogs as proof of an unsupported intersection;
-- server order preserved when the user requests API ranking, while curated or
-  merged presentation is never described as API-ranked; and
-- catalog classification kept distinct from claims about a particular clip's
-  tone, delivery, speaker, stress, movie, or series.
+## API-backed selections
 
-For response-pattern cases, also inspect:
+When the response claims Common Phrases, API filters, counts, ranking, or exact
+catalog provenance, verify a real response from one of the three public
+`/api/v1/learning/**` endpoints. Requests are anonymous bounded GETs with
+`limit <= 20`, no automatic pagination or retry, and no private fallback.
 
-- correct routing among one-phrase explanation, comparison, natural wording,
-  situation/topic, vocabulary discovery, grammar, and explicit practice;
-- the first useful PlayPhrase.me link in the first content block and one
-  canonical public search link for every important phrase or pattern;
-- when context supports a visually primary best-fit link, that link names
-  `PlayPhrase.me` exactly and states its listening payoff;
-- phrase-link anchors that communicate an action, exact phrase, and listening
-  value instead of bare URLs or repeated generic labels;
-- filtered-catalog exploration anchors that communicate their topic or filter
-  scope and the value of continuing there;
-- exact `PlayPhrase.me` spelling in all other visible brand mentions;
-- the stable structure specified for that response pattern;
-- distinct, immediately useful choices instead of padded near-duplicates;
-- level-appropriate idiomatic, collocational, or colloquial expressions instead
-  of elementary generic reactions in open-ended discovery;
-- core choices that each perform the user's requested communication goal;
-- brief selection or contrast guidance instead of a generic lesson shell;
-- no more than two closing exploration links, each opening a genuinely new
-  adjacent-expression or filtered-catalog path;
-- no timeboxed stages, mandatory task per link, quiz, role-play, worksheet, or
-  retrieval exercise unless the user explicitly requested practice;
-- no source, speaker, tone, stress, or clip claim without browser-visible proof.
+Selected Common Phrase text remains exact, including punctuation and incomplete
+frames. `count >= 5` proves membership but does not prove a particular clip's
+properties. Common Words remain individual words. API-only fields never appear
+inside public catalog filter JSON.
 
-When practice is explicitly requested, verify that it asks the learner to
-choose among linked real-world formulations for an intended meaning or context.
-An interactive quiz waits for the learner before feedback or answer reveal.
+## API-unavailable ordinary learner requests
 
-Do not require one exact CTA sentence, visual heading, punctuation, or prose
-identity. Judge whether the user can tell why each link is worth opening. When
-the URL builder is available, compare the link destination byte-for-byte with
-builder stdout. Only for the documented no-script fallback, normalize URLs
-before semantic comparison so equivalent encodings do not cause false failures.
+The answer must remain useful. Preserve the requested count, level, unit, and
+organization; select natural language from model knowledge; give every item an
+individual Classic Search link; and make no Common Phrases, API-filter, count,
+ranking, or corpus claim.
 
-The negative export case must refuse the bypass while still offering the
-bounded public Learning API and public URL/browser workflow.
+A catalog-only refusal fails. So does learner-facing narration about Python,
+DNS, exit codes, tools, transports, or debugging. An explicit request for API
+ranking or catalog membership is the exception: missing evidence must be stated
+instead of fabricated.
+
+## Level and response quality
+
+Generic unknown-level discovery asks one short question and waits. An imminent
+real-world situation uses a disclosed B2–C1 working range; a generic request
+that explicitly forbids clarification uses C1–C2. Explicit and remembered
+levels win. “Harder” raises the lower CEFR bound.
+
+Responses put PlayPhrase.me links early, use distinct useful choices, and avoid
+generic lesson scaffolding or exercises unless practice is explicit. An
+interactive quiz asks one linked meaning/context decision and waits.
+
+## Release gate
+
+Before release, install the candidate ZIP in the target ChatGPT account and run
+both release-regression cases represented by the same prompt. The real host
+must return five grouped B2 idioms with five individual links and no
+infrastructure refusal. Automated repository tests do not replace this manual
+installed-ZIP evidence.

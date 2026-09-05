@@ -1,10 +1,10 @@
 # Explore real English in ChatGPT with PlayPhrase.me
 
 The PlayPhrase.me skill turns an English question or communication goal into an
-answer built around real movie and TV dialogue. For open-ended selections,
-ChatGPT chooses from Common Phrases—curated expressions found at least five
-times in the corpus—and every phrase leads back to PlayPhrase.me so you can hear
-it in context.
+answer built around movie and TV listening links. When live catalog data is
+available, ChatGPT can choose from Common Phrases—curated expressions found at
+least five times in the corpus. Either way, every useful phrase leads back to
+PlayPhrase.me so you can hear it in context.
 
 **[Download the PlayPhrase.me skill for ChatGPT](https://github.com/potapenko/playphraseme-skill/releases/latest/download/skill.zip)**
 
@@ -34,11 +34,11 @@ Start a new chat, type `@PlayPhrase.me`, and send this prompt:
 they help me express and give me a PlayPhrase.me link for each one.
 ```
 
-When the Learning API is available, you get a compact, link-first selection
-from Common Phrases rather than a generic quiz or an invented phrase list.
-Exact choices can change as the curated catalog evolves. If the API is
-unavailable, the skill says so and offers the closest supported public catalog
-or Reels path instead of inventing examples.
+You get a compact, link-first selection rather than a generic quiz. Exact
+choices may change as the catalog evolves. A temporary API or tool limitation
+does not replace the requested five phrases with an infrastructure explanation:
+the skill still gives useful language and an individual PlayPhrase.me listening
+link for every choice, while reserving Common Phrases claims for verified data.
 
 ## Find the part of PlayPhrase.me you need
 

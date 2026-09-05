@@ -1,110 +1,115 @@
 # Public URL contract
 
-When `scripts/playphrase_url.py` is available, always use it. Never handcraft a
-PlayPhrase.me URL in that case. Return its URL unchanged as the link destination
-and do not append `utm_*` or any other tracking parameters. Descriptive link
-text does not change this requirement.
+Construct public PlayPhrase.me links directly from these templates. Use
+standard UTF-8 query encoding, preserve the intended state, and never append
+`utm_*` or any other tracking parameters.
 
-The builder produces deterministic UTF-8 URLs with query state after the hash:
+Frontend state lives after the hash:
 
 ```text
 https://www.playphrase.me/#/<route>?<query>
 ```
 
-Quoted text, `&`, `#`, `%`, Unicode, and compact JSON filters are percent
-encoded. Empty and default values are omitted. Build commands print the URL to
-stdout; `--format json` returns `url`, `mode`, normalized `state`, and
-`warnings`. `decode` returns JSON and removes unknown or internal parameters.
-If a browser follows a redirect, keep the generated link and report the
-browser-observed destination separately only when it matters to the request.
+Encode quoted text, `&`, `#`, `%`, Unicode, `*`, and compact JSON. Spaces may
+use `+`; omit empty and default values. Do not use a Learning API record `id`
+inside a frontend URL.
 
 ## Classic Search
 
-```bash
-python3 scripts/playphrase_url.py search --query "thank you"
-python3 scripts/playphrase_url.py search --query "i love you" --exact
-python3 scripts/playphrase_url.py search --query "hello * world"
-python3 scripts/playphrase_url.py search --query "go home" --grammar
-```
-
-Grammar is English-only and is normalized to one `gr:` prefix. `pos` is
-non-negative and omitted at zero.
-
-## Common Phrases and Vocabulary
-
-```bash
-python3 scripts/playphrase_url.py catalog \
-  --source common-phrases \
-  --filter idiom=true \
-  --filter language-level-from=B1 \
-  --filter language-level-to=C1
-
-python3 scripts/playphrase_url.py catalog \
-  --source common-words \
-  --filter domain=American-English \
-  --filter part-of-speech=verb
-```
-
-Common Phrase fields: `idiom`, `is-question`, `language-level-from`,
-`language-level-to`, `emotion`, `polarity`, and `topic`.
-
-Vocabulary fields: CEFR range, `domain`, `part-of-speech`, `is-slang`,
-`offensive-filter`, and `sort-by`. Parts of speech are `verb`, `noun`,
-`adjective`, and `adverb`. Offensive modes are `exclude`, `include`, and
-`only`; Learning API v1 itself always excludes offensive words.
-
-Emotion values:
+Ordinary phrase:
 
 ```text
-angry, anxious, assertive, concerned, confident, confused, determined,
-embarrassed, empathetic, excited, fearful, friendly, frustrated, happy,
-hopeful, nervous, neutral, nostalgic, other, romantic, sad, sarcastic, scared,
-serious, skeptical, supportive, surprised, urgent, worried
+https://www.playphrase.me/#/search?language=en&q=thank+you
 ```
 
-Topic values:
+Exact quote: wrap the search value in double quotes before encoding.
 
 ```text
-art, business, daily-life, decision-making, education, emergency,
-entertainment, family, government, health, healthcare, history, language, law,
-legal, life, literature, medical, personal development, personal-development,
-personal-reflection, philosophy, politics, problem-solving, relationship,
-relationships, religion, sports, transportation, travel, work, other
+https://www.playphrase.me/#/search?language=en&q=%22i+love+you%22
 ```
+
+Wildcard: keep `*` in the search value and encode it.
+
+```text
+https://www.playphrase.me/#/search?language=en&q=hello+%2A+world
+```
+
+English grammar search: prepend one `gr: ` before encoding.
+
+```text
+https://www.playphrase.me/#/search?language=en&q=gr%3A+go+home
+```
+
+Use Classic Search for every selected phrase, whether it came from API data or
+the honest model-selected fallback.
+
+## Common Phrases and Common Words catalogs
+
+Template:
+
+```text
+https://www.playphrase.me/#/search?language=<language>&source=<source>&filters=<URL-encoded compact JSON>
+```
+
+Example:
+
+```text
+https://www.playphrase.me/#/search?language=en&source=common-phrases&filters=%7B%22idiom%22%3Atrue%2C%22language-level-from%22%3A%22B2%22%2C%22language-level-to%22%3A%22B2%22%7D
+```
+
+Common Phrases catalog fields are `idiom`, `is-question`,
+`language-level-from`, `language-level-to`, `emotion`, `polarity`, and
+`topic`.
+
+Common Words fields are the CEFR bounds, `domain`, `part-of-speech`,
+`is-slang`, `offensive-filter`, and `sort-by`. Parts of speech are `verb`,
+`noun`, `adjective`, and `adverb`. Offensive modes are `exclude`, `include`,
+and `only`.
+
+Do not put Learning API-only phrase fields such as `register`, `formality`, or
+`function` into public catalog JSON. Link selected items individually instead.
 
 ## Clip Search
 
-```bash
-python3 scripts/playphrase_url.py clip-search \
-  --query "break a leg" \
-  --filter year=1990..1999 \
-  --filter genre=Comedy \
-  --filter director="quentin tarantino"
+Template:
+
+```text
+https://www.playphrase.me/#/clip-search?language=<language>&q=<encoded query>&filters=<URL-encoded compact JSON>
 ```
 
-Fields are `year`, `source-kind`, `genre`, `cast-actor`, `voice-detection`,
-`director`, `movie-id`, `imdb`, and `serie-imdb`. Arrays can be supplied by
-repeating `--filter`. Accepted input aliases are `actor` → `cast-actor` and
-`year-range` → `year`; output always uses canonical keys.
+Supported fields are `year`, `source-kind`, `genre`, `cast-actor`,
+`voice-detection`, `director`, `movie-id`, `imdb`, and `serie-imdb`. `genre`,
+`cast-actor`, `voice-detection`, and `director` use JSON arrays. A year range
+uses `{"min":1990,"max":1999}`.
 
-`voice-detection` accepts at most one value and is removed with a warning for a
-non-English corpus. `movie-id` or `imdb` can coexist in the route with generic
-metadata, but the builder warns that the generic filters are ineffective for
-an exact source.
+`voice-detection` is English-only. `movie-id` or `imdb` may coexist in route
+state with generic metadata, but generic filters are ineffective for an exact
+source.
 
-## Reels and actor scope
+## Reels
 
-```bash
-python3 scripts/playphrase_url.py reels \
-  --source custom-search --query "break a leg" --language en
+Template:
 
-python3 scripts/playphrase_url.py actor --actor-id ACTOR_ID
+```text
+https://www.playphrase.me/#/reels/<language>?source=<source>&q=<encoded query>
 ```
 
-Reels always uses an explicit language route such as `/#/reels/en`. Supported
-sources are `common-phrases`, `common-words`, `favorites`, and `custom-search`.
-Catalog filters use their catalog-specific schema. Same-language
-`translate-direction` is omitted.
+Supported sources are `common-phrases`, `common-words`, `favorites`, and
+`custom-search`. A catalog Reels URL may use only its public catalog filters.
+Do not imply that Reels preserves API-only filters or combines an arbitrary
+model-selected phrase list.
 
-Never guess an actor id from a name. Without a public actor id, use Clip Search
-cast or voice filters and preserve their distinct meaning.
+Example:
+
+```text
+https://www.playphrase.me/#/reels/en?source=custom-search&q=break+a+leg
+```
+
+## Actor route
+
+```text
+https://www.playphrase.me/actor/<public actor id>
+```
+
+Never guess an actor id from a name. Without a public id, use Clip Search cast
+or voice filters and preserve their different meanings.
