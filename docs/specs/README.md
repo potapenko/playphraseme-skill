@@ -14,6 +14,8 @@ PlayPhrase.me language-learning skill.
 
 ## Release baselines
 
+- [v0.6.0](releases/v0.6.0.md) — instruction-only ChatGPT runtime with useful
+  model fallback and no bundled Python tooling.
 - [v0.5.1](releases/v0.5.1.md) — client-first Learning API hotfix and tolerant
   boolean CLI forms.
 - [v0.5.0](releases/v0.5.0.md) — host-specific Learning API transport and
