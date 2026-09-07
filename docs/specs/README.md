@@ -5,6 +5,8 @@ PlayPhrase.me language-learning skill.
 
 ## Active contracts
 
+- [AI landing](landing-page.md) — standalone introduction, Russian editorial
+  source, visual examples and ten-locale scope for `playphraseme.ai`.
 - [Skill distribution](skill-distribution.md) — installation channels,
   package contents, compatibility, and release acceptance.
 - [Response experience](lesson-experience.md) — PlayPhrase-first answer
