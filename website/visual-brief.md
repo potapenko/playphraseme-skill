@@ -1,6 +1,6 @@
 # Visual examples for the Russian landing
 
-Editorial handoff for `content/ru.md`, semantic revision 1. This is a visual
+Editorial handoff for `content/ru.md`, semantic revision 2. This is a visual
 content brief, not a selected page design or a capture receipt.
 
 ## Composition
@@ -14,6 +14,11 @@ visible in the third part.
 The three authored dialogue examples must be readable page text, with the
 labels “Запрос”, “Пример ответа” and real phrase links. They are not recorded
 ChatGPT transcripts, testimonials, or a functioning chat interface.
+Use the revised master's “Скопируйте запрос” and contextual follow-up labels.
+Every fenced prompt receives a copy control in the eventual website. Keep
+the copyable query primary and the phrase links alongside the example answer.
+The master includes self-contained prompts plus labelled same-chat follow-ups;
+do not present a follow-up as a standalone fresh-chat request.
 
 ## Selected visual subjects
 
@@ -21,7 +26,7 @@ ChatGPT transcripts, testimonials, or a functioning chat interface.
 | --- | --- | --- |
 | Introduction | Safari search for `I wouldn't miss it for the world` | The link opens the website, with a phrase, video area, translation and source information. |
 | Conversation section | A short real ChatGPT response with phrase links | How a response leads to individual searches. |
-| Personal discovery | Safari Clip Search for `I told you so` | Browsing a phrase as a clip-finding task. |
+| Personal discovery | Safari Clip Search for `I don't want to say I told you so.` | Browsing a catalog-backed phrase as a clip-finding task. |
 | Installation | ChatGPT Skills → Create → Upload from your computer | The actual upload entry point. |
 
 Use close, readable views of the useful interface. Exclude browser chrome,
@@ -33,9 +38,12 @@ counts or assigning tone/speaker identity from metadata.
 
 The hero search, Clip Search for `I told you so`, and the ChatGPT upload menu
 have been observed in Safari. Both searches produced visible matching results.
-This is not fresh skill installation or release acceptance. The additional
-authored dialogue phrases still need their publication checks; the draft does
-not claim those checks passed.
+Those observations used the earlier unpunctuated hero query and shorter clip
+query; they do not validate the revised exact-query destinations. All 15 linked
+phrase examples in revision 2 match public Learning API records exactly; see
+`phrase-review.md`. This proves catalog membership, not specific scene content
+or end-to-end ChatGPT behavior. Safari acceptance of the updated destinations
+and fresh ChatGPT conversations remain part of the later publication check.
 
 ## Existing candidate image
 

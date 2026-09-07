@@ -1,8 +1,7 @@
 # Playphrase.me AI landing
-
 - Status: Active brief; Russian copy pending editorial acceptance
 - Stability: Evolving
-- Revision: 1
+- Revision: 2
 - Domain: `skill-landing`
 - Authority: Eugene approved the landing proposal and clarified its standalone
   scope in this conversation on 2026-09-07.
@@ -30,6 +29,21 @@ use cases; an optional short practice session; installation and compact FAQ.
 Depth comes from distinct examples and useful explanations, not repeated
 claims. The three authored conversations are labelled examples, not transcripts
 of verified ChatGPT runs. Real screenshots keep their actual provenance.
+
+For authored listening examples, select confirmed Common Phrases through the
+public Learning API using the installed Codex skill. Preserve returned text
+exactly, including punctuation, in display and query. A composed multi-sentence
+answer must not masquerade as one catalog entry. Syntax patterns and fragments
+being explained are distinct from catalog entries. An absent Suggestions match
+means unconfirmed in that bounded response, not absent from the whole corpus.
+Keep the editorial phrase decisions in `website/phrase-review.md`.
+Ready-to-copy prompts are the main entry into each scenario. Use fenced text
+blocks for fresh requests and clearly labelled contextual follow-ups. Fresh
+ChatGPT prompts use the real `@PlayPhrase.me` invocation; preserve that literal
+identifier despite the editorial brand spelling. The eventual website adds a
+copy control to each prompt. Do not ask newcomers to compose search syntax or
+operate filters themselves; the skill supplies destinations. Audio/video
+playback still takes place on the website, not silently inside the chat.
 
 Explain meaning, context, tone, level adjustments, listening and opt-in
 practice. English phrases remain English; explanations and learner prompts
@@ -74,3 +88,12 @@ Evolve: add a self-contained ChatGPT-first acquisition page with broad
 Playphrase.me introduction and personal clip discovery, replacing the earlier
 proposal's reliance on Learn for deeper explanations. No existing released
 runtime or route changes. Visual layout is not selected in this editorial step.
+
+## LP.DELTA-2
+Evolve: Eugene requested installation in Codex and API verification of the
+landing examples in this conversation. Replace unconfirmed authored listening
+examples with exact returned Common Phrases; keep educational interpretation
+separate from membership evidence. Russian semantic revision advances to 2.
+Eugene further requested more copyable prompts and a prompt-first flow instead
+of instructions to search manually. No skill runtime, release, website
+deployment or Learn change is authorized.
