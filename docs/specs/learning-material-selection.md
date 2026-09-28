@@ -2,10 +2,10 @@
 
 - Status: Active
 - Stability: Evolving
-- Revision: 8
+- Revision: 10
 - Domain: `learning-material-selection`
-- Authority: user-authorized LM-SKILL packet, 2026-09-28; prior selection contract preserved
-- Requires: `lesson-experience` Revision 9, clauses `LE.ROUTING`,
+- Authority: user-authorized LM-SKILL-02 packet, 2026-09-28; prior selection contract preserved
+- Requires: `lesson-experience` Revision 11, clauses `LE.ROUTING`,
   `LE.COMPOSITION`, `LE.ACTIVE-LINKS`, `LE.CONTINUATION`, `LE.DEGRADATION`;
   `skill-distribution` Revision 8, clause `SD.COMPATIBILITY`
 
@@ -22,8 +22,10 @@ Model-selected suggestions carry none of those claims.
 Honor explicit CEFR exactly. Reuse explicitly stated level from the conversation or reliable learner
 memory; never infer it from writing style or locale. Clear signals may map to disclosed narrow
 ranges: beginner A1–A2, intermediate B1–B2, upper-intermediate B2–C1, and advanced C1–C2. “Not
-basic” may use B2–C1. For generic level-sensitive discovery without a signal, ask one plain-language
-question offering simple, intermediate, or advanced material, then wait. For imminent situations or
+basic” may use B2–C1. Guided-learning intent starts useful selection immediately as specified in
+LE.ROUTING; choose a disclosed everyday starting difficulty if none is known. Do not ask for a
+situation or require CEFR before helping. Other generic level-sensitive catalog discovery without
+a signal asks one plain-language level question and waits. For imminent situations or
 explicit no-clarification requests, answer with common task-appropriate expressions. Briefly
 describe the starting difficulty in ordinary language and offer adjustment. Do not assume B2–C1 or
 C1–C2 solely because the request is urgent or forbids questions. A task-selected API range is a
@@ -36,7 +38,7 @@ words. Preserve topic and register.
 
 ## LMS.WORD-PATH — Word, combinations, listening
 
-Resolve the requested level; B2 in the campaign example is not a global default. Use Common Words
+Resolve the requested level; campaign examples never create a global default. Use Common Words
 for word-level evidence. Obtain useful combinations from public Vocabulary collocations when
 actually observed, Suggestions when useful, or honest model selection. UI collocations and model
 choices are not Common Phrases records. Suggestions may return optional `language-level` and `count`
@@ -63,7 +65,12 @@ tone claims about a clip. Preserve server order for explicit ranking requests; o
 coherent subset. Prefer immediately reusable chunks with distinct practical value at the requested
 level. Avoid weak duplicates and phrases already rejected or known in the available conversation.
 Every selected word or phrase has its own link. Start with the response size in `LE.COMPOSITION`,
-honoring explicit counts.
+honoring explicit counts. A word-learning request selects words with short meanings and multiple
+useful distinct expressions under each word, each linked. Do not flatten it into unrelated phrases.
+A request for expressions receives expressions. In guided learning, choose varied reusable phrase cores rather than many
+pronoun variants of one construction. Prefer conversational usefulness for the learner over rarity
+or long full-sentence complexity. Supply meanings/examples yourself; do not offload study design
+to the learner. A useful A2 learning example is not a claim of catalog A2 or scene-level A2.
 
 ## LMS.DEGRADATION — Keep usefulness and evidence honest
 
@@ -82,11 +89,11 @@ advanced C1–C2 consistency, easier/harder follow-ups, word/phrase separation, 
 independence, empty results, bounded queries, exact API text, and honest model fallback with
 preserved count/grouping.
 
-## LMS.DELTA-8 — Source-aware word path
+## LMS.DELTA-10 — Guided selection without learner-authored setup
 
-Evolve under the 2026-09-28 LM-SKILL packet; reconcile the obsolete claim that Suggestions lacks
-count metadata using the bounded production observations in [the task plan](../LM-SKILL-PLAN.md).
-LMS.WORD-PATH separates catalog/UI/model sources and record levels; LMS.QUERY permits a bounded
-next-stage request. API request parameters, private-API prohibitions and ordinary fallback remain.
-QA adds irrelevant/simpler Suggestions, missing metadata, word/phrase/scene level separation,
-empty/unavailable data, exact text and the B2 campaign example.
+Evolve under LM-SKILL-02 in [the task plan](../LM-SKILL-PLAN.md). LMS.LEVEL starts guided study
+with an adjustable choice; LMS.CURATION requires useful varied cores and assistant explanations,
+including word-grouped material under the author-accepted two-critic repair.
+Explicit levels, ordinary catalog clarification, exact record text, source distinctions, bounded
+queries and the reconciled optional Suggestions metadata remain protected. QA checks unknown-level
+guided start, A2 usefulness without false CEFR claims, varied cores and known-item replacement.

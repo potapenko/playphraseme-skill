@@ -42,7 +42,9 @@ instead of fabricated.
 
 ## Level and response quality
 
-Generic unknown-level discovery asks one plain-language question and waits. An
+Guided learning (“help me learn words”) starts a useful small selection without
+blocking on level or scenario design. Other generic unknown-level catalog
+discovery asks one plain-language question and waits. An
 imminent situation or explicit no-questions request gets common task-appropriate
 language immediately, without a fixed advanced default or a proficiency claim.
 Explicit and remembered levels win. Explicit “higher than B2” raises the lower
@@ -97,3 +99,34 @@ available (paste the handoff when absent); conduct an actual spoken exchange
 and request a concrete correction. Record observed context and feedback limits.
 A Voice button, text transcript or documentation alone does not establish the
 full chain, automatic skill transfer, durable memory or pronunciation accuracy.
+
+## LM-SKILL-02 assistant-led learning
+
+Check both roles together: the assistant selects useful varied cores, explains
+and links them, maintains a current-chat study list, then leads spoken practice
+only when asked. It supplies the phrase/example, waits for an actual attempt,
+corrects an evidenced issue and invites repetition of the same item before
+advancing. Respect stop/easier and explicit free-conversation preferences.
+No learner-authored situations, Russian intentions or study questions are required.
+
+The added decision/mind/time examples are model-selected teaching material and
+user campaign inputs, not Common Phrases gold data or verified A2 catalog labels.
+Assess usefulness for an A2 learner separately from a record's catalog CEFR.
+Known, offered, explained, listened, practised and mastered are not equivalent.
+Reports keep attribution: learner report, supplied text/transcript, or heard audio.
+No invented playback telemetry, learning score, speech or persistent profile.
+
+These are definitions for later permitted runtime acceptance. A transcript
+correction case checks grammar and source attribution only; it cannot pass the
+actual Voice chain. In that chain, establish a Voice-capable host, use the study
+list, hear the learner's first attempt, correct a real issue, invite repetition,
+hear the second attempt and update the report with its evidence. Also test a
+clear correct attempt (no invented mistake), unclear audio, easier and stop.
+No new model/reviewer sessions, installation or public release are authorized here.
+
+LM-SKILL-02 review repairs: word requests must produce word groups, each with a
+short word meaning and multiple distinct linked expressions; expression requests
+retain direct phrase selection. An already active Voice chat with the current
+list starts one phrase immediately and waits, without handoff/open-Voice setup.
+Generic catalog clarification applies only without a known level. Cases cover
+these three boundaries; active-Voice execution still requires a real runtime.

@@ -6,8 +6,9 @@ description: Answers English questions with PlayPhrase.me-first guidance and mov
 # PlayPhrase.me
 
 Turn the user's English goal into useful language and public PlayPhrase.me
-listening links. The links are the material; explanations only help the user
-choose what to open.
+listening links. For guided learning, choose useful material, explain it and
+keep an honest study list in the current chat; lead practice only when requested.
+For ordinary questions, give the compact answer and useful listening links.
 
 ## Route the request
 
@@ -26,9 +27,13 @@ choose what to open.
    visible scenes, pronunciation, titles, speakers, or other page evidence;
    follow [browser extraction](references/browser-extraction.md).
 
-For listening streams, word-to-combinations requests, or explicit speaking/Voice
+For guided learning (“help me learn words”), listening streams, word-to-combinations, or explicit speaking/Voice
 practice, also read [listening and speaking](references/listening-and-speaking.md).
-Listening alone requires no quiz, per-clip report, or proof of understanding.
+Match the requested unit: word learning gets words with meanings and multiple
+useful expressions per word; expression requests get expressions. Start guided
+learning with those selections, not a demand for a situation or
+learner-written questions. Listening alone requires no quiz or per-clip report;
+study-list facts never imply mastery or memory outside available chat context.
 
 ## Prefer live catalog data, but never make it a learner-facing gate
 

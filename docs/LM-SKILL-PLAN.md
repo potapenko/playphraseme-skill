@@ -155,3 +155,148 @@ ordinary/listening/context/speaking cases; then perform an actual Voice exchange
 with user audio and concrete feedback. Keep actual model/Voice observations
 separate from the 42 definitions. No additional agents are needed.
 
+## LM-SKILL-02 — assistant-led learning and spoken repetition
+
+Authority: new explicit author instruction relayed by the main chat on
+2026-09-28: «Учебным сценарием управляет ChatGPT». Execute in the same scope;
+no installation, release, new agents, branches or storage architecture.
+Prior completed checkpoint: 003b46584afa945098b9dde1fe412b385aaac260.
+Execution remains single-agent; master started clean and synchronized.
+
+Traversal: current AGENTS → docs/specs/README.md → lesson-experience r9 →
+learning-material-selection r8; distribution r8 / SD.COMPATIBILITY and the
+previously read governance and released/candidate contracts remain applicable.
+Excluded: landing, Learn, API/backend, installation and publication. The complete
+selected response/selection contracts and existing implementation were reread.
+
+Final Spec Basis: Evolve LE.ROUTING/LE.SPEAKING plus new LE.STUDY-LIST and
+LMS.LEVEL/LMS.CURATION. The prior unknown-level wait and learner-supplied
+conversation prompt are observed implementation, not authority against the new
+instruction. Guided learning now starts selection immediately; the assistant
+provides useful diverse phrase cores, explanations and the practice sequence.
+Ordinary individual questions stay short; catalog-only unknown-level discovery
+keeps its existing clarification path. Explicit level/count and exact API text
+remain protected. Campaign A2 usefulness does not assign global A2, phrase CEFR
+or scene level. Earlier barely/B2 examples are historical regression inputs,
+not the only campaign example or a required default.
+
+Task-owned write set: this plan; docs/specs/lesson-experience.md (r10) and
+learning-material-selection.md (r9); skills/playphraseme/SKILL.md and its
+references/listening-and-speaking.md, learning-query-planning.md,
+response-patterns.md; evals/cases.json and evals/README.md. Update contracts
+first, then instructions and narrow scenario definitions; run make check,
+reference/link checks and diff check. No product/API execution code changes.
+
+Study list semantics: offered, explained, known-by-user-report, listened-by-user-
+report, spoken attempt with its actual evidence source, and return-to items are
+independent facts, not a mastery ladder. No link-to-listening inference, invented
+hearing, persistence promise, profile store or score. Keep the report compact in
+the current chat; do not append one to every short answer or demand clip reports.
+Speaking is opt-in: choose an item from this list, give a phrase/example, wait
+for speech, correct a concrete observed issue and invite a retry of that same
+item before advancing. No invented situations/questions demanded of the learner.
+Honor stop/easier. Text-only checks cannot establish spoken behavior.
+
+Before checkpoint, send the exact current diff scope, contract pins, changed
+examples, checks and residuals to the main chat for both existing critics.
+Pending: implementation, local checks, two-critic review, scoped checkpoint/push.
+
+### LM-SKILL-02 local outcome ready for review
+
+Pinned result: lesson-experience r10, learning-material-selection r9,
+skill-distribution r8 unchanged. Contract first, nine task-owned paths modified.
+The conditional reference now owns assistant initiative, independent in-chat
+study facts and the spoken correction/repetition loop. The router and query
+planner explicitly distinguish guided learning from generic catalog discovery.
+Free-conversation preferences remain protected; no forced drill against a
+specific request. No API/request/URL behavior or installation changed.
+
+Illustrative model-selected response (not API/CEFR/clip evidence):
+
+- [make a decision — слушать на PlayPhrase.me](https://www.playphrase.me/#/search?language=en&q=make+a+decision) — принять решение.
+- [change your mind](https://www.playphrase.me/#/search?language=en&q=change+your+mind) — передумать.
+- [take your time](https://www.playphrase.me/#/search?language=en&q=take+your+time) — не торопись.
+
+«Начнём с повседневных выражений; сложность можно подстроить.
+В нашем списке эти три выражения предложены и объяснены. О прослушивании
+и практике пока нет сведений» — no situation/question homework or B2 default.
+For the A2 scenario, these are useful teaching choices, not verified A2 records.
+
+Illustrative requested-practice turn: «Произнеси: I made a decision. Я подожду».
+For supplied text “I made decision.”: «Нужен артикль a: I made a decision.
+Попробуй повторить целиком». This is a grammatical correction to supplied text,
+not observed audio or a pronunciation diagnosis. The report can say “supplied
+text attempt; return to the article a”; it cannot claim speech or mastery.
+
+Checks: make check passed 16 tests, skill validation and build; 11 packaged
+canonical files. Definitions increased from 42 to 51, with earlier Voice/context
+expectations adjusted. These are not executed model conversations. Additional
+checks passed: 18 packaged references resolve, three new phrase links decode to
+exact cores, specification leaves stay within 100 lines, and diff whitespace is
+clean. Skill-creator quick_validate passed in a temporary venv, then the venv
+was removed.
+Actual fresh installed-ZIP, spoken attempt/correction/repeated attempt and Voice
+reporting remain unverified. Safari was not acquired or operated for LM-SKILL-02.
+Before checkpoint: send this result to both existing critics through the main
+chat, apply bounded actionable findings, then checkpoint/push current master.
+
+### LM-SKILL-02 critic repairs (before checkpoint)
+
+The main chat accepted both critics' P2 findings and one P3 synchronization:
+(1) a word-learning request must show words/meanings and several distinct
+expressions with EACH word, not the earlier flat three-phrase example;
+(2) active Voice with available context starts the first phrase immediately,
+without an unnecessary transfer or open-Voice prompt;
+(3) generic catalog clarification is only for an unknown level.
+Final pins advance to lesson-experience r11 and selection r10; distribution r8
+is unchanged. These corrections supersede the flat guided-word example above;
+it remains a valid direct-expression response only.
+
+Corrected model-selected word-learning example (no API/CEFR/clip claims):
+
+**decision — решение**
+- [make a decision — слушать на PlayPhrase.me](https://www.playphrase.me/#/search?language=en&q=make+a+decision) — принять решение.
+- [a difficult decision](https://www.playphrase.me/#/search?language=en&q=a+difficult+decision) — трудное решение.
+
+**mind — ум, мысли; смысл зависит от сочетания**
+- [change your mind](https://www.playphrase.me/#/search?language=en&q=change+your+mind) — передумать.
+- [keep in mind](https://www.playphrase.me/#/search?language=en&q=keep+in+mind) — помнить, иметь в виду.
+
+**time — время**
+- [take your time](https://www.playphrase.me/#/search?language=en&q=take+your+time) — не торопись.
+- [on time](https://www.playphrase.me/#/search?language=en&q=on+time) — вовремя.
+
+Study summary: these words/expressions were offered and explained here; listening
+and attempts remain unknown. Already-active Voice example with this context:
+«Произнеси: I made a decision. Я подожду». No handoff or request to reopen Voice.
+The same instruction must still wait for an actual attempt, never fabricate one.
+The existing three-expression test context now explicitly requests expressions;
+new exact regression cases cover word grouping, active Voice and known-level reuse.
+
+Repair owner checks: make check passed 16 tests, package validation/build; six
+grouped example links preserve exact cores; 54 scenario definitions are unique;
+packaged references resolve; diff check passed. These checks do not establish
+actual model/audio behavior. The repair was submitted to both existing critics
+for recheck before checkpoint. No UI, installation, release or new agents.
+
+### LM-SKILL-02 accepted local delivery
+
+The main chat reports both critics accepted all three repairs in the actual
+LE r11 / LMS r10 diff without new findings, and its coordinator accepted the
+instruction/local-check result and authorized scoped checkpoint/push.
+This supersedes the pending-review status above. Nine task-owned files only;
+current master, no installation/public release or new agents. The final chat
+receipt supplies the checkpoint identity and push/clean-tree result.
+
+Runtime acceptance packet: use the generated dist/skill.zip (11 canonical
+files) after separate installation authorization, in Safari through Computer Use.
+Verify guided word grouping/links/explanations and the independent study-report
+facts against actual generated responses. In an already active Voice session
+with the list available, verify immediate first phrase, then actual spoken
+attempt → concrete correction → retry of the same phrase → attributed report;
+verify easier/stop and no fake errors/scores. Separately verify handoff only for
+missing context, a different chat or a direct request. No new agents are needed.
+
+Exact residual: fresh installed ZIP and actual spoken attempt → correction →
+retry → report have not been tested. The 54 scenario definitions are not
+executed model runs; local checks do not establish host/Voice compatibility.

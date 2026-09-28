@@ -32,7 +32,12 @@ only when both are explicit. For general informal expressions, use
   memory. Never infer it from writing style, interface language, or locale.
 - Useful disclosed mappings are beginner → A1–A2, intermediate → B1–B2,
   upper-intermediate or “not basic” → B2–C1, advanced → C1–C2.
-- For generic level-sensitive discovery with no signal, ask one short level
+- For guided learning such as “help me learn words,” begin a small useful set
+  yourself. Reuse a stated level; otherwise describe an adjustable everyday
+  starting point without diagnosing the learner or assuming a fixed global CEFR.
+  Do not block on a situation, CEFR code, native-language intention or questions
+  the learner must compose. The learner may adjust difficulty after seeing it.
+- For other generic level-sensitive catalog discovery with no signal, ask one short level
   question in ordinary language and wait. Offer simple, intermediate, or advanced
   material; a CEFR code is optional.
 - For an imminent situation or explicit no-clarification request, answer
@@ -100,6 +105,20 @@ conversation. CEFR is a boundary, not a quality score. For interesting, informal
 or upper-level material, prefer idiomatic, collocational, or colloquial chunks
 with distinct communicative value. Avoid elementary reactions and transparent
 imperatives that add nothing new.
+
+For word learning, choose a small set of words, give each a short meaning, then
+several distinct useful expressions containing that word (normally at least two)
+with individual links. Preserve this word → expressions structure; a flat list
+of phrases is not a substitute. If the user asks for expressions instead, select
+expressions directly. Explicit counts and units determine the grouping.
+
+For guided learning, choose distinct useful phrase cores across meanings or
+words; changing only a pronoun is not useful variety. Supply a short meaning and
+an example yourself. Conversational usefulness at a learner's level does not
+establish the word/phrase's catalog CEFR or the level of its scenes. If a strict
+catalog-level request conflicts with a useful choice, keep the level constraint;
+do not relabel the choice. Keep exact catalog sentences distinct from any
+model-written shorter core or teaching example, with no inherited provenance.
 
 When API data exists, preserve selected Common Phrase `text` exactly, including
 an incomplete frame. Treat server order as priority; preserve it for an

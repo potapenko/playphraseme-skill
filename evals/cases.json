@@ -666,7 +666,9 @@
         "requires-one-natural-conversation-prompt-then-wait": true,
         "must-not-reselect-unrelated-material": true,
         "must-not-default-to-quiz-or-numerical-scores": true,
-        "must-not-claim-voice-mode-started": true
+        "must-not-claim-voice-mode-started": true,
+        "requires-assistant-supplied-setup-or-example": true,
+        "must-not-require-learner-designed-situation": true
       }
     },
     {
@@ -687,7 +689,9 @@
         "must-not-claim-automatic-skill-transfer": true,
         "must-not-promise-durable-memory-or-favorites-import": true,
         "must-not-claim-verified-voice-or-pronunciation-assessment": true,
-        "must-not-add-exam-or-numerical-scores": true
+        "must-not-add-exam-or-numerical-scores": true,
+        "requires-study-list-evidence-and-return-to-items": true,
+        "requires-phrase-attempt-correction-repeat-loop-in-handoff": true
       }
     },
     {
@@ -718,7 +722,7 @@
         },
         {
           "role": "assistant",
-          "content": "When was the last time you had barely enough time to finish something?"
+          "content": "Вот пример: I have barely enough time. Если хочешь повторить его вслух, я подожду."
         }
       ],
       "prompt": "Стоп разговор. Теперь только слушать те же выражения.",
@@ -727,6 +731,280 @@
         "requires-retain-exact-selected-expressions": true,
         "requires-link-per-phrase": true,
         "must-not-add-conversation-question-or-test": true
+      }
+    },
+    {
+      "id": "guided-learning-starts-selection",
+      "prompt": "Помоги учить английские слова.",
+      "runtime-event": {
+        "learning-api": "unavailable"
+      },
+      "expected": {
+        "requires-immediate-compact-selection-and-individual-links": true,
+        "requires-assistant-supplied-meanings": true,
+        "requires-disclosed-adjustable-starting-difficulty": true,
+        "must-not-block-on-level-or-situation-question": true,
+        "must-not-demand-russian-intention-or-study-questions": true,
+        "must-not-assume-global-a2-or-b2": true,
+        "requires-compact-current-chat-study-summary": true,
+        "must-not-start-unrequested-speaking": true,
+        "requires-selected-words-with-short-meanings": true,
+        "requires-multiple-distinct-expressions-per-word": true,
+        "requires-word-grouped-links": true,
+        "must-not-substitute-flat-phrase-list-for-word-learning": true
+      }
+    },
+    {
+      "id": "guided-a2-varied-phrase-cores",
+      "prompt": "У меня A2. Подбери полезные разговорные выражения с decision, mind и time, объясни и дай ссылки.",
+      "runtime-event": {
+        "learning-api": "unavailable"
+      },
+      "expected": {
+        "requires-useful-distinct-cores-for-all-three-words": true,
+        "requires-short-accessible-meanings": true,
+        "requires-link-per-phrase": true,
+        "must-not-substitute-pronoun-variants-for-variety": true,
+        "must-not-claim-catalog-a2-or-scene-level": true,
+        "must-not-demand-learner-created-situations": true
+      }
+    },
+    {
+      "id": "guided-explanation-without-homework",
+      "prior-turns": [
+        {
+          "role": "user",
+          "content": "У меня A2. Подбери три полезных выражения с decision, mind и time."
+        },
+        {
+          "role": "assistant",
+          "content": "Начнём с трёх повседневных выражений:\n[make a decision — слушать на PlayPhrase.me](https://www.playphrase.me/#/search?language=en&q=make+a+decision) — принять решение.\n[change your mind](https://www.playphrase.me/#/search?language=en&q=change+your+mind) — передумать.\n[take your time](https://www.playphrase.me/#/search?language=en&q=take+your+time) — не торопись.\nВ нашем списке эти три выражения предложены и объяснены; о прослушивании и практике пока нет сведений."
+        }
+      ],
+      "prompt": "Объясни второе попроще.",
+      "expected": {
+        "requires-explain-selected-second-expression": true,
+        "requires-assistant-supplied-simple-example": true,
+        "must-not-ask-learner-to-invent-question-or-russian-intention": true,
+        "must-not-add-quiz-or-speaking": true,
+        "must-not-add-unrequested-full-report": true
+      }
+    },
+    {
+      "id": "study-report-separates-evidence",
+      "prior-turns": [
+        {
+          "role": "user",
+          "content": "У меня A2. Подбери три полезных выражения с decision, mind и time."
+        },
+        {
+          "role": "assistant",
+          "content": "Начнём с трёх повседневных выражений:\n[make a decision — слушать на PlayPhrase.me](https://www.playphrase.me/#/search?language=en&q=make+a+decision) — принять решение.\n[change your mind](https://www.playphrase.me/#/search?language=en&q=change+your+mind) — передумать.\n[take your time](https://www.playphrase.me/#/search?language=en&q=take+your+time) — не торопись.\nВ нашем списке эти три выражения предложены и объяснены; о прослушивании и практике пока нет сведений."
+        },
+        {
+          "role": "user",
+          "content": "make a decision уже знаю. Ссылку change your mind открыл, но ещё не слушал. take your time послушал."
+        }
+      ],
+      "prompt": "Покажи наш учебный список и что мы уже сделали.",
+      "expected": {
+        "requires-all-three-exact-expressions-and-meanings": true,
+        "requires-offered-and-explained-from-actual-chat": true,
+        "requires-known-as-learner-report-only": true,
+        "requires-listened-take-your-time-as-learner-report": true,
+        "must-not-mark-opened-change-your-mind-as-listened": true,
+        "requires-practice-as-unknown-without-attempt": true,
+        "must-not-infer-mastery-or-create-storage": true
+      }
+    },
+    {
+      "id": "voice-start-provides-model-and-waits",
+      "prior-turns": [
+        {
+          "role": "user",
+          "content": "У меня A2. Подбери три полезных выражения с decision, mind и time."
+        },
+        {
+          "role": "assistant",
+          "content": "Начнём с трёх повседневных выражений:\n[make a decision — слушать на PlayPhrase.me](https://www.playphrase.me/#/search?language=en&q=make+a+decision) — принять решение.\n[change your mind](https://www.playphrase.me/#/search?language=en&q=change+your+mind) — передумать.\n[take your time](https://www.playphrase.me/#/search?language=en&q=take+your+time) — не торопись.\nВ нашем списке эти три выражения предложены и объяснены; о прослушивании и практике пока нет сведений."
+        }
+      ],
+      "prompt": "Начнём голосовую практику с нашим списком. Ты выбирай фразы и поправляй меня.",
+      "runtime-event": {
+        "voice-host": "must-be-established-in-actual-runtime-before-execution"
+      },
+      "expected": {
+        "requires-select-one-current-list-expression": true,
+        "requires-provide-one-short-phrase-or-example-to-say": true,
+        "requires-wait-for-actual-spoken-attempt": true,
+        "must-not-ask-learner-to-design-situation-or-question": true,
+        "must-not-invent-attempt-or-mark-practised": true,
+        "must-not-claim-voice-started-without-evidence": true
+      }
+    },
+    {
+      "id": "transcript-correction-invites-same-item-repeat",
+      "prior-turns": [
+        {
+          "role": "user",
+          "content": "У меня A2. Подбери три полезных выражения с decision, mind и time."
+        },
+        {
+          "role": "assistant",
+          "content": "Начнём с трёх повседневных выражений:\n[make a decision — слушать на PlayPhrase.me](https://www.playphrase.me/#/search?language=en&q=make+a+decision) — принять решение.\n[change your mind](https://www.playphrase.me/#/search?language=en&q=change+your+mind) — передумать.\n[take your time](https://www.playphrase.me/#/search?language=en&q=take+your+time) — не торопись.\nВ нашем списке эти три выражения предложены и объяснены; о прослушивании и практике пока нет сведений."
+        },
+        {
+          "role": "user",
+          "content": "Хочу голосовую практику: давай фразу, поправляй и проси повторить."
+        },
+        {
+          "role": "assistant",
+          "content": "Произнеси: I made a decision. Я подожду."
+        }
+      ],
+      "prompt": "Вот текст моей попытки: I made decision.",
+      "expected": {
+        "requires-concrete-missing-article-correction": true,
+        "requires-model-corrected-same-phrase": true,
+        "requires-invite-repeat-and-wait-before-advancing": true,
+        "requires-return-to-item-with-specific-reason": true,
+        "requires-attempt-as-supplied-text-not-heard-audio": true,
+        "must-not-diagnose-pronunciation-or-invent-speech": true,
+        "must-not-mark-mastered-or-score": true
+      }
+    },
+    {
+      "id": "voice-easier-before-attempt",
+      "prior-turns": [
+        {
+          "role": "user",
+          "content": "У меня A2. Подбери три полезных выражения с decision, mind и time."
+        },
+        {
+          "role": "assistant",
+          "content": "Начнём с трёх повседневных выражений:\n[make a decision — слушать на PlayPhrase.me](https://www.playphrase.me/#/search?language=en&q=make+a+decision) — принять решение.\n[change your mind](https://www.playphrase.me/#/search?language=en&q=change+your+mind) — передумать.\n[take your time](https://www.playphrase.me/#/search?language=en&q=take+your+time) — не торопись.\nВ нашем списке эти три выражения предложены и объяснены; о прослушивании и практике пока нет сведений."
+        },
+        {
+          "role": "user",
+          "content": "Начнём голосовую практику."
+        },
+        {
+          "role": "assistant",
+          "content": "Произнеси: You can change your mind if you need more time. Я подожду."
+        }
+      ],
+      "prompt": "Слишком сложно, дай попроще.",
+      "expected": {
+        "requires-shorter-example-from-current-list": true,
+        "requires-wait-for-attempt": true,
+        "must-not-mark-practised-or-failed-without-attempt": true,
+        "must-not-reset-level-or-require-situation": true
+      }
+    },
+    {
+      "id": "typed-rehearsal-is-not-spoken-mastery",
+      "prior-turns": [
+        {
+          "role": "user",
+          "content": "У меня A2. Подбери три полезных выражения с decision, mind и time."
+        },
+        {
+          "role": "assistant",
+          "content": "Начнём с трёх повседневных выражений:\n[make a decision — слушать на PlayPhrase.me](https://www.playphrase.me/#/search?language=en&q=make+a+decision) — принять решение.\n[change your mind](https://www.playphrase.me/#/search?language=en&q=change+your+mind) — передумать.\n[take your time](https://www.playphrase.me/#/search?language=en&q=take+your+time) — не торопись.\nВ нашем списке эти три выражения предложены и объяснены; о прослушивании и практике пока нет сведений."
+        },
+        {
+          "role": "user",
+          "content": "Тренируюсь только письменно: Take your time."
+        }
+      ],
+      "prompt": "Запиши результат в наш список.",
+      "expected": {
+        "requires-record-typed-rehearsal-only": true,
+        "must-not-mark-spoken-or-listened-from-text": true,
+        "must-not-mark-mastered-from-correct-text": true,
+        "must-not-invent-score-or-durable-memory": true
+      }
+    },
+    {
+      "id": "known-item-new-selection",
+      "prior-turns": [
+        {
+          "role": "user",
+          "content": "У меня A2. Подбери три полезных выражения с decision, mind и time."
+        },
+        {
+          "role": "assistant",
+          "content": "Начнём с трёх повседневных выражений:\n[make a decision — слушать на PlayPhrase.me](https://www.playphrase.me/#/search?language=en&q=make+a+decision) — принять решение.\n[change your mind](https://www.playphrase.me/#/search?language=en&q=change+your+mind) — передумать.\n[take your time](https://www.playphrase.me/#/search?language=en&q=take+your+time) — не торопись.\nВ нашем списке эти три выражения предложены и объяснены; о прослушивании и практике пока нет сведений."
+        },
+        {
+          "role": "user",
+          "content": "change your mind уже знаю."
+        }
+      ],
+      "prompt": "Давай новое вместо этого.",
+      "expected": {
+        "requires-assistant-select-new-useful-core": true,
+        "must-not-repeat-known-core-with-new-pronoun": true,
+        "requires-preserve-other-list-items-and-a2-context": true,
+        "requires-meaning-and-link": true,
+        "must-not-ask-learner-to-design-lesson": true
+      }
+    },
+    {
+      "id": "guided-words-keep-word-to-expressions-chain",
+      "prompt": "У меня A2. Помоги учить слова decision, mind и time. Дай несколько разных выражений с каждым и ссылки.",
+      "runtime-event": {
+        "learning-api": "unavailable"
+      },
+      "expected": {
+        "requires-three-word-groups": true,
+        "requires-short-meaning-per-word": true,
+        "minimum-distinct-expressions-per-word": 2,
+        "requires-link-and-meaning-per-expression": true,
+        "must-not-substitute-flat-phrase-list": true,
+        "must-not-substitute-pronoun-variants-for-variety": true,
+        "must-not-claim-catalog-a2": true,
+        "must-not-ask-situation-or-level-again": true
+      }
+    },
+    {
+      "id": "active-voice-with-list-starts-immediately",
+      "prior-turns": [
+        {
+          "role": "user",
+          "content": "У меня A2. Подбери три полезных выражения с decision, mind и time."
+        },
+        {
+          "role": "assistant",
+          "content": "Начнём с трёх повседневных выражений:\n[make a decision — слушать на PlayPhrase.me](https://www.playphrase.me/#/search?language=en&q=make+a+decision) — принять решение.\n[change your mind](https://www.playphrase.me/#/search?language=en&q=change+your+mind) — передумать.\n[take your time](https://www.playphrase.me/#/search?language=en&q=take+your+time) — не торопись.\nВ нашем списке эти три выражения предложены и объяснены; о прослушивании и практике пока нет сведений."
+        }
+      ],
+      "prompt": "Я уже в Voice. Начнём практику с нашим списком.",
+      "runtime-event": {
+        "voice-host": "active-with-current-chat-context; establish-in-real-runtime"
+      },
+      "expected": {
+        "requires-one-current-list-phrase-or-example-then-wait": true,
+        "must-not-provide-unrequested-handoff": true,
+        "must-not-ask-to-open-voice-or-paste-context": true,
+        "must-not-invent-spoken-attempt": true,
+        "must-not-ask-for-known-level-or-rebuild-list": true
+      }
+    },
+    {
+      "id": "known-level-catalog-selection-no-repeat-question",
+      "prior-turns": [
+        {
+          "role": "user",
+          "content": "Мой уровень английского — A2."
+        }
+      ],
+      "prompt": "Дай пять полезных повседневных выражений.",
+      "expected": {
+        "requires-reuse-stated-a2": true,
+        "output-count": 5,
+        "requires-link-per-phrase": true,
+        "must-not-repeat-level-question": true
       }
     }
   ]

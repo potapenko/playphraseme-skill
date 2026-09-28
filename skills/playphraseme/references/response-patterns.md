@@ -17,7 +17,9 @@ catalog provenance. A failed API attempt must never turn an ordinary learner
 request into a catalog-only refusal.
 
 Resolve level through [learning query planning](learning-query-planning.md).
-Generic unknown-level discovery asks one plain-language level question. For an
+Guided learning starts assistant-selected material immediately; follow
+[listening and speaking](listening-and-speaking.md) for its in-chat study list.
+Other generic unknown-level catalog discovery asks one plain-language level question. For an
 imminent situation or an explicit no-questions request, answer immediately with
 common task-appropriate expressions. Urgency does not imply advanced English.
 
@@ -84,6 +86,12 @@ version. Do not label the learner B2–C1 or assume advanced material.
 
 ## 5. Vocabulary or expression discovery
 
+“Help me learn words” asks the assistant to lead: choose a small set of words,
+explain each, and group several useful linked expressions under each word.
+An expression request gets expressions directly. Carry forward the study list. Do not ask the learner to invent
+a situation or learning questions. Offer fresh cores, not a series of pronoun
+variants; a new short language question still gets a short answer without a report.
+
 Follow an explicit count. Group by communicative purpose when requested. Use a
 compact table or short grouped bullets, with one linked phrase and one meaning
 or nuance per item. Do not turn every item into a paragraph.
@@ -106,8 +114,7 @@ request for a quiz. Do not append a speaking exercise to a listen-only answer.
 
 Use a quiz only when that form of practice is explicit. Make the task depend on
 linked real-world formulations and ask the learner to choose for a meaning or
-context. An
-interactive quiz presents one decision and waits for the learner's answer. Then
+context. An interactive quiz presents one decision and waits for the learner's answer. Then
 give concise feedback and the next item; stop or explain when asked.
 
 ## Explicit lessons and follow-up turns
