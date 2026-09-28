@@ -54,12 +54,18 @@ its broad defaults. Suggestions does not support CEFR filters.
   questions, situations, and other phrase properties.
 - Use Common Words for individual vocabulary, including word-level slang,
   domain, part of speech, and utility sorting.
-- Use Suggestions when the user starts from a known expression and wants nearby
-  formulations.
+- Use Suggestions for nearby formulations around known text, including a chosen
+  word. It is candidate discovery, not an exact-word or CEFR-filtered search.
+- For word → combinations → listening, follow
+  [listening and speaking](listening-and-speaking.md).
 - A user-supplied phrase may go directly to Classic Search.
 
 Prefer one bounded Learning API request with enough candidates for curation.
-Use no more than 20 candidates and do not page for variety.
+Use no more than 20 candidates per request and do not page for variety. A
+word-to-combinations path may use one additional sequential Suggestions query
+for the selected word. Keep the existing overall bound of one initial request
+and at most two purposeful follow-ups (distinct group, next stage, or disclosed
+relaxation); no retries to force a particular example.
 
 If no usable API response is available, ordinary learner help continues from
 model knowledge. Keep the requested level, unit, count, and organization;

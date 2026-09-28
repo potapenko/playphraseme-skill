@@ -1,4 +1,4 @@
-# PlayPhrase-first response patterns
+# PlayPhrase.me response patterns
 
 Read this reference for English questions, communication goals, lessons, or
 explicit practice.
@@ -100,8 +100,13 @@ patterns and give the shortest rule needed to distinguish them.
 
 ## 7. Explicit practice or quiz
 
-Use only when practice is explicit. Make the task depend on linked real-world
-formulations and ask the learner to choose for a meaning or context. An
+For listening streams and explicit conversation/Voice practice, use
+[listening and speaking](listening-and-speaking.md). A request to talk is not a
+request for a quiz. Do not append a speaking exercise to a listen-only answer.
+
+Use a quiz only when that form of practice is explicit. Make the task depend on
+linked real-world formulations and ask the learner to choose for a meaning or
+context. An
 interactive quiz presents one decision and waits for the learner's answer. Then
 give concise feedback and the next item; stop or explain when asked.
 
@@ -119,6 +124,9 @@ without repeating known material. For “easier,” simplify wording and explana
 for “harder,” add appropriate nuance or complexity. Preserve other constraints.
 A request “for writing” changes register rather than restarting the topic. Do
 not claim persistent memory or store a profile outside available host context.
+Retain expressions explicitly selected for listening or conversation; “more”
+requests new choices, while “talk using these” reuses the chosen set. A link
+click, playback, or self-report is not proof that an expression has been learned.
 
 ## When a listening link does not help
 

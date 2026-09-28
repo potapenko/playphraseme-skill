@@ -71,3 +71,29 @@ no-questions travel request without a supplied level, an explicit timed lesson,
 and user-reported empty listening results. Judge generated responses, not only
 the presence of expected flags in cases.json. Keep public conversation URLs and
 compact outcomes in the release baseline; temporary transcripts are not source.
+
+## LM-SKILL listening and speaking checks
+
+The added cases cover a supplied B2 Vocabulary word and combinations, unknown
+level, unrelated/simpler Suggestions, optional metadata, empty/unavailable API,
+listen-only, explicit conversation, Voice handoff, selected-context retention,
+stopping practice and no mastery inference. Existing ordinary-selection and
+release cases remain regression coverage.
+
+`controlled-success` events are synthetic adversarial inputs for a permitted
+future behavioral harness, not captured production payloads. Optional metadata
+must be judged per record, and Vocabulary collocations must not be relabeled as
+Common Phrases records. User-supplied barely combinations are campaign inputs,
+not new Common Phrases gold fixtures.
+
+A self-walkthrough or JSON validation is not an executed model conversation.
+No additional model/reviewer session is authorized for LM-SKILL. Fresh installed
+ChatGPT acceptance must use Safari/Computer Use under AGENTS.md when authorized
+and the shared lane is free. No installation or release is performed by this task.
+
+To verify Voice later, start with the actual selected level and expressions;
+open Voice in the supported target interface; check whether that context is
+available (paste the handoff when absent); conduct an actual spoken exchange
+and request a concrete correction. Record observed context and feedback limits.
+A Voice button, text transcript or documentation alone does not establish the
+full chain, automatic skill transfer, durable memory or pronunciation accuracy.

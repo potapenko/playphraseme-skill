@@ -522,6 +522,212 @@
           "content": "Which expression says you are determined to attend?\n1. [Like a kid in a candy store. — listen on PlayPhrase.me](https://www.playphrase.me/#/search?language=en&q=Like+a+kid+in+a+candy+store.)\n2. [I wouldn't miss it for the world.](https://www.playphrase.me/#/search?language=en&q=I+wouldn%27t+miss+it+for+the+world.)"
         }
       ]
+    },
+    {
+      "id": "b2-word-to-combinations",
+      "prompt": "У меня B2. В Vocabulary я выбрал barely [B2], там Common collocations: barely enough, barely noticeable. Дай ссылки на потоки и коротко объясни разницу.",
+      "expected": {
+        "mode": "word-to-combinations-listening",
+        "requires-preserve-user-word-and-combinations": true,
+        "output-count": 2,
+        "requires-link-per-phrase": true,
+        "requires-distinguish-vocabulary-collocations-from-common-phrases": true,
+        "must-not-infer-phrase-or-scene-level-from-word": true,
+        "must-not-add-per-clip-work": true
+      }
+    },
+    {
+      "id": "word-discovery-does-not-default-to-b2",
+      "prompt": "Подбери слово и полезные сочетания с ним, чтобы послушать.",
+      "expected": {
+        "requires-one-short-level-question": true,
+        "must-wait-before-returning-candidates": true,
+        "must-not-assume-b2": true
+      }
+    },
+    {
+      "id": "suggestions-relevance-and-record-level",
+      "prompt": "Найди Common Phrases со словом barely строго уровня B2.",
+      "runtime-event": {
+        "learning-api": "controlled-success",
+        "fixture-kind": "synthetic-adversarial-records-not-production-evidence",
+        "items": [
+          {
+            "id": "fixture-a",
+            "text": "Can barely take care of myself.",
+            "count": 11,
+            "language-level": "B1"
+          },
+          {
+            "id": "fixture-b",
+            "text": "Been under a lot of pressure lately.",
+            "count": 33,
+            "language-level": "B2"
+          }
+        ]
+      },
+      "expected": {
+        "must-not-send-cefr-filters-to-suggestions": true,
+        "must-reject-wrong-level-and-unrelated-results": true,
+        "must-state-no-supported-exact-catalog-match": true,
+        "must-not-rewrite-records-to-fit": true,
+        "must-not-substitute-model-provenance": true
+      }
+    },
+    {
+      "id": "suggestions-optional-metadata",
+      "prompt": "Какие у этих Suggestions уровень и count?",
+      "runtime-event": {
+        "learning-api": "controlled-success",
+        "fixture-kind": "synthetic-missing-metadata-not-production-evidence",
+        "items": [
+          {
+            "id": "fixture-a",
+            "text": "You have a decision to make.",
+            "count": 29,
+            "language-level": "B1"
+          },
+          {
+            "id": "fixture-b",
+            "text": "Was the best decision I ever made."
+          }
+        ]
+      },
+      "expected": {
+        "requires-report-present-record-count-and-level": true,
+        "requires-missing-metadata-as-unknown": true,
+        "must-not-infer-filter-applied": true,
+        "must-not-infer-scene-level": true,
+        "requires-exact-returned-text": true
+      }
+    },
+    {
+      "id": "word-path-api-empty",
+      "prompt": "Подбери два полезных сочетания с barely для моего B2 и ссылки, хочу только слушать.",
+      "runtime-event": {
+        "learning-api": "empty-items"
+      },
+      "expected": {
+        "output-count": 2,
+        "requires-retain-seed-word": true,
+        "allows-model-selected-language": true,
+        "requires-link-per-phrase": true,
+        "must-not-claim-common-phrase-or-api-provenance": true,
+        "must-not-add-quiz-or-speaking": true,
+        "must-not-retry-or-page": true
+      }
+    },
+    {
+      "id": "word-path-api-unavailable",
+      "prompt": "Подбери два полезных сочетания с barely для моего B2 и ссылки, хочу только слушать.",
+      "runtime-event": {
+        "learning-api": "unavailable"
+      },
+      "expected": {
+        "output-count": 2,
+        "requires-retain-seed-word": true,
+        "allows-model-selected-language": true,
+        "requires-link-per-phrase": true,
+        "must-not-return-catalog-only-refusal": true,
+        "must-not-claim-common-phrase-or-api-provenance": true,
+        "must-not-narrate-infrastructure": true,
+        "must-not-add-quiz-or-speaking": true
+      }
+    },
+    {
+      "id": "listen-only-keeps-chosen-expressions",
+      "prior-turns": [
+        {
+          "role": "user",
+          "content": "У меня B2. Выбираю barely enough — едва хватает, и barely noticeable — едва заметный. Хочу слушать именно их."
+        }
+      ],
+      "prompt": "Просто дай ссылки. Без разбора и теста.",
+      "expected": {
+        "output-count": 2,
+        "requires-retain-exact-selected-expressions": true,
+        "requires-link-per-phrase": true,
+        "must-not-add-per-clip-reporting-or-retelling": true,
+        "must-not-add-quiz-or-speaking": true,
+        "must-not-offer-unrequested-extras": true
+      }
+    },
+    {
+      "id": "explicit-speaking-retains-context",
+      "prior-turns": [
+        {
+          "role": "user",
+          "content": "У меня B2. Выбираю barely enough — едва хватает, и barely noticeable — едва заметный. Хочу слушать именно их."
+        }
+      ],
+      "prompt": "Давай поговорим по-английски с этими выражениями. Поправляй формулировки.",
+      "expected": {
+        "requires-reuse-selected-expressions-and-level": true,
+        "requires-one-natural-conversation-prompt-then-wait": true,
+        "must-not-reselect-unrelated-material": true,
+        "must-not-default-to-quiz-or-numerical-scores": true,
+        "must-not-claim-voice-mode-started": true
+      }
+    },
+    {
+      "id": "voice-portable-context-no-audio",
+      "prior-turns": [
+        {
+          "role": "user",
+          "content": "У меня B2. Выбираю barely enough — едва хватает, и barely noticeable — едва заметный. Хочу слушать именно их."
+        }
+      ],
+      "prompt": "Хочу продолжить с этими выражениями в ChatGPT Voice. Дай текст для переноса.",
+      "runtime-event": {
+        "audio-exchange": "not-available-in-test-environment"
+      },
+      "expected": {
+        "requires-copyable-level-expressions-meanings-and-feedback-request": true,
+        "requires-user-controlled-voice-start-where-supported": true,
+        "must-not-claim-automatic-skill-transfer": true,
+        "must-not-promise-durable-memory-or-favorites-import": true,
+        "must-not-claim-verified-voice-or-pronunciation-assessment": true,
+        "must-not-add-exam-or-numerical-scores": true
+      }
+    },
+    {
+      "id": "click-is-not-learning-proof",
+      "prior-turns": [
+        {
+          "role": "user",
+          "content": "У меня B2. Выбираю barely enough — едва хватает, и barely noticeable — едва заметный. Хочу слушать именно их."
+        }
+      ],
+      "prompt": "Я открыл обе ссылки. Значит, я уже выучил эти выражения?",
+      "expected": {
+        "must-not-infer-mastery-from-clicks-or-playback": true,
+        "must-not-invent-progress-tracking": true,
+        "must-not-impose-test-or-per-clip-report": true
+      }
+    },
+    {
+      "id": "speaking-stop-returns-to-listening",
+      "prior-turns": [
+        {
+          "role": "user",
+          "content": "У меня B2. Выбираю barely enough — едва хватает, и barely noticeable — едва заметный. Хочу слушать именно их."
+        },
+        {
+          "role": "user",
+          "content": "Давай поговорим с этими выражениями."
+        },
+        {
+          "role": "assistant",
+          "content": "When was the last time you had barely enough time to finish something?"
+        }
+      ],
+      "prompt": "Стоп разговор. Теперь только слушать те же выражения.",
+      "expected": {
+        "requires-stop-speaking": true,
+        "requires-retain-exact-selected-expressions": true,
+        "requires-link-per-phrase": true,
+        "must-not-add-conversation-question-or-test": true
+      }
     }
   ]
 }

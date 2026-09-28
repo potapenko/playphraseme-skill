@@ -15,7 +15,8 @@ choose what to open.
    a lesson, or explicit practice, read
    [response patterns](references/response-patterns.md) and
    [search modes](references/search-modes.md).
-2. For an open-ended phrase or word collection, also read
+2. For an open-ended phrase or word collection, or word-to-combinations
+   selection, also read
    [learning query planning](references/learning-query-planning.md).
 3. To use Common Phrases, Common Words, or Suggestions data, read
    [the public Learning API](references/learning-api.md).
@@ -24,6 +25,10 @@ choose what to open.
 5. Open a public page with an available browser only when the user asks for
    visible scenes, pronunciation, titles, speakers, or other page evidence;
    follow [browser extraction](references/browser-extraction.md).
+
+For listening streams, word-to-combinations requests, or explicit speaking/Voice
+practice, also read [listening and speaking](references/listening-and-speaking.md).
+Listening alone requires no quiz, per-clip report, or proof of understanding.
 
 ## Prefer live catalog data, but never make it a learner-facing gate
 
@@ -88,7 +93,7 @@ mode fits the request. A browser redirect does not change the link you provide.
 - Do not claim a clip's title, speaker, delivery, tone, stress, or meaning from
   catalog metadata alone.
 
-## Keep the response compact and PlayPhrase-first
+## Keep the response compact and lead with PlayPhrase.me
 
 Put the first useful PlayPhrase.me link in the first content block. For a list,
 give every requested phrase a brief meaning or use and an individual,

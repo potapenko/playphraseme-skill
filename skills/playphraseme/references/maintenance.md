@@ -1,6 +1,6 @@
 # Maintenance
 
-Last contract review: 2026-09-05.
+Last bounded selection/response review: 2026-09-28; other routes unchanged.
 
 Review the skill when the Learning API, public URL state, browser DOM, Agent
 Skills format, or host installation guidance changes.
@@ -25,8 +25,8 @@ useful, honestly unlabeled phrase links.
 
 ## Verify documented examples
 
-Before adding or changing an agent-selected literal example in `SKILL.md`,
-response patterns, evals, or learner-facing repository documentation:
+For agent-selected examples claimed as Common Phrases in `SKILL.md`, response
+patterns, evals, or learner-facing repository documentation:
 
 1. Make one bounded production Common Phrases request matching the stated CEFR
    and filters through any available HTTP client.
@@ -36,9 +36,23 @@ response patterns, evals, or learner-facing repository documentation:
 4. Record the request URL, review date, text, and observed count in
    `evals/common_phrase_examples.json` for long-lived gold examples.
 
+For word or public Vocabulary collocation examples, verify against that source
+and identify it explicitly. Do not promote UI collocations or model examples
+into the Common Phrases gold fixture. Preserve user-provided test inputs and
+mark controlled fixtures as synthetic, not production observations.
+
 Classic Search results do not establish Common Phrases membership. Browser
 inspection is for clip-visible claims such as titles, speakers, or sources.
 
 Current gold verification, 2026-09-05: the production B2 idiom query supplied
 the five literal release-regression examples in `response-patterns.md`; each
 had `count >= 5` and an exact Classic Search link.
+
+Suggestions review, 2026-09-28: bounded `q=decision` and `q=barely` requests
+with `language=en&limit=6` returned per-item `count` and `language-level`.
+The latter mixed relevant B1 phrases with text not containing the query word.
+These observations reconcile response metadata only; no new filter is supported.
+Voice instructions describe a user-controlled text handoff. Before claiming
+installed-skill/Voice compatibility, verify the actual context, audio exchange
+and feedback in the target host; documentation or a visible Voice button alone
+is insufficient. Never turn text-only feedback into pronunciation evidence.
