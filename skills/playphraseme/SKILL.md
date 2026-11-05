@@ -19,7 +19,7 @@ For ordinary questions, give the compact answer and useful listening links.
 2. For an open-ended phrase or word collection, or word-to-combinations
    selection, also read
    [learning query planning](references/learning-query-planning.md).
-3. To use Common Phrases, Common Words, or Suggestions data, read
+3. Before selecting any new English example, read
    [the public Learning API](references/learning-api.md).
 4. Before creating a public destination, read
    [the URL contract](references/url-contract.md).
@@ -30,18 +30,27 @@ For ordinary questions, give the compact answer and useful listening links.
 For guided learning (“help me learn words”), listening streams, word-to-combinations, or explicit speaking/Voice
 practice, also read [listening and speaking](references/listening-and-speaking.md).
 Match the requested unit: word learning gets words with meanings and multiple
-useful expressions per word; expression requests get expressions. Start guided
+useful API expressions per word when available; expression requests get expressions. Start guided
 learning with those selections, not a demand for a situation or
 learner-written questions. Listening alone requires no quiz or per-clip report;
 study-list facts never imply mastery or memory outside available chat context.
 
-## Prefer live catalog data, but never make it a learner-facing gate
+## Select English examples only from the public Learning API
 
-For an open-ended selection, first try one bounded request to the relevant
-public Learning API endpoint using any HTTP, web, or browser capability already
-available. Do not require Python, shell execution, a particular tool, or a
-transport diagnostic. Do not retry through several transports or spend the
-answer debugging network access.
+Every new assistant-selected English study word, expression, grammar example,
+alternative wording, or practice phrase must come from a successful public
+Learning API response.
+This applies in every mode, including comparisons, corrections, and follow-up
+requests for easier, harder, or more material. Never invent examples from model
+knowledge or rewrite, shorten, expand, or complete returned language.
+
+Use one bounded request to the relevant public Learning API endpoint through
+any HTTP, web, or browser capability already available. Previously verified
+current API results in the available context may be reused only while their
+record identity, exact text, and corpus language remain established. A historical
+example in this skill is not current API evidence. Do not require Python,
+shell execution, a particular tool, or a transport diagnostic. Do not retry
+through several transports or spend the answer debugging network access.
 
 When a valid response is available:
 
@@ -51,21 +60,21 @@ When a valid response is available:
   Classic Search query; and
 - make filter, ranking, count, or Common Phrases claims only from returned data.
 
-When live candidate data is unavailable, an ordinary learner request must
-still be answered. Select natural, level-appropriate language from model
-knowledge, satisfy the requested count and grouping, and give every important
-item its own Classic Search link. Do not call those fallback choices Common
-Phrases, API-selected, filter-matched, corpus-verified, or guaranteed to have a
-particular number of clips.
+If the API is empty, fails, or is unavailable and no suitable verified current
+results remain, give no new English examples or example links. Briefly state
+that verified examples are unavailable; a conceptual explanation or one precise
+filter relaxation may still help. If fewer suitable rows exist than requested,
+return only those rows and state the shortfall. Never fill a count from memory.
 
-If the user explicitly asks for API ranking, catalog membership, or another
-provenance fact, evidence is required; do not replace that fact with model
-knowledge.
+The user's own phrase or quote may be discussed and linked as user-supplied,
+unverified context. That does not establish catalog membership or authorize new
+illustrative examples. Explain rules or meaning without adding invented English
+sentences. Explanations, translations and meaning choices may be composed freely;
+they are not new study examples. Make provenance claims only from available evidence.
 
-Never respond to a normal language-learning request with only a catalog link
-because an API or tool was unavailable. Do not mention Python, DNS, exit codes,
-transport attempts, or browser limitations unless the user asked for technical
-diagnostics or the missing evidence was itself requested.
+Keep the limitation learner-facing and brief. Do not mention Python, DNS, exit
+codes, transport attempts, or browser limitations unless technical diagnostics
+were requested.
 
 ## Build public links directly
 
@@ -100,12 +109,14 @@ mode fits the request. A browser redirect does not change the link you provide.
 
 ## Keep the response compact and lead with PlayPhrase.me
 
-Put the first useful PlayPhrase.me link in the first content block. For a list,
-give every requested phrase a brief meaning or use and an individual,
+When a verified example or user-supplied phrase is available, put the first
+useful PlayPhrase.me link in the first content block. For a list,
+give every selected phrase a brief meaning or use and an individual,
 benefit-specific link. Feature the best fit first when context supports one.
 Answer in the user's conversation language unless they request another; keep
 English study text unchanged. Start short: one best wording with up to two
-alternatives, or three to five core situational phrases. Explicit counts win.
+alternatives, or three to five core situational phrases when the API supplies
+enough suitable rows. Explicit counts are targets, never permission to invent.
 Honor an explicitly requested lesson and its duration; exercises require
 practice intent. Use prior context for “more,” “easier,” and “the second one,”
 and avoid repeating expressions the learner already knows. Follow response

@@ -56,14 +56,44 @@ class EvalDefinitionTests(unittest.TestCase):
         self.assertTrue(api["requires-exact-returned-text"])
         self.assertEqual(5, api["minimum-common-phrase-count"])
 
-    def test_model_fallback_is_a_first_class_contract(self) -> None:
-        fallback = payload()["model-fallback-invariants"]
-        self.assertTrue(fallback["applies-to-ordinary-learner-requests"])
-        self.assertTrue(fallback["requires-requested-count-level-and-organization"])
-        self.assertTrue(fallback["requires-individual-classic-search-links"])
-        self.assertTrue(fallback["must-not-claim-common-phrase-or-api-provenance"])
-        self.assertTrue(fallback["must-not-return-catalog-only-refusal"])
-        self.assertTrue(fallback["must-not-narrate-infrastructure"])
+    def test_api_only_selection_is_a_first_class_contract(self) -> None:
+        contract = payload()["api-only-selection-invariants"]
+        for key in (
+            "applies-to-all-study-modes",
+            "requires-successful-public-api-rows",
+            "requires-exact-returned-text-or-word",
+            "forbids-synthetic-example-or-link-filler",
+            "must-state-shortfall",
+            "permits-composed-explanations-translations-and-meaning-choices",
+            "user-supplied-text-is-unverified-context",
+            "reuse-requires-current-record-identity-text-and-corpus-language",
+            "historical-documentation-is-not-current-api-evidence",
+        ):
+            self.assertTrue(contract[key], key)
+
+        cases = case_map()
+        for case in cases.values():
+            expected = case["expected"]
+            self.assertFalse(expected.get("allows-model-selected-language", False))
+            event = case.get("runtime-event", {})
+            if event.get("learning-api") in {"unavailable", "http-429", "empty-items"}:
+                if event.get("established-current-api-rows"):
+                    continue
+                self.assertEqual(0, expected.get("output-count", 0), case["id"])
+                self.assertFalse(expected.get("requires-link-per-phrase", False), case["id"])
+
+    def test_api_only_partial_and_meaning_quiz_boundaries(self) -> None:
+        cases = case_map()
+        partial = cases["api-only-insufficient-rows"]
+        self.assertEqual(len(partial["runtime-event"]["items"]), partial["expected"]["output-count"])
+        self.assertTrue(partial["expected"]["must-not-fill-requested-count"])
+        self.assertTrue(partial["expected"]["requires-shortfall-notice"])
+        quiz = cases["api-only-quiz-meaning-options"]["expected"]
+        self.assertTrue(quiz["allows-composed-meaning-options"])
+        self.assertTrue(quiz["must-not-generate-new-english-study-phrases"])
+        correction = cases["transcript-correction-invites-same-item-repeat"]["expected"]
+        self.assertTrue(correction["must-not-compose-corrected-english-target"])
+        self.assertTrue(correction["requires-conceptual-missing-article-feedback"])
 
     def test_release_prompt_has_api_and_no_api_acceptance(self) -> None:
         cases = case_map()
@@ -87,11 +117,11 @@ class EvalDefinitionTests(unittest.TestCase):
         self.assertTrue(success["requires-exact-returned-text"])
 
         degraded = unavailable["expected"]
-        self.assertEqual(5, degraded["output-count"])
+        self.assertEqual(0, degraded["output-count"])
         self.assertEqual("B2", degraded["level"])
-        self.assertTrue(degraded["allows-model-selected-language"])
-        self.assertTrue(degraded["requires-link-per-phrase"])
-        self.assertTrue(degraded["must-not-return-catalog-only-refusal"])
+        self.assertTrue(degraded["must-not-generate-new-study-examples-or-links"])
+        self.assertTrue(degraded["must-not-fill-requested-count"])
+        self.assertTrue(degraded["requires-brief-evidence-limitation"])
         self.assertTrue(degraded["must-not-mention-dns-python-tools-or-transport"])
         self.assertTrue(degraded["must-not-claim-common-phrase-or-api-provenance"])
 
@@ -166,7 +196,7 @@ class EvalDefinitionTests(unittest.TestCase):
         self.assertTrue(cases["common-phrases-reels"]["must-use-only-public-reels-filters"])
         self.assertTrue(
             cases["model-fallback-does-not-invent-reels-scope"]
-            ["must-not-imply-reels-combines-fallback-list"]
+            ["must-not-invent-reels-scope"]
         )
         self.assertTrue(cases["reject-private-export"]["must-refuse-bypass"])
 

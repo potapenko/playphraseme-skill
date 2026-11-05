@@ -19,14 +19,17 @@ Skills format, or host installation guidance changes.
    target account before publishing.
 
 The public package is instruction-only. Do not reintroduce bundled runtime
-scripts merely to enforce a host-specific transport sequence. If a host cannot
-fetch live candidates, verify that ordinary learner requests still produce
-useful, honestly unlabeled phrase links.
+scripts merely to enforce a host-specific transport sequence. Verify success,
+empty results, and unavailable-API scenarios across ordinary learner requests:
+new examples must use exact successful API rows; empty or failed requests must
+produce no synthetic examples or example links. Requested counts, grammar,
+comparisons, practice, and follow-ups must never bypass that rule. User-supplied
+quotes remain unverified context unless API evidence establishes membership.
 
 ## Verify documented examples
 
-For agent-selected examples claimed as Common Phrases in `SKILL.md`, response
-patterns, evals, or learner-facing repository documentation:
+Before adding or changing an agent-selected literal phrase example in `SKILL.md`,
+response patterns, evals, or learner-facing repository documentation:
 
 1. Make one bounded production Common Phrases request matching the stated CEFR
    and filters through any available HTTP client.
@@ -36,9 +39,9 @@ patterns, evals, or learner-facing repository documentation:
 4. Record the request URL, review date, text, and observed count in
    `evals/common_phrase_examples.json` for long-lived gold examples.
 
-For word or public Vocabulary collocation examples, verify against that source
-and identify it explicitly. Do not promote UI collocations or model examples
-into the Common Phrases gold fixture. Preserve user-provided test inputs and
+For new word or collocation study examples, verify exact Common Words or
+Common Phrases/Suggestions rows. Browser-only collocations do not qualify. Do
+not promote UI observations or model examples into the Common Phrases gold fixture. Preserve user-provided test inputs and
 mark controlled fixtures as synthetic, not production observations.
 
 Classic Search results do not establish Common Phrases membership. Browser

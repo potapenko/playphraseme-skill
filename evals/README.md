@@ -18,8 +18,8 @@ semantically during QA; equivalent standard percent encoding is acceptable.
 
 ## API-backed selections
 
-When the response claims Common Phrases, API filters, counts, ranking, or exact
-catalog provenance, verify a real response from one of the three public
+For every new assistant-selected study word, phrase or illustrative example,
+verify a successful response from one of the three public
 `/api/v1/learning/**` endpoints. Requests are anonymous bounded GETs with
 `limit <= 20`, no automatic pagination or retry, and no private fallback.
 
@@ -30,15 +30,17 @@ inside public catalog filter JSON.
 
 ## API-unavailable ordinary learner requests
 
-The answer must remain useful. Preserve the requested count, level, unit, and
-organization; select natural language from model knowledge; give every item an
-individual Classic Search link; and make no Common Phrases, API-filter, count,
-ranking, or corpus claim.
+Without suitable current API rows already established in context, require zero
+new study examples and example links. A concise limitation, conceptual rule or
+explanation of supplied text is valid. Counts and per-word quotas never authorize
+filler. Partial success returns only suitable exact rows and states the shortfall.
+Previously established rows may be reused only with their identity, text and
+corpus language intact; historical documentation is not current API evidence.
 
-A catalog-only refusal fails. So does learner-facing narration about Python,
-DNS, exit codes, tools, transports, or debugging. An explicit request for API
-ranking or catalog membership is the exception: missing evidence must be stated
-instead of fabricated.
+Explanations, translations and meaning options may be composed. Do not confuse
+them with invented illustrative English sentences or phrases. User-supplied text
+may be linked and discussed as unverified context without catalog claims.
+No learner-facing Python, DNS, tools, transport debugging or private fallback.
 
 ## Level and response quality
 
@@ -48,7 +50,7 @@ discovery asks one plain-language question and waits. An
 imminent situation or explicit no-questions request gets common task-appropriate
 language immediately, without a fixed advanced default or a proficiency claim.
 Explicit and remembered levels win. Explicit “higher than B2” raises the lower
-bound; “easier” and “harder” also adapt the actual wording and nuance.
+bound; “easier” and “harder” select suitable exact API wording and nuance.
 
 Responses put PlayPhrase.me links early, use distinct useful choices, and avoid
 unsolicited lesson scaffolding or exercises. Explicit lessons preserve requested
@@ -61,8 +63,8 @@ interactive quiz asks one linked meaning/context decision and waits.
 
 Before release, install the candidate ZIP in the target ChatGPT account and run
 both release-regression cases represented by the same prompt. The real host
-must return five grouped B2 idioms with five individual links and no
-infrastructure refusal. Automated repository tests do not replace this manual
+returns five grouped B2 idioms only with five suitable API rows. With unavailable
+or empty data it returns no new examples; partial data yields a stated shortfall. Automated repository tests do not replace this manual
 installed-ZIP evidence.
 
 ## v0.7.0 conversation checks
@@ -104,13 +106,14 @@ full chain, automatic skill transfer, durable memory or pronunciation accuracy.
 
 Check both roles together: the assistant selects useful varied cores, explains
 and links them, maintains a current-chat study list, then leads spoken practice
-only when asked. It supplies the phrase/example, waits for an actual attempt,
-corrects an evidenced issue and invites repetition of the same item before
+only when asked. It selects an exact API phrase, waits for an actual attempt, explains an
+evidenced issue and models a corrected target only from an exact API row before
 advancing. Respect stop/easier and explicit free-conversation preferences.
 No learner-authored situations, Russian intentions or study questions are required.
 
-The added decision/mind/time examples are model-selected teaching material and
-user campaign inputs, not Common Phrases gold data or verified A2 catalog labels.
+The historical decision/mind/time assistant turns are context, not current API
+evidence or permission to reuse model-generated study examples. Establish API
+provenance for new/reused targets; keep user campaign inputs explicitly unverified.
 Assess usefulness for an A2 learner separately from a record's catalog CEFR.
 Known, offered, explained, listened, practised and mastered are not equivalent.
 Reports keep attribution: learner report, supplied text/transcript, or heard audio.
@@ -125,8 +128,18 @@ clear correct attempt (no invented mistake), unclear audio, easier and stop.
 No new model/reviewer sessions, installation or public release are authorized here.
 
 LM-SKILL-02 review repairs: word requests must produce word groups, each with a
-short word meaning and multiple distinct linked expressions; expression requests
+short word meaning and multiple distinct linked API expressions when available; expression requests
 retain direct phrase selection. An already active Voice chat with the current
 list starts one phrase immediately and waits, without handoff/open-Voice setup.
 Generic catalog clarification applies only without a known level. Cases cover
 these three boundaries; active-Voice execution still requires a real runtime.
+
+## API-ONLY-1 correction checks
+
+Apply source requirements across ordinary, guided, grammar, comparison, quiz,
+Voice and follow-up modes. Run success, empty, unavailable and partial-result
+scenarios; verify exact text plus decoded query, no transformed teaching targets,
+no filler, and meaningful explanations/meaning quizzes remain allowed. Controlled
+fixtures replay existing literal evidence without claiming a new production GET.
+The six API-ONLY cases and changed failure expectations are scenario definitions,
+not executed model sessions. Installed-client and actual Voice evidence remain separate.

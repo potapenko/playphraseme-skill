@@ -40,8 +40,10 @@ English grammar search: prepend one `gr: ` before encoding.
 https://www.playphrase.me/#/search?language=en&q=gr%3A+go+home
 ```
 
-Use Classic Search for every selected phrase, whether it came from API data or
-the honest model-selected fallback.
+Use Classic Search for every phrase selected from verified current API rows,
+preserving its exact text. User-supplied wording may also be linked as unverified
+context. A valid URL does not establish catalog membership; never create a link
+for an invented example.
 
 ## Common Phrases and Common Words catalogs
 

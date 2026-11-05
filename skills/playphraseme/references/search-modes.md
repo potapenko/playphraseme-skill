@@ -5,9 +5,9 @@ Choose the simplest mode that fits the request.
 | Intent | Preferred path |
 | --- | --- |
 | Nearby expressions around known text | Learning API Suggestions, then individual Classic Search links |
-| Phrases by CEFR, idiom, register, function, topic, or another documented field | Learning API Common Phrases when available |
-| Individual vocabulary by CEFR, domain, part of speech, slang, or utility | Learning API Common Words when available |
-| Ordinary learner collection when API data is unavailable | Model-selected language plus individual Classic Search links |
+| Phrases by CEFR, idiom, register, function, topic, or another documented field | Learning API Common Phrases |
+| Individual vocabulary by CEFR, domain, part of speech, slang, or utility | Learning API Common Words |
+| Ordinary learner collection when API data is empty or unavailable | Brief limitation; no new examples or example links without suitable verified current API rows |
 | User-supplied ordinary phrase or word | Classic Search |
 | User-supplied exact quote | Classic Search with encoded double quotes |
 | User-supplied arbitrary span | Classic Search with `*` |
@@ -19,11 +19,11 @@ Choose the simplest mode that fits the request.
 The Learning API is not a general scene-search endpoint. Use public frontend
 routes for exact, wildcard, grammar, Clip Search, actor, and Reels requests.
 
-When valid Common Phrases data is available, preserve returned `text` exactly
-and link it through Classic Search. When it is unavailable, ordinary language
-help continues from model knowledge; do not claim that fallback phrases belong
-to Common Phrases or matched API filters. Direct user-supplied wording may
-always go straight to its search route.
+Preserve selected API `text` or `word` exactly and link it through Classic
+Search. This source requirement covers every mode, including grammar and
+practice. Without suitable verified current API rows, do not supply new English
+examples or example links. Direct user-supplied wording may go straight to its
+search route as unverified context; it is not evidence of catalog membership.
 
 For level, register, situation, or communication-goal collections, read
 [learning query planning](learning-query-planning.md).
@@ -38,7 +38,7 @@ For level, register, situation, or communication-goal collections, read
   speaking credit.
 
 There is no dedicated phrasal-verb filter. Search a phrasal verb named by the
-user directly, or choose suitable examples without claiming a nonexistent
+user directly, or select suitable exact API rows without claiming a nonexistent
 catalog filter.
 
 The extended fields `phrase-type`, `formality`, `tense`, `aspect`, `register`,

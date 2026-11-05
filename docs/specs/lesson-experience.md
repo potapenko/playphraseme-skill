@@ -2,10 +2,10 @@
 
 - Status: Active
 - Stability: Evolving
-- Revision: 11
+- Revision: 12
 - Domain: `lesson-experience`
-- Authority: user-authorized LM-SKILL-02 packet, 2026-09-28; prior UX contract preserved
-- Requires: `skill-distribution` Revision 8, clause `SD.COMPATIBILITY`
+- Authority: user API-ONLY-1 decision, 2026-11-05; unrelated LM-SKILL-02 behavior preserved
+- Requires: `skill-distribution` Revision 9, clause `SD.COMPATIBILITY`
 
 ## LE.ROUTING — Choose a response pattern
 
@@ -19,9 +19,9 @@ level-sensitive catalog discovery without a known level asks one plain-language 
 
 ## LE.COMPOSITION — Compact and adjustable answers
 
-The first useful PlayPhrase.me link appears in the first content block. Feature one best fit when supported; a short wording question normally needs it and
+When verified or user-supplied text is available, the first useful PlayPhrase.me link appears in the first content block. Feature one best fit when supported; a short wording question normally needs it and
 up to two distinct alternatives, not a long list. Start situation preparation with roughly three to five core expressions; expand for explicit breadth or
-count. Compare all named alternatives and honor requested counts and organization. Explain in the user's conversation language unless they choose another;
+count when suitable API rows suffice. Compare named alternatives and preserve organization; report any shortfall. Explain in the user's conversation language unless they choose another;
 English study text and exact search queries remain English. Give a short meaning and a use distinction when useful, avoiding repeated promotional copy.
 Ordinary questions have no lesson wrapper or unsolicited exercises. An explicit lesson request receives a coherent lesson; preserve requested duration and
 stages. A lesson alone does not imply a quiz or interactive practice.
@@ -30,8 +30,8 @@ stages. A lesson alone does not imply a quiz or interactive practice.
 
 Every important phrase has its own descriptive link. The first primary link names PlayPhrase.me and its listening purpose; supporting labels may be just
 the exact phrase with nearby meaning/use. Avoid repeating long calls to action. With valid Common Phrases data, preserve selected `items[].text` unchanged
-as displayed phrase and Classic Search query, including incomplete frames. Without live data, provide model-selected language and individual Classic Search
-links without Common Phrases, API, filter, frequency, or clip claims. Search links do not prove any clip's availability, speaker, source, or delivery.
+as displayed phrase and Classic Search query, including incomplete frames. Apply the same rule to Common Word `word`. New study examples require API
+evidence in every mode; no model-written phrase, teaching sentence or synthetic English option substitutes for a row. Search links do not prove any clip's availability, speaker, source, or delivery.
 Explicit Clip Search, actor, and Reels requests retain their public routes. One optional Reels continuation may follow a completed non-practice answer only
 for a faithful supported catalog scope, never an arbitrary generated playlist.
 
@@ -56,35 +56,33 @@ reporting, store a profile, promise durable memory or add an unsolicited ledger 
 
 ## LE.SPEAKING — Assistant-led opt-in spoken practice
 
-After an explicit request for voice practice, select from the current study list, supply one phrase and a short example, then wait for the learner to say
-it. Give a concrete correction supported by actual input, model the corrected version and invite repetition of the same item before moving on. Do not
+After an explicit request for voice practice, select one verified API phrase from the current study list and wait for the learner to say it.
+Explain issues evidenced by actual input; model a corrected target only when it is an exact API row, then invite repetition before moving on. Do not
 invent an error or demand a learner-created situation; no numerical scores. With clear audio and no issue, acknowledge that attempt without claiming
 mastery; offer voluntary repetition. Stop/easier changes the next step immediately. Listen-only requests never start this loop. In an active Voice chat
 with the list available, start the first phrase and wait without setup or handoff. Offer portable context only for missing context, another chat or an
 explicit transfer request; include level, expressions, meanings, evidenced progress and this loop. Ask the user to open Voice only when not already there.
 No automatic switching/skill transfer, durable memory, Favorites import or precise pronunciation assessment is promised. Text is not audio evidence.
 
-Explicit free-conversation requests retain that format, with an assistant-supplied setup or example.
+Explicit free-conversation requests retain that format; explanations/setups may be composed, but new illustrative English phrases still require API rows.
 
 ## LE.MODES — Explicit practice
 
 Exercises require explicit practice intent and follow the requested format. For a quiz, link the relevant formulations and ask one meaning/context
-decision, then wait and give concise feedback before the next item. Honor requests to stop, explain, or change difficulty.
+decision, then wait and give concise feedback before the next item. Meaning options may be composed; new English study phrases may not. Honor requests to stop, explain, or change difficulty.
 
 ## LE.DEGRADATION — Preserve the requested outcome
 
-API failure never replaces an ordinary request with a catalog-only refusal. Preserve count, level, and grouping through honest model-selected material. Do
-not narrate Python, DNS, exit codes, or transport troubleshooting. Explain a missing fact only when explicitly requested provenance cannot be established.
-If the learner reports no useful results or a mismatched example, acknowledge it and offer a meaning-preserving alternative search or shorter fragment.
-Keep the original phrase distinct; never overwrite exact API text or claim to have verified the replacement. When the cause is unclear, ask at most one
-concrete question while offering a useful next step. Respect access and guest limits. Never use private APIs or invent movie/TV evidence.
+When API data is empty, unavailable or unsuitable, give no new English study examples or example links unless suitable current API rows are already
+established in context. State the limitation briefly; return fewer than requested when necessary. Explain rules or supplied text without inventing examples.
+User-supplied text may be linked as unverified context. Never silently remove filters, shorten an API phrase or invent a replacement after a failed link.
+Offer a precise relaxation or another exact verified API row. No infrastructure narration, private APIs, limit bypasses or fabricated movie/TV evidence.
 
 ## LE.QA — Acceptance scenarios
 
-Cover concise wording, named comparisons, imminent situations without an advanced default, plain-language level questions, multilingual explanations,
-context-preserving follow-ups, no repeats, easier/harder adjustments, explicit timed lessons, quiz feedback, failed-link recovery, exact API text, honest
-fallback, eligible Reels, and omission of infrastructure narration. The release regression still returns exactly five grouped B2 idioms with five
-individual descriptive Classic Search links and no unsolicited lesson.
+Cover concise wording, comparisons, guided word grouping, grammar, lessons, quizzes, Voice and follow-ups under API success, empty/error/unavailable
+responses and shortfalls. Verify exact study text, composed explanations/meaning choices, no fabricated study examples, unchanged study-state/audio
+boundaries, eligible Reels and failed-link recovery. Five-idiom output requires five suitable verified rows; zero candidates means zero new examples.
 
 ## LE.DELTA-11 — Assistant-led study and repetition
 
@@ -92,3 +90,8 @@ Evolve under LM-SKILL-02 in [the task plan](../LM-SKILL-PLAN.md): immediate guid
 replace learner-authored study setup. Ordinary answers, exact text, listening freedom and explicit levels remain protected. QA adds assistant initiative,
 varied cores, honest study states, repeat/stop/easier and text/audio separation. The accepted critic repairs require word grouping, direct active-Voice
 practice and clarification only without a known level. No installed-model or Voice acceptance is inferred from instruction checks.
+
+## LE.API-ONLY-1 — No synthetic study material
+
+Evolve by the user's 2026-11-05 API-only/source-and-installed instruction. Revision 12 takes precedence over prior model fallback and composed teaching/correction
+examples; explanation, translation, meaning quizzes, supplied-text discussion and guided practice remain. Runtime/Voice acceptance remains separate.

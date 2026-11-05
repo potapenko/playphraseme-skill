@@ -2,9 +2,9 @@
 
 - Status: Active
 - Stability: Evolving
-- Revision: 8
+- Revision: 9
 - Domain: `skill-distribution`
-- Authority: user approval of the UX audit and new release on 2026-09-05
+- Authority: user API-ONLY-1 decision, 2026-11-05; unrelated distribution rules preserved
 ## SD.CHANNELS — Installation channels
 
 The canonical skill source is `skills/playphraseme/`.
@@ -37,17 +37,14 @@ browser capability to make one bounded public Learning API request. It does not
 require a particular tool, shell, Python runtime, DNS diagnostic, exit code, or
 transport sequence.
 
-Learning API access is an enrichment path, not a prerequisite for an ordinary
-learner answer. When a valid response is available, the skill may describe
-selected items as Common Phrases and preserves returned text exactly. When the
-host cannot obtain a usable response, it still answers the learner's request
-with level-appropriate model-selected language and individual public Classic
-Search links. It must not describe those fallback choices as API-returned,
-Common Phrases, corpus-verified, or filter-matched.
-
-A request explicitly asking for API ranking, Common Phrases membership, or
-catalog provenance still requires API evidence. If that evidence is unavailable,
-the skill says so briefly and does not fabricate it.
+Successful public Learning API rows are required for every new assistant-selected
+English study word, phrase or illustrative example. Preserve exact `text`/`word`.
+Empty, failed or unavailable API data gives no new examples or example links;
+state the limitation or shortfall without model filler. Suitable current API rows
+already in context may be reused only with established identity, exact text and
+corpus language. Historical examples alone are not current evidence. User-supplied
+text remains unverified context. Explanations, translations and meaning choices
+may be composed without inventing illustrative English sentences.
 
 Public frontend links follow the documented route templates, use standard URL
 encoding, and contain no tracking parameters. A host may construct them
@@ -76,13 +73,11 @@ presents ChatGPT ZIP upload first and prompt-assisted installation afterward.
    route state.
 5. A fresh manual ChatGPT test uploads the candidate ZIP and invokes
    `@PlayPhrase.me` with the release regression prompt.
-6. The regression prompt returns exactly five B2 idioms, grouped by
-   communicative purpose, with one Classic Search link per idiom and no generic
-   lesson or infrastructure refusal, whether or not the host can fetch the
-   Learning API.
-7. Common Phrases or API-filter provenance is claimed only when a valid API
-   response was actually observed; fallback selections remain useful and
-   honestly unlabeled.
+6. With five suitable API rows, the regression returns five grouped B2 idioms
+   and exact individual links. Empty/unavailable data returns no new examples;
+   insufficient data returns only suitable rows and states the shortfall.
+7. Every new study example has API evidence. Grammar, comparison, practice and
+   follow-up requests never bypass that requirement or rewrite returned text.
 8. Fresh ChatGPT checks cover changed difficulty defaults, concise answers,
    Russian explanation, context-preserving follow-ups, and explicit timed lessons.
 
@@ -95,3 +90,10 @@ README first-use prompts become short everyday requests, including Russian;
 release QA adds the changed conversation scenarios. ZIP layout, instruction-only
 runtime, invocation syntax, public routes, provenance, and installation channels
 remain unchanged. Candidate v0.7.0 requires fresh installed-ZIP ChatGPT evidence.
+
+## SD.API-ONLY-1 — Source and installation consistency
+
+Evolve by the user's 2026-11-05 API-only/source-and-installed instruction.
+Revision 9 changes the prior fallback contract; package layout, public routes,
+host flexibility and release gates remain. Source checks and offline scenarios
+do not establish installed-client acceptance. No release is authorized here.

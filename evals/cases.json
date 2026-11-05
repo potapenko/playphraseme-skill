@@ -15,14 +15,6 @@
     "minimum-common-phrase-count": 5,
     "forbids-automatic-retry-or-pagination": true
   },
-  "model-fallback-invariants": {
-    "applies-to-ordinary-learner-requests": true,
-    "requires-requested-count-level-and-organization": true,
-    "requires-individual-classic-search-links": true,
-    "must-not-claim-common-phrase-or-api-provenance": true,
-    "must-not-return-catalog-only-refusal": true,
-    "must-not-narrate-infrastructure": true
-  },
   "cases": [
     {
       "id": "release-regression-api-available",
@@ -59,18 +51,16 @@
       },
       "prompt": "Give me 5 useful B2 English idioms for today. Group them by what they help me express and give me a PlayPhrase.me link for each one.",
       "expected": {
-        "mode": "response-vocabulary-discovery-model-fallback",
-        "output-count": 5,
+        "mode": "response-vocabulary-discovery-api-unavailable",
+        "output-count": 0,
         "level": "B2",
-        "requires-grouping-by-communicative-purpose": true,
-        "requires-link-per-phrase": true,
-        "requires-descriptive-phrase-links-with-nearby-use": true,
         "must-not-repeat-promotional-link-labels": true,
-        "allows-model-selected-language": true,
         "must-not-claim-common-phrase-or-api-provenance": true,
-        "must-not-return-catalog-only-refusal": true,
         "must-not-mention-dns-python-tools-or-transport": true,
-        "must-not-add-generic-exercises": true
+        "must-not-add-generic-exercises": true,
+        "requires-brief-evidence-limitation": true,
+        "must-not-generate-new-study-examples-or-links": true,
+        "must-not-fill-requested-count": true
       }
     },
     {
@@ -80,13 +70,13 @@
       },
       "prompt": "Give me five useful B2 English idioms with PlayPhrase.me links.",
       "expected": {
-        "output-count": 5,
-        "requires-link-per-phrase": true,
+        "output-count": 0,
         "must-not-retry-api": true,
-        "allows-model-selected-language": true,
         "must-not-claim-common-phrase-or-api-provenance": true,
-        "must-not-return-catalog-only-refusal": true,
-        "must-not-mention-infrastructure": true
+        "must-not-mention-infrastructure": true,
+        "requires-brief-evidence-limitation": true,
+        "must-not-generate-new-study-examples-or-links": true,
+        "must-not-fill-requested-count": true
       }
     },
     {
@@ -285,7 +275,9 @@
       "expected": {
         "requires-linked-comparison-set": true,
         "requires-same-situation-contrast": true,
-        "must-not-add-generic-exercises": true
+        "must-not-add-generic-exercises": true,
+        "must-not-invent-illustrative-english-sentences": true,
+        "requires-user-text-as-unverified-context": true
       }
     },
     {
@@ -312,7 +304,9 @@
         "requires-linked-phrase-choices": true,
         "requires-meaning-or-context-decision": true,
         "must-wait-for-learner-answer": true,
-        "must-not-reveal-answer-in-same-turn": true
+        "must-not-reveal-answer-in-same-turn": true,
+        "requires-exact-api-english-study-choices": true,
+        "allows-composed-meaning-options": true
       }
     },
     {
@@ -340,11 +334,12 @@
       },
       "prompt": "Give me five B2 idioms and keep me listening afterward.",
       "expected": {
-        "output-count": 5,
-        "requires-link-per-phrase": true,
-        "allows-model-selected-language": true,
-        "must-not-imply-reels-combines-fallback-list": true,
-        "must-not-claim-api-provenance": true
+        "output-count": 0,
+        "must-not-claim-api-provenance": true,
+        "requires-brief-evidence-limitation": true,
+        "must-not-generate-new-study-examples-or-links": true,
+        "must-not-fill-requested-count": true,
+        "must-not-invent-reels-scope": true
       }
     },
     {
@@ -388,7 +383,8 @@
         "requires-russian-explanation": true,
         "must-preserve-topic-and-purpose": true,
         "requires-simpler-wording-and-explanation": true,
-        "must-not-repeat-level-question": true
+        "must-not-repeat-level-question": true,
+        "new-wording-requires-exact-api-row": true
       },
       "prior-turns": [
         {
@@ -408,7 +404,8 @@
         "requires-replace-first-item-only": true,
         "must-preserve-other-items": true,
         "must-not-repeat-known-phrase": true,
-        "must-preserve-level-and-topic": true
+        "must-preserve-level-and-topic": true,
+        "new-wording-requires-exact-api-row": true
       },
       "prior-turns": [
         {
@@ -428,7 +425,8 @@
         "output-count": 3,
         "must-preserve-level-and-topic": true,
         "must-not-repeat-prior-phrases": true,
-        "requires-link-per-phrase": true
+        "requires-link-per-phrase": true,
+        "new-wording-requires-exact-api-row": true
       },
       "prior-turns": [
         {
@@ -449,7 +447,8 @@
         "requires-russian-explanation": true,
         "must-preserve-communicative-intent": true,
         "requires-written-register": true,
-        "must-not-restart-unrelated-selection": true
+        "must-not-restart-unrelated-selection": true,
+        "new-wording-requires-exact-api-row": true
       },
       "prior-turns": [
         {
@@ -467,11 +466,12 @@
       "prompt": "По первой ссылке ничего не нашлось. Что попробовать?",
       "expected": {
         "requires-acknowledgement": true,
-        "requires-alternative-search-link": true,
         "must-preserve-communicative-intent": true,
         "must-keep-original-expression-distinct": true,
         "must-not-invent-result-verification": true,
-        "must-not-bypass-access-limits": true
+        "must-not-bypass-access-limits": true,
+        "replacement-requires-exact-current-api-row": true,
+        "must-not-shorten-or-invent-replacement": true
       },
       "prior-turns": [
         {
@@ -556,13 +556,15 @@
             "id": "fixture-a",
             "text": "Can barely take care of myself.",
             "count": 11,
-            "language-level": "B1"
+            "language-level": "B1",
+            "language": "en"
           },
           {
             "id": "fixture-b",
             "text": "Been under a lot of pressure lately.",
             "count": 33,
-            "language-level": "B2"
+            "language-level": "B2",
+            "language": "en"
           }
         ]
       },
@@ -585,11 +587,13 @@
             "id": "fixture-a",
             "text": "You have a decision to make.",
             "count": 29,
-            "language-level": "B1"
+            "language-level": "B1",
+            "language": "en"
           },
           {
             "id": "fixture-b",
-            "text": "Was the best decision I ever made."
+            "text": "Was the best decision I ever made.",
+            "language": "en"
           }
         ]
       },
@@ -608,13 +612,14 @@
         "learning-api": "empty-items"
       },
       "expected": {
-        "output-count": 2,
+        "output-count": 0,
         "requires-retain-seed-word": true,
-        "allows-model-selected-language": true,
-        "requires-link-per-phrase": true,
         "must-not-claim-common-phrase-or-api-provenance": true,
         "must-not-add-quiz-or-speaking": true,
-        "must-not-retry-or-page": true
+        "must-not-retry-or-page": true,
+        "requires-brief-evidence-limitation": true,
+        "must-not-generate-new-study-examples-or-links": true,
+        "must-not-fill-requested-count": true
       }
     },
     {
@@ -624,14 +629,14 @@
         "learning-api": "unavailable"
       },
       "expected": {
-        "output-count": 2,
+        "output-count": 0,
         "requires-retain-seed-word": true,
-        "allows-model-selected-language": true,
-        "requires-link-per-phrase": true,
-        "must-not-return-catalog-only-refusal": true,
         "must-not-claim-common-phrase-or-api-provenance": true,
         "must-not-narrate-infrastructure": true,
-        "must-not-add-quiz-or-speaking": true
+        "must-not-add-quiz-or-speaking": true,
+        "requires-brief-evidence-limitation": true,
+        "must-not-generate-new-study-examples-or-links": true,
+        "must-not-fill-requested-count": true
       }
     },
     {
@@ -668,7 +673,8 @@
         "must-not-default-to-quiz-or-numerical-scores": true,
         "must-not-claim-voice-mode-started": true,
         "requires-assistant-supplied-setup-or-example": true,
-        "must-not-require-learner-designed-situation": true
+        "must-not-require-learner-designed-situation": true,
+        "setup-does-not-authorize-invented-english-examples": true
       }
     },
     {
@@ -737,7 +743,7 @@
       "id": "guided-learning-starts-selection",
       "prompt": "Помоги учить английские слова.",
       "runtime-event": {
-        "learning-api": "unavailable"
+        "learning-api": "success-with-sufficient-suitable-rows"
       },
       "expected": {
         "requires-immediate-compact-selection-and-individual-links": true,
@@ -751,14 +757,16 @@
         "requires-selected-words-with-short-meanings": true,
         "requires-multiple-distinct-expressions-per-word": true,
         "requires-word-grouped-links": true,
-        "must-not-substitute-flat-phrase-list-for-word-learning": true
+        "must-not-substitute-flat-phrase-list-for-word-learning": true,
+        "requires-exact-api-study-examples": true,
+        "counts-conditional-on-suitable-rows": true
       }
     },
     {
       "id": "guided-a2-varied-phrase-cores",
       "prompt": "У меня A2. Подбери полезные разговорные выражения с decision, mind и time, объясни и дай ссылки.",
       "runtime-event": {
-        "learning-api": "unavailable"
+        "learning-api": "success-with-sufficient-suitable-rows"
       },
       "expected": {
         "requires-useful-distinct-cores-for-all-three-words": true,
@@ -766,7 +774,9 @@
         "requires-link-per-phrase": true,
         "must-not-substitute-pronoun-variants-for-variety": true,
         "must-not-claim-catalog-a2-or-scene-level": true,
-        "must-not-demand-learner-created-situations": true
+        "must-not-demand-learner-created-situations": true,
+        "requires-exact-api-study-examples": true,
+        "counts-conditional-on-suitable-rows": true
       }
     },
     {
@@ -784,10 +794,11 @@
       "prompt": "Объясни второе попроще.",
       "expected": {
         "requires-explain-selected-second-expression": true,
-        "requires-assistant-supplied-simple-example": true,
         "must-not-ask-learner-to-invent-question-or-russian-intention": true,
         "must-not-add-quiz-or-speaking": true,
-        "must-not-add-unrequested-full-report": true
+        "must-not-add-unrequested-full-report": true,
+        "allows-conceptual-explanation-without-new-example": true,
+        "new-study-example-requires-exact-api-row": true
       }
     },
     {
@@ -831,15 +842,16 @@
       ],
       "prompt": "Начнём голосовую практику с нашим списком. Ты выбирай фразы и поправляй меня.",
       "runtime-event": {
-        "voice-host": "must-be-established-in-actual-runtime-before-execution"
+        "voice-host": "must-be-established-in-actual-runtime-before-execution",
+        "learning-api": "established-current-rows-for-study-list"
       },
       "expected": {
         "requires-select-one-current-list-expression": true,
-        "requires-provide-one-short-phrase-or-example-to-say": true,
         "requires-wait-for-actual-spoken-attempt": true,
         "must-not-ask-learner-to-design-situation-or-question": true,
         "must-not-invent-attempt-or-mark-practised": true,
-        "must-not-claim-voice-started-without-evidence": true
+        "must-not-claim-voice-started-without-evidence": true,
+        "requires-one-exact-verified-api-target-then-wait": true
       }
     },
     {
@@ -865,12 +877,17 @@
       "prompt": "Вот текст моей попытки: I made decision.",
       "expected": {
         "requires-concrete-missing-article-correction": true,
-        "requires-model-corrected-same-phrase": true,
-        "requires-invite-repeat-and-wait-before-advancing": true,
         "requires-return-to-item-with-specific-reason": true,
         "requires-attempt-as-supplied-text-not-heard-audio": true,
         "must-not-diagnose-pronunciation-or-invent-speech": true,
-        "must-not-mark-mastered-or-score": true
+        "must-not-mark-mastered-or-score": true,
+        "requires-conceptual-missing-article-feedback": true,
+        "must-not-compose-corrected-english-target": true,
+        "repeat-target-requires-exact-api-row": true
+      },
+      "runtime-event": {
+        "learning-api": "unavailable",
+        "verified-current-study-target": "none; prior-assistant-example-is-unverified"
       }
     },
     {
@@ -895,10 +912,14 @@
       ],
       "prompt": "Слишком сложно, дай попроще.",
       "expected": {
-        "requires-shorter-example-from-current-list": true,
         "requires-wait-for-attempt": true,
         "must-not-mark-practised-or-failed-without-attempt": true,
-        "must-not-reset-level-or-require-situation": true
+        "must-not-reset-level-or-require-situation": true,
+        "requires-easier-exact-api-row": true,
+        "must-not-shorten-existing-target": true
+      },
+      "runtime-event": {
+        "learning-api": "success-with-suitable-easier-row"
       }
     },
     {
@@ -947,14 +968,15 @@
         "must-not-repeat-known-core-with-new-pronoun": true,
         "requires-preserve-other-list-items-and-a2-context": true,
         "requires-meaning-and-link": true,
-        "must-not-ask-learner-to-design-lesson": true
+        "must-not-ask-learner-to-design-lesson": true,
+        "new-wording-requires-exact-api-row": true
       }
     },
     {
       "id": "guided-words-keep-word-to-expressions-chain",
       "prompt": "У меня A2. Помоги учить слова decision, mind и time. Дай несколько разных выражений с каждым и ссылки.",
       "runtime-event": {
-        "learning-api": "unavailable"
+        "learning-api": "success-with-sufficient-suitable-rows"
       },
       "expected": {
         "requires-three-word-groups": true,
@@ -964,7 +986,9 @@
         "must-not-substitute-flat-phrase-list": true,
         "must-not-substitute-pronoun-variants-for-variety": true,
         "must-not-claim-catalog-a2": true,
-        "must-not-ask-situation-or-level-again": true
+        "must-not-ask-situation-or-level-again": true,
+        "requires-exact-api-study-examples": true,
+        "counts-conditional-on-suitable-rows": true
       }
     },
     {
@@ -981,14 +1005,15 @@
       ],
       "prompt": "Я уже в Voice. Начнём практику с нашим списком.",
       "runtime-event": {
-        "voice-host": "active-with-current-chat-context; establish-in-real-runtime"
+        "voice-host": "active-with-current-chat-context; establish-in-real-runtime",
+        "learning-api": "established-current-rows-for-study-list"
       },
       "expected": {
-        "requires-one-current-list-phrase-or-example-then-wait": true,
         "must-not-provide-unrequested-handoff": true,
         "must-not-ask-to-open-voice-or-paste-context": true,
         "must-not-invent-spoken-attempt": true,
-        "must-not-ask-for-known-level-or-rebuild-list": true
+        "must-not-ask-for-known-level-or-rebuild-list": true,
+        "requires-one-exact-verified-api-target-then-wait": true
       }
     },
     {
@@ -1006,6 +1031,142 @@
         "requires-link-per-phrase": true,
         "must-not-repeat-level-question": true
       }
+    },
+    {
+      "id": "api-only-insufficient-rows",
+      "prompt": "Give me 5 useful B2 English idioms for today. Group them by what they help me express and give me a PlayPhrase.me link for each one.",
+      "runtime-event": {
+        "learning-api": "controlled-success",
+        "fixture-kind": "historical-gold-text-replayed-offline-not-current-production-evidence",
+        "items": [
+          {
+            "text": "With great power comes great responsibility.",
+            "count": 28,
+            "id": "offline-verified-literal-1",
+            "language": "en"
+          },
+          {
+            "text": "Keep your eye on the prize.",
+            "count": 25,
+            "id": "offline-verified-literal-2",
+            "language": "en"
+          }
+        ]
+      },
+      "expected": {
+        "output-count": 2,
+        "requires-exact-returned-text": true,
+        "requires-link-per-phrase": true,
+        "requires-shortfall-notice": true,
+        "must-not-fill-requested-count": true
+      }
+    },
+    {
+      "id": "api-only-grammar-unavailable",
+      "prompt": "Объясни условные предложения и дай три примера для B1.",
+      "runtime-event": {
+        "learning-api": "unavailable"
+      },
+      "expected": {
+        "new-example-count": 0,
+        "allows-conceptual-explanation": true,
+        "must-not-invent-illustrative-english-sentences": true,
+        "requires-brief-evidence-limitation": true
+      }
+    },
+    {
+      "id": "api-only-guided-study-unavailable",
+      "prompt": "Помоги учить английские слова.",
+      "runtime-event": {
+        "learning-api": "unavailable"
+      },
+      "expected": {
+        "new-example-count": 0,
+        "must-not-generate-new-study-examples-or-links": true,
+        "requires-brief-evidence-limitation": true,
+        "must-not-invent-study-progress": true
+      }
+    },
+    {
+      "id": "api-only-quiz-meaning-options",
+      "prompt": "У меня B2. Дай вопрос о значении одной подтверждённой фразы; варианты смысла сформулируй по-русски.",
+      "runtime-event": {
+        "learning-api": "controlled-success",
+        "fixture-kind": "historical-gold-text-replayed-offline-not-current-production-evidence",
+        "items": [
+          {
+            "text": "With great power comes great responsibility.",
+            "count": 28,
+            "id": "offline-verified-literal-1",
+            "language": "en"
+          }
+        ]
+      },
+      "expected": {
+        "requires-exact-api-study-text": true,
+        "allows-composed-meaning-options": true,
+        "requires-one-question-then-wait": true,
+        "must-not-generate-new-english-study-phrases": true
+      }
+    },
+    {
+      "id": "api-only-supplied-quote-unavailable",
+      "prompt": "What does 'cut me some slack' mean?",
+      "runtime-event": {
+        "learning-api": "unavailable"
+      },
+      "expected": {
+        "allows-user-supplied-direct-search": true,
+        "requires-user-text-as-unverified-context": true,
+        "allows-explanation-of-supplied-text": true,
+        "new-example-count": 0,
+        "must-not-invent-nearby-alternatives": true
+      }
+    },
+    {
+      "id": "api-only-reuse-current-evidence",
+      "prompt": "Повтори эти примеры с теми же ссылками.",
+      "runtime-event": {
+        "learning-api": "unavailable",
+        "established-current-api-rows": [
+          {
+            "text": "With great power comes great responsibility.",
+            "count": 28,
+            "id": "offline-verified-literal-1",
+            "language": "en"
+          },
+          {
+            "text": "Keep your eye on the prize.",
+            "count": 25,
+            "id": "offline-verified-literal-2",
+            "language": "en"
+          }
+        ]
+      },
+      "expected": {
+        "output-count": 2,
+        "requires-exact-returned-text": true,
+        "requires-link-per-phrase": true,
+        "must-retain-record-identity-text-and-corpus": true,
+        "must-not-add-new-examples": true
+      }
     }
-  ]
+  ],
+  "api-only-selection-invariants": {
+    "applies-to-all-study-modes": true,
+    "requires-successful-public-api-rows": true,
+    "requires-exact-returned-text-or-word": true,
+    "forbids-synthetic-example-or-link-filler": true,
+    "must-state-shortfall": true,
+    "permits-composed-explanations-translations-and-meaning-choices": true,
+    "user-supplied-text-is-unverified-context": true,
+    "reuse-requires-current-record-identity-text-and-corpus-language": true,
+    "historical-documentation-is-not-current-api-evidence": true,
+    "must-not-narrate-infrastructure": true
+  },
+  "scenario-preconditions": {
+    "selection-without-failure-event": "Establish successful public API rows sufficient for the expected selection before evaluating a requested output count; no count overrides API-only selection.",
+    "prior-turns": "Quoted historical assistant turns are context, not API evidence. Establish current row identity, exact text and corpus before reusing them as verified study targets.",
+    "controlled-events": "Fixture data is offline scenario input, never a new production observation."
+  }
 }
