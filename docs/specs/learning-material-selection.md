@@ -2,20 +2,16 @@
 
 - Status: Active
 - Stability: Evolving
-- Revision: 11
+- Revision: 12
 - Domain: `learning-material-selection`
-- Authority: user API-ONLY-1 decision, 2026-11-05; unrelated LM-SKILL-02 behavior preserved
-- Requires: `lesson-experience` Revision 12, clauses `LE.ROUTING`,
-  `LE.COMPOSITION`, `LE.ACTIVE-LINKS`, `LE.CONTINUATION`, `LE.DEGRADATION`;
-  `skill-distribution` Revision 9, clause `SD.COMPATIBILITY`
+- Authority: user API-ONLY-2 clarification, 2026-11-06; unrelated LM-SKILL-02 behavior preserved
+- Requires: `lesson-experience` Revision 13, clauses `LE.ROUTING`,
+  `LE.COMPOSITION`, `LE.ACTIVE-LINKS`, `LE.CONTINUATION`, `LE.DEGRADATION`;   `skill-distribution` Revision 10, clause `SD.COMPATIBILITY`
 
 ## LMS.INTENT — Compile the learner's request
 
-Identify unit, explicit level, situation, communicative purpose, register, and requested count
-before selection. New assistant-selected English study words, expressions and examples require successful public Learning API rows. Preserve exact `text`/`word` in every mode. Never invent,
-rewrite, complete or shorten an example. Explanations, translations and meaning choices may be
-composed freely without adding new illustrative English sentences. User-supplied text is unverified
-context, not catalog evidence. Use only documented filters and preserve word/phrase units.
+Identify unit, explicit level, situation, communicative purpose, register, and requested count before selection. Every offered study word, phrase, formula or example requires an exact successful public Learning API row, including user-supplied text. Preserve exact `text`/`word` in every mode. Never invent, rewrite, complete or shorten an example. Explanations, translations and meaning choices may be composed freely without adding new illustrative English sentences. User-supplied text is unverified
+context, not learning material or catalog evidence until API-verified. Direct user-requested navigation/discussion remains allowed. Use documented filters and preserve units.
 
 ## LMS.LEVEL — Resolve difficulty without an advanced default
 
@@ -39,7 +35,7 @@ words. Preserve topic and register.
 ## LMS.WORD-PATH — Word, combinations, listening
 
 Use Common Words for new word selection and Common Phrases/Suggestions for new combinations.
-Browser-only collocations do not replace API evidence; user-supplied combinations may be discussed and linked as unverified context. Suggestions has no CEFR request filter and may return unrelated
+Browser-only collocations do not replace API evidence; user-supplied combinations may be discussed or searched as input, but require exact API verification before use as learning material. Suggestions has no CEFR request filter and may return unrelated
 text or another level. Curate for the word, meaning and difficulty without rewriting records.
 Optional `language-level`/`count` applies only to its record. A word's level does not label all
 combinations or scenes. Show fewer combinations when suitable API rows are insufficient.
@@ -98,3 +94,7 @@ guided start, A2 usefulness without false CEFR claims, varied cores and known-it
 
 User-authorized Evolve, 2026-11-05: Revision 11 API-only sourcing overrides prior model/UI fallback and count filler; source and installed skill follow it.
 All unrelated prior behavior remains. Evidence: existing instructions/evals; QA: LMS.QA and updated offline definitions.
+
+## LMS.API-ONLY-2 — All offered examples require API evidence
+
+User clarification, 2026-11-06: formulas, ellipses and user quotes are no exception for learning material; this supersedes any earlier input-based exception. Direct navigation and conceptual discussion remain; public API/privacy boundaries are unchanged.

@@ -39,7 +39,10 @@ corpus language intact; historical documentation is not current API evidence.
 
 Explanations, translations and meaning options may be composed. Do not confuse
 them with invented illustrative English sentences or phrases. User-supplied text
-may be linked and discussed as unverified context without catalog claims.
+may be discussed or used for explicit navigation, but must not become an offered
+learning example, listening assignment or practice target without an exact API
+row. The same requirement covers grammar formulas, ellipses and slots. A search
+URL or an input quote is not source evidence.
 No learner-facing Python, DNS, tools, transport debugging or private fallback.
 
 ## Level and response quality
@@ -143,3 +146,8 @@ no filler, and meaningful explanations/meaning quizzes remain allowed. Controlle
 fixtures replay existing literal evidence without claiming a new production GET.
 The six API-ONLY cases and changed failure expectations are scenario definitions,
 not executed model sessions. Installed-client and actual Voice evidence remain separate.
+
+API-ONLY-2 adds strict user-quote/formula checks: unavailable quoted practice and
+ellipsis formulas produce no offered material; a formula cannot be abstracted
+from a longer row; exact API-backed quoted practice remains allowed. Discussion,
+meaning options and explicit navigation remain distinct from learning examples.

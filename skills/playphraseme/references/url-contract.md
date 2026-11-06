@@ -41,9 +41,10 @@ https://www.playphrase.me/#/search?language=en&q=gr%3A+go+home
 ```
 
 Use Classic Search for every phrase selected from verified current API rows,
-preserving its exact text. User-supplied wording may also be linked as unverified
-context. A valid URL does not establish catalog membership; never create a link
-for an invented example.
+preserving its exact text. An explicit user-directed search may link the supplied
+query, but that navigation link cannot promote it into learning material. Every
+offered example or practice target, including quoted text and formulas, requires
+an exact API row. A valid URL is not evidence; never link invented examples.
 
 ## Common Phrases and Common Words catalogs
 

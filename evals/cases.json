@@ -240,7 +240,9 @@
         "mode": "classic-search-exact",
         "requires-encoded-double-quotes": true,
         "requires-prominent-link-before-examples": true,
-        "must-not-ask-level": true
+        "must-not-ask-level": true,
+        "navigation-query-is-not-offered-learning-material": true,
+        "examples-require-separate-exact-api-rows": true
       }
     },
     {
@@ -248,7 +250,9 @@
       "prompt": "Find movie lines matching hello, then one or more words, then world.",
       "expected": {
         "mode": "classic-search-wildcard",
-        "query": "hello * world"
+        "query": "hello * world",
+        "navigation-query-is-not-offered-learning-material": true,
+        "examples-require-separate-exact-api-rows": true
       }
     },
     {
@@ -256,7 +260,9 @@
       "prompt": "Find English examples of the grammar pattern go home.",
       "expected": {
         "mode": "classic-search-grammar",
-        "query": "gr: go home"
+        "query": "gr: go home",
+        "navigation-query-is-not-offered-learning-material": true,
+        "examples-require-separate-exact-api-rows": true
       }
     },
     {
@@ -533,7 +539,8 @@
         "requires-link-per-phrase": true,
         "requires-distinguish-vocabulary-collocations-from-common-phrases": true,
         "must-not-infer-phrase-or-scene-level-from-word": true,
-        "must-not-add-per-clip-work": true
+        "must-not-add-per-clip-work": true,
+        "requires-exact-api-verification-before-offering-supplied-material": true
       }
     },
     {
@@ -654,7 +661,8 @@
         "requires-link-per-phrase": true,
         "must-not-add-per-clip-reporting-or-retelling": true,
         "must-not-add-quiz-or-speaking": true,
-        "must-not-offer-unrequested-extras": true
+        "must-not-offer-unrequested-extras": true,
+        "requires-exact-api-verification-before-offering-supplied-material": true
       }
     },
     {
@@ -674,7 +682,8 @@
         "must-not-claim-voice-mode-started": true,
         "requires-assistant-supplied-setup-or-example": true,
         "must-not-require-learner-designed-situation": true,
-        "setup-does-not-authorize-invented-english-examples": true
+        "setup-does-not-authorize-invented-english-examples": true,
+        "requires-exact-api-verification-before-offering-supplied-material": true
       }
     },
     {
@@ -736,7 +745,8 @@
         "requires-stop-speaking": true,
         "requires-retain-exact-selected-expressions": true,
         "requires-link-per-phrase": true,
-        "must-not-add-conversation-question-or-test": true
+        "must-not-add-conversation-question-or-test": true,
+        "requires-exact-api-verification-before-offering-supplied-material": true
       }
     },
     {
@@ -1116,11 +1126,12 @@
         "learning-api": "unavailable"
       },
       "expected": {
-        "allows-user-supplied-direct-search": true,
         "requires-user-text-as-unverified-context": true,
         "allows-explanation-of-supplied-text": true,
         "new-example-count": 0,
-        "must-not-invent-nearby-alternatives": true
+        "must-not-invent-nearby-alternatives": true,
+        "must-not-promote-supplied-text-to-study-example": true,
+        "must-not-offer-unverified-practice-target": true
       }
     },
     {
@@ -1150,6 +1161,75 @@
         "must-retain-record-identity-text-and-corpus": true,
         "must-not-add-new-examples": true
       }
+    },
+    {
+      "id": "api-only-ellipsis-formula-unavailable",
+      "prompt": "Объясни формулу Thanks for… и предложи её как пример для практики.",
+      "runtime-event": {
+        "learning-api": "unavailable"
+      },
+      "expected": {
+        "new-example-count": 0,
+        "allows-conceptual-explanation": true,
+        "must-not-offer-unverified-formula": true,
+        "must-not-promote-supplied-text-to-study-example": true,
+        "requires-brief-evidence-limitation": true
+      }
+    },
+    {
+      "id": "api-only-user-quoted-practice-unavailable",
+      "prompt": "Давай потренируем мою фразу barely enough. Повтори её как учебный образец.",
+      "runtime-event": {
+        "learning-api": "unavailable"
+      },
+      "expected": {
+        "offered-practice-target-count": 0,
+        "must-not-offer-unverified-practice-target": true,
+        "must-not-treat-user-quote-as-source-evidence": true,
+        "requires-brief-evidence-limitation": true
+      }
+    },
+    {
+      "id": "api-only-no-formula-from-substring",
+      "prompt": "Преврати подтверждённую фразу в короткую учебную формулу: первые три слова и многоточие.",
+      "runtime-event": {
+        "learning-api": "controlled-success",
+        "fixture-kind": "historical-gold-text-replayed-offline-not-current-production-evidence",
+        "items": [
+          {
+            "text": "With great power comes great responsibility.",
+            "count": 28,
+            "id": "offline-verified-literal-1",
+            "language": "en"
+          }
+        ]
+      },
+      "expected": {
+        "must-not-shorten-or-abstract-api-row": true,
+        "any-offered-formula-must-equal-full-api-text": true,
+        "allows-conceptual-explanation": true
+      }
+    },
+    {
+      "id": "api-only-supplied-quote-verified-practice",
+      "prompt": "Давай практиковать мою фразу: With great power comes great responsibility.",
+      "runtime-event": {
+        "learning-api": "controlled-success",
+        "fixture-kind": "historical-gold-text-replayed-offline-not-current-production-evidence",
+        "items": [
+          {
+            "text": "With great power comes great responsibility.",
+            "count": 28,
+            "id": "offline-verified-literal-1",
+            "language": "en"
+          }
+        ]
+      },
+      "expected": {
+        "offered-practice-target-count": 1,
+        "requires-exact-api-text-not-merely-user-quote": true,
+        "requires-one-target-then-wait": true
+      }
     }
   ],
   "api-only-selection-invariants": {
@@ -1162,7 +1242,10 @@
     "user-supplied-text-is-unverified-context": true,
     "reuse-requires-current-record-identity-text-and-corpus-language": true,
     "historical-documentation-is-not-current-api-evidence": true,
-    "must-not-narrate-infrastructure": true
+    "must-not-narrate-infrastructure": true,
+    "all-offered-examples-including-user-quotes-and-formulas-require-exact-api-row": true,
+    "unverified-user-input-must-not-be-promoted-to-learning-material": true,
+    "explicit-navigation-is-not-example-evidence": true
   },
   "scenario-preconditions": {
     "selection-without-failure-event": "Establish successful public API rows sufficient for the expected selection before evaluating a requested output count; no count overrides API-only selection.",

@@ -70,8 +70,9 @@ do not append a test, speaking task or demand for a progress report.
 2. Select a small useful set of combinations containing that word in the
    intended sense from Common Phrases or one bounded Suggestions request with
    the word as `q`; no CEFR bounds belong on Suggestions. Common Words does not
-   guarantee collocations. User-supplied combinations may be discussed and linked
-   as unverified context; browser-only collocations do not replace API rows.
+   guarantee collocations. User-supplied combinations may be discussed or searched
+   as input, but cannot become offered examples or practice targets without exact
+   API verification. Browser-only collocations do not replace API rows.
 3. Curate Suggestions: reject unrelated results and choices unsuitable for the
    requested task. Optional `language-level` and `count` describe each returned
    record; preserve selected `text` exactly. Do not complete or rewrite a record
@@ -89,7 +90,8 @@ do not append a test, speaking task or demand for a progress report.
    evidence; catalog metadata alone is insufficient.
 
 Keep Common Words metadata, Common Phrases/Suggestions records and unverified
-user-supplied wording distinct. Only successful API rows source new study examples.
+user-supplied wording distinct. Every offered study example or speaking target
+requires an exact successful API row, even when the learner supplied the text.
 Do not infer learning from opening a link or listening.
 
 ## Lead speaking only when requested
@@ -131,7 +133,8 @@ Offer a portable context only when the list/context is missing in the destinatio
 the user is moving to another chat, or explicitly asks for a handoff. Fill it in
 the user's language with actual available choices and evidenced progress; do
 not invent missing study history. Preserve whether each item has current API
-evidence or is unverified user text. If no verified list is available, obtain a
+evidence or is unverified user text. Unverified entries are input, never practice
+targets or offered examples; formulas have no exception. If no verified list is available, obtain a
 starting API item as above instead of pretending to recover one. Handoff template:
 
 ```text

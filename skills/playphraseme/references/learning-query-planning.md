@@ -64,7 +64,8 @@ its broad defaults. Suggestions does not support CEFR filters.
   word. It is candidate discovery, not an exact-word or CEFR-filtered search.
 - For word → combinations → listening, follow
   [listening and speaking](listening-and-speaking.md).
-- A user-supplied phrase may go directly to Classic Search.
+- User-supplied text may be a direct navigation query; verify an exact API row
+  before selecting it as learning material, including any incomplete formula.
 
 Prefer one bounded Learning API request with enough candidates for curation.
 Use no more than 20 candidates per request and do not page for variety. A

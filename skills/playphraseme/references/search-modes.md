@@ -22,8 +22,9 @@ routes for exact, wildcard, grammar, Clip Search, actor, and Reels requests.
 Preserve selected API `text` or `word` exactly and link it through Classic
 Search. This source requirement covers every mode, including grammar and
 practice. Without suitable verified current API rows, do not supply new English
-examples or example links. Direct user-supplied wording may go straight to its
-search route as unverified context; it is not evidence of catalog membership.
+examples or example links. User-supplied wording may go directly to its route
+for an explicit search/navigation request only. It must match an exact API row
+before being offered as learning material; quotes and grammar formulas are no exception.
 
 For level, register, situation, or communication-goal collections, read
 [learning query planning](learning-query-planning.md).

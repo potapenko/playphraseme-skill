@@ -2,17 +2,14 @@
 
 - Status: Active
 - Stability: Evolving
-- Revision: 9
+- Revision: 10
 - Domain: `skill-distribution`
-- Authority: user API-ONLY-1 decision, 2026-11-05; unrelated distribution rules preserved
+- Authority: user API-ONLY-2 clarification, 2026-11-06; unrelated distribution rules preserved
 ## SD.CHANNELS — Installation channels
 
 The canonical skill source is `skills/playphraseme/`.
 
-A ready-made `skill.zip` is the primary public installation path for ChatGPT.
-The README leads with the direct download, the shortest supported upload flow,
-and a short everyday `@PlayPhrase.me` prompt. Show that users can ask in their
-own language without specifying filters, CEFR codes, or response structure.
+A ready-made `skill.zip` is the primary public installation path for ChatGPT. The README leads with the direct download, the shortest supported upload flow, and a short everyday `@PlayPhrase.me` prompt. Show that users can ask in their own language without specifying filters, CEFR codes, or response structure.
 
 Prompt-based installation remains available for Codex, Claude, and other
 compatible Agent Skills hosts. ChatGPT-first distribution must not remove that
@@ -37,13 +34,13 @@ browser capability to make one bounded public Learning API request. It does not
 require a particular tool, shell, Python runtime, DNS diagnostic, exit code, or
 transport sequence.
 
-Successful public Learning API rows are required for every new assistant-selected
-English study word, phrase or illustrative example. Preserve exact `text`/`word`.
+Exact successful public Learning API rows are required for every offered
+learning example, formula and user-quoted practice target. Preserve exact `text`/`word`.
 Empty, failed or unavailable API data gives no new examples or example links;
 state the limitation or shortfall without model filler. Suitable current API rows
 already in context may be reused only with established identity, exact text and
 corpus language. Historical examples alone are not current evidence. User-supplied
-text remains unverified context. Explanations, translations and meaning choices
+text remains input, never learning material before exact API verification. Explanations, translations and meaning choices
 may be composed without inventing illustrative English sentences.
 
 Public frontend links follow the documented route templates, use standard URL
@@ -97,3 +94,7 @@ Evolve by the user's 2026-11-05 API-only/source-and-installed instruction.
 Revision 9 changes the prior fallback contract; package layout, public routes,
 host flexibility and release gates remain. Source checks and offline scenarios
 do not establish installed-client acceptance. No release is authorized here.
+
+## SD.API-ONLY-2 — All offered examples require API evidence
+
+User clarification, 2026-11-06: formulas, ellipses and user quotes are no exception for learning material; this supersedes any earlier input-based exception. Direct navigation and conceptual discussion remain; public API/privacy boundaries are unchanged.

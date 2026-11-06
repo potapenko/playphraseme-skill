@@ -66,6 +66,9 @@ class EvalDefinitionTests(unittest.TestCase):
             "must-state-shortfall",
             "permits-composed-explanations-translations-and-meaning-choices",
             "user-supplied-text-is-unverified-context",
+            "all-offered-examples-including-user-quotes-and-formulas-require-exact-api-row",
+            "unverified-user-input-must-not-be-promoted-to-learning-material",
+            "explicit-navigation-is-not-example-evidence",
             "reuse-requires-current-record-identity-text-and-corpus-language",
             "historical-documentation-is-not-current-api-evidence",
         ):
@@ -94,6 +97,22 @@ class EvalDefinitionTests(unittest.TestCase):
         correction = cases["transcript-correction-invites-same-item-repeat"]["expected"]
         self.assertTrue(correction["must-not-compose-corrected-english-target"])
         self.assertTrue(correction["requires-conceptual-missing-article-feedback"])
+
+    def test_user_quotes_and_formulas_do_not_bypass_exact_api_evidence(self) -> None:
+        cases = case_map()
+        formula = cases["api-only-ellipsis-formula-unavailable"]["expected"]
+        self.assertEqual(0, formula["new-example-count"])
+        self.assertTrue(formula["must-not-offer-unverified-formula"])
+        practice = cases["api-only-user-quoted-practice-unavailable"]["expected"]
+        self.assertEqual(0, practice["offered-practice-target-count"])
+        self.assertTrue(practice["must-not-treat-user-quote-as-source-evidence"])
+        substring = cases["api-only-no-formula-from-substring"]["expected"]
+        self.assertTrue(substring["must-not-shorten-or-abstract-api-row"])
+        verified = cases["api-only-supplied-quote-verified-practice"]["expected"]
+        self.assertEqual(1, verified["offered-practice-target-count"])
+        self.assertTrue(verified["requires-exact-api-text-not-merely-user-quote"])
+        for case_id in ("exact-quote", "wildcard", "grammar-search"):
+            self.assertTrue(cases[case_id]["expected"]["navigation-query-is-not-offered-learning-material"])
 
     def test_release_prompt_has_api_and_no_api_acceptance(self) -> None:
         cases = case_map()

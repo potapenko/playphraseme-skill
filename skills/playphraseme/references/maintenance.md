@@ -24,7 +24,9 @@ empty results, and unavailable-API scenarios across ordinary learner requests:
 new examples must use exact successful API rows; empty or failed requests must
 produce no synthetic examples or example links. Requested counts, grammar,
 comparisons, practice, and follow-ups must never bypass that rule. User-supplied
-quotes remain unverified context unless API evidence establishes membership.
+quotes, grammar formulas and ellipses must not become learning material or
+practice targets before an exact API row is verified. Explicit navigation and
+conceptual discussion do not waive this requirement.
 
 ## Verify documented examples
 
